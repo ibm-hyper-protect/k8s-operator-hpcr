@@ -28,6 +28,10 @@ FROM scratch
 COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
+COPY --from=base_layer /lib64/libc.so.6 /lib64/
+COPY --from=base_layer /lib64/libpthread.so.0 /lib64/
+COPY --from=base_layer /lib64/ld-linux-x86-64.so.2 /lib64/
+COPY --from=base_layer /lib64/libresolv.so.2 /lib64/
 
 COPY --from=build_layer /build/k8s-operator-hpcr /k8s-operator-hpcr
 
