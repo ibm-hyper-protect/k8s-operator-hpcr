@@ -5,6 +5,7 @@
     "tasks": [
         {
             "label": "HPCR: ⚙️ Build Container",
+            "detail": "Executes a local build of the controller, useful for development",
             "type": "shell",
             "windows": {
                 "options": {
@@ -15,6 +16,7 @@
         },
         {
             "label": "HPCR: 🔒 SSH Config",
+            "detail": "Reads the local SSH config in ~/.ssh and deploys a config map based on that config",
             "type": "shell",
             "windows": {
                 "options": {
@@ -25,6 +27,7 @@
         },
         {
             "label": "HPCR: 🧰 Deploy Busybox",
+            "detail": "Deploys the busybox example for convenience",
             "type": "shell",
             "windows": {
                 "options": {

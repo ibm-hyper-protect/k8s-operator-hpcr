@@ -48,11 +48,35 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 			strings.Split(data, "\n"),
 			A.Map(strings.TrimSpace),
 		)
-		// TODO check the lines for errors
-
+		// partition the lines
+		success, failure := onprem.PartitionLogs(lines)
+		if onprem.VSIFailedToStart(failure) {
+			// print some error details
+			desc := strings.Join(failure, "\n")
+			log.Printf("Domain [%s] failed to start, errors: [%s]", opt.Name, desc)
+			// VSI is ready but in an error state. It won't start at the next attempt
+			return &common.ResourceStatus{
+				Status:      common.Ready,
+				Description: desc,
+				Error:       nil,
+			}, nil
+		}
+		// check if we are still booting
+		if onprem.VSIStartedSuccessfully(success) {
+			// juhuuu
+			return &common.ResourceStatus{
+				Status:      common.Ready,
+				Description: strings.Join(lines, "\n"),
+				Error:       nil,
+			}, nil
+		}
+		// log this
+		desc := strings.Join(lines, "\n")
+		log.Printf("Domain [%s] is still booting, logs: [%s]", opt.Name, desc)
+		// we need to wait
 		return &common.ResourceStatus{
-			Status:      common.Ready,
-			Description: strings.Join(lines, "\n"),
+			Status:      common.Waiting,
+			Description: desc,
 			Error:       nil,
 		}, nil
 	}

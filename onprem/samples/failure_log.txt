@@ -1,0 +1,24 @@
+Connected to domain 'k8s_170149056b0b4c948d482f45b515496a_0726_1de82972-5f62-42a3-8ff8-473facea5afd'
+Escape character is ^] (Ctrl + ])
+# decrypt user-data...
+2 token decrypted, 0 encrypted token ignored
+# run attestation...
+# set hostname...
+# finish root disk setup...
+# Wed Feb 15 08:53:51 UTC 2023
+# HPL11 build:23.1.0 enabler:22.11.6
+# HPL11099I: bootloader end
+hpcr-dnslookup[485]: HPL14000I: Network connectivity check completed successfully.
+hpcr-logging[497]: Configuring logging ...
+hpcr-logging[498]: Version [1.1.74]
+hpcr-logging[498]: Configuring logging, input [/var/hyperprotect/user-data.decrypted] ...
+hpcr-logging[498]: Sending logging probe to [https://logs.eu-gb.logging.cloud.ibm.com/logs/ingest/?hostname=goruw-bx8w5ja2nu2rqf04qav-q2in-h3q070to-xb8sv3&now=1676451237] ...
+hpcr-logging[498]: HPL01010I: Logging has been setup successfully.
+hpcr-logging[497]: Logging has been configured
+hpcr-catch-failure[698]: VSI Status is:  Failed
+hpcr-catch-failure[698]: VSI has failed to start
+hpcr-catch-failure[698]: HPL16003E: some other error
+hpcr-catch-failure[698]: HPL10000E: One or more service failed -> Check for the services that failed to be active
+hpcr-catch-failure[698]: Triggering shutdown
+hpcr-catch-failure[698]: Catch service failed
+hpcr-catch-failure[704]: Shutdown scheduled for Wed 2023-02-15 08:59:00 UTC, use 'shutdown -c' to cancel.

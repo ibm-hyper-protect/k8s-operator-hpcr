@@ -1,6 +1,6 @@
 // Copyright 2023 IBM Corp.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
+// Licensed under the Ache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
@@ -16,6 +16,7 @@ package onprem
 
 import (
 	"bytes"
+	"regexp"
 
 	"libvirt.org/go/libvirtxml"
 )
@@ -23,6 +24,13 @@ import (
 const (
 	// some sensible value for the size of the logging volume
 	maxLoggingVolumeSize = uint64(2 * 1024 * 1024)
+)
+
+var (
+	// expression to match tokens
+	reSuccessToken        = regexp.MustCompile(`HPL\d+I`)
+	reErrorToken          = regexp.MustCompile(`HPL\d+E`)
+	reStartedSuccessfully = regexp.MustCompile(`(HPL10001I)|(VSI has started successfully)`)
 )
 
 // createLoggingVolumeDef creates the XML for the logging
@@ -81,6 +89,7 @@ func CreateLoggingVolume(client *LivirtClient) func(storagePool, name string) (*
 }
 
 // GetLoggingVolume retrieves the value of the logging volume
+// the HPCR console log is very small by design, so passing it as a string does make sense
 func GetLoggingVolume(client *LivirtClient) func(storagePool, name string) (string, error) {
 	conn := client.LibVirt
 
@@ -104,4 +113,40 @@ func GetLoggingVolume(client *LivirtClient) func(storagePool, name string) (stri
 		// returns the content of the logs
 		return buffer.String(), nil
 	}
+}
+
+// PartitionLogs partitions the original logs into success and error logs
+func PartitionLogs(logs []string) ([]string, []string) {
+	var success, failure []string
+	for _, line := range logs {
+		if reSuccessToken.MatchString(line) {
+			success = append(success, line)
+		}
+		if reErrorToken.MatchString(line) {
+			failure = append(failure, line)
+		}
+	}
+	return success, failure
+}
+
+// VSIStartedSuccessfully tests if the VSI started successfully
+func VSIStartedSuccessfully(logs []string) bool {
+	// check if the logs contain an indication for successful startup
+	for _, line := range logs {
+		if reStartedSuccessfully.MatchString(line) {
+			return true
+		}
+	}
+	return false
+}
+
+// VSIFailedToStart tests if the VSI failed to start
+func VSIFailedToStart(logs []string) bool {
+	// check if the logs contain an for failure
+	for _, line := range logs {
+		if reErrorToken.MatchString(line) {
+			return true
+		}
+	}
+	return false
 }

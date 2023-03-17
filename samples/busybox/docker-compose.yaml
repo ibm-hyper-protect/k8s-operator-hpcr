@@ -2,6 +2,6 @@
 version: '3.0'
 services:
   busybox:
-    image: docker.io/library/busybox:latest
+    image: docker.io/library/busybox@sha256:b5d6fe0712636ceb7430189de28819e195e8966372edfc2d9409d79402a0dc16
     command: |
       echo "Hello from busybox"
