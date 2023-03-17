@@ -2,6 +2,8 @@
 
 The [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
 
+For the impatient: [how to setup the controller in your cluster](#installing-the-controller)
+
 ## Limitations
 
 - only support the Default k8s namespace for the moment
@@ -390,6 +392,8 @@ For testing use
 docker run --rm -it -p <PORT>:80 docker-eu-public.artifactory.swg-devops.com/sys-zaas-team-hpse-dev-docker-local/zaas/hpse-docker-22-04-dev-vm-x84_64
 ```
 
+## Installing the Controller
+
 ### Prerequisite
 
 - Install [Metacontroller](https://metacontroller.github.io/metacontroller/guide/install.html):
@@ -398,22 +402,26 @@ docker run --rm -it -p <PORT>:80 docker-eu-public.artifactory.swg-devops.com/sys
   kubectl apply -k https://github.com/metacontroller/metacontroller/manifests/production
   ```
 
-- Setup [Pull Secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials) when using private registries for the [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) image. 
-  
-  The name of the [Pull Secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials) needs to match the value of the `imagePullSecrets` field in the [webhook.yaml](k8s/webhook.yaml) file. The value of the secrets needs to allow for pull access to the image specified in the `image` field of the [webhook.yaml](k8s/webhook.yaml) file. e.g.
-  ```bash
-  kubectl create secret docker-registry artifactory \
-  --docker-server=docker-eu-public.artifactory.swg-devops.com \
-  --docker-username=<USERNAME> \
-  --docker-password=<REGISTRY_APIKEY> \
-  --docker-email=<USER_EMAIL>
-  ```
-
-### Deploy Resources
+### Deploy the Controller
 
 ```bash
-kubectl apply -f k8s
+kubectl apply -f https://github.com/ibm-hyper-protect/hpcr-controller/manifests
 ``` 
+
+Verify your installation by checking for the existence of the custom resources:
+
+```bash
+kubectl kubectl get crds
+
+NAME                                         CREATED AT
+compositecontrollers.metacontroller.k8s.io   2023-03-15T21:32:11Z
+controllerrevisions.metacontroller.k8s.io    2023-03-15T21:32:11Z
+decoratorcontrollers.metacontroller.k8s.io   2023-03-15T21:32:11Z
+onprem-hpcrs.hpse.ibm.com                    2023-03-17T12:44:30Z
+vpc-hpcrs.hpse.ibm.com                       2023-03-17T12:44:30Z
+```
+
+
 
 ### Show Logs
 

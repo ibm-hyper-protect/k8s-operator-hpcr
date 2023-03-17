@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpcr-controller
+  labels:
+    hpcr: pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hpcr-controller
+  template:
+    metadata:
+      labels:
+        app: hpcr-controller
+    spec:
+      containers:
+      - name: controller
+        image: ghcr.io/ibm-hyper-protect/hpcr-controller:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpcr-controller
+spec:
+  selector:
+    app: hpcr-controller
+  ports:
+  - port: 8080

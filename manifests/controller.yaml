@@ -1,0 +1,42 @@
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: hpcr-controller-vpc
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: vpc-hpcrs    
+  resyncPeriodSeconds: 60
+  hooks:
+    sync:
+      webhook:
+        url: http://hpcr-controller.default:8080/vpc/sync
+    finalize:
+      webhook:
+        url: http://hpcr-controller.default:8080/vpc/finalize
+    customize:
+      webhook:
+        url: http://hpcr-controller.default:8080/vpc/customize
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: hpcr-controller-onprem  
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-hpcrs
+  resyncPeriodSeconds: 60
+  hooks:
+    sync:
+      webhook:
+        url: http://hpcr-controller.default:8080/onprem/sync
+    finalize:
+      webhook:
+        url: http://hpcr-controller.default:8080/onprem/finalize
+    customize:
+      webhook:
+        url: http://hpcr-controller.default:8080/onprem/customize

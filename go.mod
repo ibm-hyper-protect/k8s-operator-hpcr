@@ -1,6 +1,6 @@
 module github.com/ibm-hyper-protect/hpcr-controller
 
-go 1.19
+go 1.20
 
 require (
 	github.com/IBM/go-sdk-core/v5 v5.13.1
@@ -36,7 +36,7 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-openapi/errors v0.20.3 // indirect
-	github.com/go-openapi/strfmt v0.21.3 // indirect
+	github.com/go-openapi/strfmt v0.21.5 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
@@ -81,7 +81,7 @@ require (
 	github.com/vmihailenco/msgpack/v4 v4.3.12 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	github.com/zclconf/go-cty v1.13.0 // indirect
+	github.com/zclconf/go-cty v1.13.1 // indirect
 	go.mongodb.org/mongo-driver v1.11.2 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/net v0.8.0 // indirect

@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "HPCR: ⚙️ Build Container",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "command": "${workspaceFolder}\\tooling\\scripts\\buildContainer.bat"
+            }
+        },
+        {
+            "label": "HPCR: 🔒 SSH Config",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "command": "${workspaceFolder}\\tooling\\scripts\\deploySSHConfig.bat"
+            }
+        },
+        {
+            "label": "HPCR: 🧰 Deploy Busybox",
+            "type": "shell",
+            "windows": {
+                "options": {
+                    "cwd": "${workspaceFolder}",
+                },
+                "command": "dotenv ${workspaceFolder}\\tooling\\scripts\\deploySample.bat"
+            }
+        }
+    ]
+}
