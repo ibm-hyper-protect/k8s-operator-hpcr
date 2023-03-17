@@ -1,7 +1,7 @@
 
 # Using k8s-operator-hpcr to manage IBM Hyper Protect Virtual Servers on a LPAR
 
-Now that you have installed the Hyper Protect Virtual Servers Kubernetes Operator, create Kubernetes artifacts that will be used to create IBM Hyper Protect Virtual Servers through the libvirt API.  The operator defines a [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to deploy a [Hyper Protect Virtual Server]https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-setting-up-configuring-hyper-protect-virtual) to an LPAR. The controller does the following:
+Now that you have installed the Hyper Protect Virtual Servers Kubernetes Operator, create Kubernetes artifacts that will be used to create IBM Hyper Protect Virtual Servers through the libvirt API.  The operator defines a [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to deploy a [Hyper Protect Virtual Server](https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-setting-up-configuring-hyper-protect-virtual) to an LPAR. The controller does the following:
 
 - make the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime) available on the LPAR
 - manage the artifacts required to start the VSI (cloud init disk, boot disk, external disk, logging)
