@@ -386,7 +386,7 @@ The HPCR image (qcow2) needs to be accessible in an HTTP addressable location fr
 
 Then deploy a pod with that image. 
 
-For testing use
+For testing use:
 
 ```bash
 docker run --rm -it -p <PORT>:80 docker-eu-public.artifactory.swg-devops.com/sys-zaas-team-hpse-dev-docker-local/zaas/hpse-docker-22-04-dev-vm-x84_64
