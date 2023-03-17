@@ -19,8 +19,8 @@ import (
 	"log"
 
 	"github.com/IBM/vpc-go-sdk/vpcv1"
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
-	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 )
 
 const (

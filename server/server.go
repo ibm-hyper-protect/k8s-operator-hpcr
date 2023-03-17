@@ -19,8 +19,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/server/onprem"
-	"github.com/ibm-hyper-protect/hpcr-controller/server/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/vpc"
 )
 
 // CreateServer creates the server that implements the actual controller

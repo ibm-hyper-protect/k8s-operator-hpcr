@@ -18,7 +18,7 @@ COPY . /src
 
 RUN cd /src && \
     mkdir -p /build && \
-    go build -ldflags "-X github.com/ibm-hyper-protect/hpcr-controller/cli.compiled=$(date +%s) -s -w" -o /build/hpcr-controller main.go 
+    go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/hpcr-controller main.go 
     
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal as base_layer

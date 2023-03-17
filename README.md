@@ -1,6 +1,6 @@
 # HPCR Controller
 
-The [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
+The [hpcr-controller](https://github.com/ibm-hyper-protect/k8s-operator-hpcr) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
 
 For the impatient: [how to setup the controller in your cluster](#installing-the-controller)
 
@@ -405,7 +405,7 @@ docker run --rm -it -p <PORT>:80 docker-eu-public.artifactory.swg-devops.com/sys
 ### Deploy the Controller
 
 ```bash
-kubectl apply -f https://github.com/ibm-hyper-protect/hpcr-controller/manifests
+kubectl apply -f https://github.com/ibm-hyper-protect/k8s-operator-hpcr/manifests
 ``` 
 
 Verify your installation by checking for the existence of the custom resources:

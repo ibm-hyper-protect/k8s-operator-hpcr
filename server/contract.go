@@ -17,7 +17,7 @@ package server
 import (
 	"fmt"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 func CreateContract(data map[string]any, envMap env.Environment) (string, error) {

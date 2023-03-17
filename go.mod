@@ -1,4 +1,4 @@
-module github.com/ibm-hyper-protect/hpcr-controller
+module github.com/ibm-hyper-protect/k8s-operator-hpcr
 
 go 1.20
 

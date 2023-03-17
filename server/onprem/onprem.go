@@ -21,8 +21,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
-	"github.com/ibm-hyper-protect/hpcr-controller/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	v1 "k8s.io/api/core/v1"
 )
 

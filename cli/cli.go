@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/server"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server"
 	c "github.com/urfave/cli/v2"
 )
 

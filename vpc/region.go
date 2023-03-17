@@ -15,7 +15,7 @@
 package vpc
 
 import (
-	E "github.com/ibm-hyper-protect/hpcr-controller/env"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 const (

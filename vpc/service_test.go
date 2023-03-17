@@ -23,7 +23,7 @@ import (
 	"github.com/IBM/vpc-go-sdk/vpcv1"
 	"github.com/stretchr/testify/require"
 
-	E "github.com/ibm-hyper-protect/hpcr-controller/env"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 func envFromDotEnv() (E.Environment, error) {

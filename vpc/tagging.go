@@ -24,7 +24,7 @@ import (
 	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/IBM/vpc-go-sdk/common"
 
-	E "github.com/ibm-hyper-protect/hpcr-controller/env"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 const (

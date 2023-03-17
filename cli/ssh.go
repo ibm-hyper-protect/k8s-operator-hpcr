@@ -19,7 +19,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/urfave/cli/v2"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

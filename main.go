@@ -18,7 +18,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/cli"
 )
 
 func main() {

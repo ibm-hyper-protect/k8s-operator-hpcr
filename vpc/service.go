@@ -20,7 +20,7 @@ import (
 	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/IBM/vpc-go-sdk/vpcv1"
 
-	E "github.com/ibm-hyper-protect/hpcr-controller/env"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 func CreateAuthenticator(apiKey string, isIAMApiEndpoint string) (*core.IamAuthenticator, error) {

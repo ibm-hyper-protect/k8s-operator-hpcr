@@ -18,8 +18,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
-	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 )
 
 func envFromDotEnv() (env.Environment, error) {

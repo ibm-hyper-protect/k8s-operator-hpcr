@@ -15,8 +15,8 @@
 package onprem
 
 import (
-	CTR "github.com/ibm-hyper-protect/hpcr-controller/contract"
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	CTR "github.com/ibm-hyper-protect/k8s-operator-hpcr/contract"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
 	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"

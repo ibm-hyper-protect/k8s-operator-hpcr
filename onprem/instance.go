@@ -28,7 +28,7 @@ import (
 )
 
 type InstanceMetadata struct {
-	XMLName xml.Name `xml:"https://github.com/ibm-hyper-protect/hpcr-controller instance"`
+	XMLName xml.Name `xml:"https://github.com/ibm-hyper-protect/k8s-operator-hpcr instance"`
 	Hash    string   `xml:"hash"`
 }
 

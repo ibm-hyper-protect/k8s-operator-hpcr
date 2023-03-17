@@ -18,7 +18,7 @@ import (
 	"io"
 
 	libvirt "github.com/digitalocean/go-libvirt"
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 type LivirtClient struct {

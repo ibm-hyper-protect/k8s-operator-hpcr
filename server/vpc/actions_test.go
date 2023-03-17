@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/server/common"
-	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 	"github.com/stretchr/testify/require"
 )
 

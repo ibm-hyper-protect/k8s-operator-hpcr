@@ -26,7 +26,7 @@ import (
 	"os/user"
 
 	"github.com/digitalocean/go-libvirt/socket"
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/knownhosts"
 	v1 "k8s.io/api/core/v1"

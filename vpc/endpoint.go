@@ -17,7 +17,7 @@ package vpc
 import (
 	"fmt"
 
-	E "github.com/ibm-hyper-protect/hpcr-controller/env"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
 func GetDefaultIBMCloudApiEndpoint(region string) string {

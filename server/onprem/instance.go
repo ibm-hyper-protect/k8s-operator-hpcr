@@ -15,8 +15,8 @@
 package onprem
 
 import (
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
-	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 )
 
 // onpremInstanceOptionsFromConfigMap decodes the information required to create a VSI

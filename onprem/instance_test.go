@@ -18,7 +18,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )

@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

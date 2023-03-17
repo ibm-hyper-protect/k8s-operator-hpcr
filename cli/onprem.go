@@ -17,9 +17,9 @@ package cli
 import (
 	"os"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/common"
-	"github.com/ibm-hyper-protect/hpcr-controller/env"
-	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
 	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	J "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/json"

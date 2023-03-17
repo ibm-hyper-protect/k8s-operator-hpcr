@@ -22,8 +22,8 @@ import (
 	"strings"
 
 	"github.com/IBM/vpc-go-sdk/vpcv1"
-	"github.com/ibm-hyper-protect/hpcr-controller/server/common"
-	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 )
 
 var TagPrefix = strings.ReplaceAll(ServicePrefix, "-", "_")

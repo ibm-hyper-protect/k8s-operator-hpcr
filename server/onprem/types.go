@@ -14,7 +14,7 @@
 
 package onprem
 
-import "github.com/ibm-hyper-protect/hpcr-controller/onprem"
+import "github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 
 type (
 	OnPremConfigResource struct {

@@ -18,8 +18,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
-	"github.com/ibm-hyper-protect/hpcr-controller/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"libvirt.org/go/libvirtxml"
