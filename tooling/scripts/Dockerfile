@@ -6,8 +6,8 @@ COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
 
-COPY build/hpcr-controller /hpcr-controller
+COPY build/k8s-operator-hpcr /k8s-operator-hpcr
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/hpcr-controller" ]
+ENTRYPOINT [ "/k8s-operator-hpcr" ]

@@ -28,7 +28,7 @@ const (
 	KeyTargetProfile   = "TARGET_PROFILE"
 	KeySubnetID        = "TARGET_SUBNET_ID"
 	DefaultProfileName = "bz2e-2x8"
-	ServicePrefix      = "hpcr-controller"
+	ServicePrefix      = "k8s-operator-hpcr"
 )
 
 type (

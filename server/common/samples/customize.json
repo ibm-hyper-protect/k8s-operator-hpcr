@@ -3,13 +3,13 @@
         "kind": "CompositeController",
         "apiVersion": "metacontroller.k8s.io/v1alpha1",
         "metadata": {
-            "name": "hpcr-controller-onprem",
+            "name": "k8s-operator-hpcr-onprem",
             "uid": "fde1160e-5754-4bff-a301-404dca2895db",
             "resourceVersion": "906",
             "generation": 1,
             "creationTimestamp": "2023-03-15T21:32:15Z",
             "annotations": {
-                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"hpcr-controller-onprem\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"onprem-hpcrs\"},\"resyncPeriodSeconds\":60}}\n"
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"k8s-operator-hpcr-onprem\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"onprem-hpcrs\"},\"resyncPeriodSeconds\":60}}\n"
             },
             "managedFields": [
                 {
@@ -75,19 +75,19 @@
                 "customize": {
                     "version": "v1",
                     "webhook": {
-                        "url": "http://hpcr-controller.default:8080/onprem/customize"
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/customize"
                     }
                 },
                 "sync": {
                     "version": "v1",
                     "webhook": {
-                        "url": "http://hpcr-controller.default:8080/onprem/sync"
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/sync"
                     }
                 },
                 "finalize": {
                     "version": "v1",
                     "webhook": {
-                        "url": "http://hpcr-controller.default:8080/onprem/finalize"
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/finalize"
                     }
                 }
             },
@@ -105,7 +105,7 @@
             },
             "creationTimestamp": "2023-03-16T14:59:23Z",
             "finalizers": [
-                "metacontroller.io/compositecontroller-hpcr-controller-onprem"
+                "metacontroller.io/compositecontroller-k8s-operator-hpcr-onprem"
             ],
             "generation": 1,
             "labels": {
@@ -146,7 +146,7 @@
                         "f:metadata": {
                             "f:finalizers": {
                                 ".": {},
-                                "v:\"metacontroller.io/compositecontroller-hpcr-controller-onprem\"": {}
+                                "v:\"metacontroller.io/compositecontroller-k8s-operator-hpcr-onprem\"": {}
                             }
                         }
                     },

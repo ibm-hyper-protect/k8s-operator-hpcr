@@ -1,5 +1,5 @@
 build
-hpcr-controller.exe
-hpcr-controller
+k8s-operator-hpcr.exe
+k8s-operator-hpcr
 .env
 samples/apikey.yaml

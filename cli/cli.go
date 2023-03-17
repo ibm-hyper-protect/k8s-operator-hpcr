@@ -40,7 +40,7 @@ func CreateApp() *c.App {
 	return &c.App{
 		Version:  version,
 		Compiled: compiledAt,
-		Name:     "hpcr-controller",
+		Name:     "k8s-operator-hpcr",
 		Usage:    "Start HPCR controller",
 		Flags: []c.Flag{
 			&c.IntFlag{

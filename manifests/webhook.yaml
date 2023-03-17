@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hpcr-controller
+  name: k8s-operator-hpcr
   labels:
     hpcr: pod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hpcr-controller
+      app: k8s-operator-hpcr
   template:
     metadata:
       labels:
-        app: hpcr-controller
+        app: k8s-operator-hpcr
     spec:
       containers:
       - name: controller
@@ -30,9 +30,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hpcr-controller
+  name: k8s-operator-hpcr
 spec:
   selector:
-    app: hpcr-controller
+    app: k8s-operator-hpcr
   ports:
   - port: 8080

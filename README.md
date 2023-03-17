@@ -1,6 +1,6 @@
 # HPCR Controller
 
-The [hpcr-controller](https://github.com/ibm-hyper-protect/k8s-operator-hpcr) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
+The [k8s-operator-hpcr](https://github.com/ibm-hyper-protect/k8s-operator-hpcr) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
 
 For the impatient: [how to setup the controller in your cluster](#installing-the-controller)
 
@@ -426,6 +426,6 @@ vpc-hpcrs.hpse.ibm.com                       2023-03-17T12:44:30Z
 ### Show Logs
 
 ```bash
-kubectl logs -l app=hpcr-controller
+kubectl logs -l app=k8s-operator-hpcr
 ``` 
  

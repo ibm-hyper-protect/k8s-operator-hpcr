@@ -18,7 +18,7 @@ COPY . /src
 
 RUN cd /src && \
     mkdir -p /build && \
-    go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/hpcr-controller main.go 
+    go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/k8s-operator-hpcr main.go 
     
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal as base_layer
@@ -29,8 +29,8 @@ COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
 
-COPY --from=build_layer /build/hpcr-controller /hpcr-controller
+COPY --from=build_layer /build/k8s-operator-hpcr /k8s-operator-hpcr
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/hpcr-controller" ]
+ENTRYPOINT [ "/k8s-operator-hpcr" ]

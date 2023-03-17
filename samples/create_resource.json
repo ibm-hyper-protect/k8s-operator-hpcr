@@ -3,13 +3,13 @@
     "kind": "CompositeController",
     "apiVersion": "metacontroller.k8s.io/v1alpha1",
     "metadata": {
-      "name": "hpcr-controller",
+      "name": "k8s-operator-hpcr",
       "uid": "cd66a453-5b14-4168-ab10-23e3e2ba227a",
       "resourceVersion": "97344",
       "generation": 5,
       "creationTimestamp": "2022-11-14T14:11:23Z",
       "annotations": {
-        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"hpcr-controller\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"hpcrs\"}}}\n"
+        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"k8s-operator-hpcr\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"hpcrs\"}}}\n"
       },
       "managedFields": [
         {
@@ -74,19 +74,19 @@
         "customize": {
           "version": "v1",
           "webhook": {
-            "url": "http://hpcr-controller.default:8080/customize"
+            "url": "http://k8s-operator-hpcr.default:8080/customize"
           }
         },
         "sync": {
           "version": "v1",
           "webhook": {
-            "url": "http://hpcr-controller.default:8080/sync"
+            "url": "http://k8s-operator-hpcr.default:8080/sync"
           }
         },
         "finalize": {
           "version": "v1",
           "webhook": {
-            "url": "http://hpcr-controller.default:8080/finalize"
+            "url": "http://k8s-operator-hpcr.default:8080/finalize"
           }
         }
       },
@@ -103,7 +103,7 @@
       },
       "creationTimestamp": "2022-11-15T08:32:29Z",
       "finalizers": [
-        "metacontroller.io/compositecontroller-hpcr-controller"
+        "metacontroller.io/compositecontroller-k8s-operator-hpcr"
       ],
       "generation": 4,
       "managedFields": [
@@ -114,7 +114,7 @@
             "f:metadata": {
               "f:finalizers": {
                 ".": {},
-                "v:\"metacontroller.io/compositecontroller-hpcr-controller\"": {}
+                "v:\"metacontroller.io/compositecontroller-k8s-operator-hpcr\"": {}
               }
             }
           },
