@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package onprem
 
 import (
-	"log"
-	"os"
+	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func TestLoadSSHConfig(t *testing.T) {
+
+	config, err := defaultSSHConfig("../.env")
 	if err != nil {
-		log.Fatal(err)
+		t.SkipNow()
 	}
+
+	// validate
+	assert.NotEmpty(t, config.Hostname)
+	assert.NotEmpty(t, config.Key)
+	assert.NotEmpty(t, config.User)
+	assert.NotEmpty(t, config.KnownHosts)
 }

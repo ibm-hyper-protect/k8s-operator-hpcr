@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package onprem
 
 import (
-	"log"
-	"os"
-
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"bytes"
+	"encoding/xml"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+// XMLMarshall marshals an object to XML
+func XMLMarshall(b any) (string, error) {
+	var buf bytes.Buffer
+	enc := xml.NewEncoder(&buf)
+	enc.Indent("  ", "    ")
+	if err := enc.Encode(b); err != nil {
+		return "", err
 	}
+	return buf.String(), nil
 }

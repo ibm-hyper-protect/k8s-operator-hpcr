@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
-	"os"
+	"fmt"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	E "github.com/ibm-hyper-protect/hpcr-controller/env"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+func GetDefaultIBMCloudApiEndpoint(region string) string {
+	return fmt.Sprintf("https://%s.iaas.cloud.ibm.com", region)
+}
+
+func GetIBMCloudApiEndpoint(env E.Environment, defEndpoint string) string {
+	endpoint, ok := env[KeyIBMCloudIsApiEndpoint]
+	if ok {
+		return endpoint
 	}
+	return defEndpoint
 }

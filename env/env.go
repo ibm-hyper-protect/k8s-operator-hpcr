@@ -12,18 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package env
 
-import (
-	"log"
-	"os"
+import "strings"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
-)
+type Environment = map[string]string
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+func SplitLine(line string) (string, string, bool) {
+	splits := strings.SplitN(line, "=", 2)
+	if len(splits) != 2 {
+		return "", "", false
 	}
+	return splits[0], splits[1], true
+}
+
+func GetEnvAsMap(env []string) Environment {
+	res := make(Environment)
+	for _, item := range env {
+		key, value, ok := SplitLine(item)
+		if ok {
+			res[key] = value
+		}
+	}
+	return res
 }

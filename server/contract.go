@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package server
 
 import (
-	"log"
-	"os"
+	"fmt"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/ibm-hyper-protect/hpcr-controller/env"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+func CreateContract(data map[string]any, envMap env.Environment) (string, error) {
+	if parent, ok := data["parent"].(map[string]any); ok {
+		if spec, ok := parent["spec"].(map[string]any); ok {
+			if contract, ok := spec["contract"].(string); ok {
+				// this is the contract
+				fmt.Printf("contract: %s", contract)
+				return contract, nil
+			}
+		}
 	}
+	return "", fmt.Errorf("no contract field")
 }

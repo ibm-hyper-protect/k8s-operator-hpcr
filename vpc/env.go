@@ -12,18 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
+	"bufio"
 	"os"
+	"path/filepath"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/ibm-hyper-protect/hpcr-controller/env"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func EnvFromDotEnv(root string) (env.Environment, error) {
+	f, err := os.Open(filepath.Clean(filepath.Join(root, ".env")))
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
+	defer f.Close() // #nosec
+	scanner := bufio.NewScanner(f)
+	res := make(env.Environment)
+	for scanner.Scan() {
+		key, value, ok := env.SplitLine(scanner.Text())
+		if ok {
+			res[key] = value
+		}
+	}
+	return res, nil
 }

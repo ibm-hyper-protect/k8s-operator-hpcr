@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package common
 
 import (
-	"log"
-	"os"
-
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
+type result[A any] struct {
+	a A
+	e error
+}
+
+// EromEither converts from Either to a normal tuple
+func FromEither[A any](value E.Either[error, A]) (A, error) {
+	res := E.Fold(func(e error) *result[A] {
+		return &result[A]{e: e}
+	}, func(a A) *result[A] {
+		return &result[A]{a: a}
+	})(value)
+	return res.a, res.e
 }

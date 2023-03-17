@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package onprem
 
-import (
-	"log"
-	"os"
+import "github.com/ibm-hyper-protect/hpcr-controller/onprem"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
-)
-
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+type (
+	OnPremConfigResource struct {
+		Parent onprem.OnPremCustomResource `json:"parent"`
 	}
-}
+)

@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package cli
 
-import (
-	"log"
-	"os"
+import "strings"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
-)
-
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+func labelsFromList(lst []string) map[string]string {
+	// convert from slice to map
+	labels := make(map[string]string)
+	for _, label := range lst {
+		split := strings.SplitN(label, ":", 2)
+		if len(split) == 2 {
+			labels[split[0]] = split[1]
+		}
 	}
+
+	return labels
 }

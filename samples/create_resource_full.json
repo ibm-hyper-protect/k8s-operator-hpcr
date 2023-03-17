@@ -1,0 +1,367 @@
+{
+    "controller": {
+        "kind": "CompositeController",
+        "apiVersion": "metacontroller.k8s.io/v1alpha1",
+        "metadata": {
+            "name": "hpcr-controller",
+            "uid": "b83ac5d5-2bb4-406d-80dc-2d55235b4bb2",
+            "resourceVersion": "1966",
+            "generation": 1,
+            "creationTimestamp": "2022-12-11T21:21:42Z",
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"hpcr-controller\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"hpcrs\"}}}\n"
+            },
+            "managedFields": [
+                {
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "apiVersion": "metacontroller.k8s.io/v1alpha1",
+                    "time": "2022-12-11T21:21:42Z",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:generateSelector": {},
+                            "f:hooks": {
+                                ".": {},
+                                "f:customize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:finalize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:sync": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                }
+                            },
+                            "f:parentResource": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:resource": {}
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "spec": {
+            "parentResource": {
+                "apiVersion": "hpse.ibm.com/v1",
+                "resource": "hpcrs"
+            },
+            "hooks": {
+                "customize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/customize"
+                    }
+                },
+                "sync": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/sync"
+                    }
+                },
+                "finalize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/finalize"
+                    }
+                }
+            },
+            "generateSelector": true
+        },
+        "status": {}
+    },
+    "parent": {
+        "apiVersion": "hpse.ibm.com/v1",
+        "kind": "HyperProtectContainerRuntime",
+        "metadata": {
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"hpse.ibm.com/v1\",\"kind\":\"HyperProtectContainerRuntime\",\"metadata\":{\"annotations\":{},\"name\":\"carsten-metadata\",\"namespace\":\"default\"},\"spec\":{\"contract\":\"env: hyper-protect-basic.B5if8A6Ks5Y025ihZ3drF+C+GY76O41sryHawwvjORimj5OkErT3x2CVzJWNwbuqDMqfKIngaRd1haNeuJIH/RupCv9InzsqzTH110cVX4mkSu1XDYgC226nSkvd3XpQ6DxiyQbGyBRR4pqpsn15hFjaGGws5rksaulhvSspfnS5PqF8pPZ1kr/pLbMfvC+4Vmjr/yvZIJM0SRudxJrTCzUQJ1f7HL/G/FljvOjc+R4I7fzMgarOxUqhkUIscrckaqZB7sgf6B7iiZbQES6N4BHGlsMUHQQG4zqnII+tkIq7Uqwwem3YNVa5ht+DL3dRLUCihT1BagJagQja1Uo1LebMf83nNgAh6Wzx7NUBBiJHYShzCY1SqsjAi6LJ4y4J8bzwpGs3jZPSHNtdA5p5rG7TardTBqW2EcJMrUn1qoVBelg3XicO1oOpbDXPsUeINcsM1CJBnneAkXcuqxPa5EwbM/4FpRxCDCnGAhS2m5XcrkL612/NwTGVyggap0VJnvy8B+wPzgHu7DPO2J2vVJlBSsJvcieQSwnsY9TaVi/GDM30IQpd/Mnw/e7dRgbGUuG4lBC/X6qNU/v9frnme6hOyUWWHqvImMErL2bVY+yEfK50Ua4X9CYEWGGvkc9di6ZNT02aD3vKy40SU4VSS7bYvl3O4mBB4pHrzSth1XI=.U2FsdGVkX18+Lx5JcOvkfk6ZC6HQUEb1xqRCE7gnv723SDcd55CUXMFPHOq7Kh+0sjBAC7d63ruU1/fuNhsRuog4hFdfu/24CHwONBmM1AzM988QsIu70SuhN8dWS5pUD/J2c2hTpDl20NfI/zRHtui+2nvSNNAIciISiTQvHBIPBc3IOJxi3htq90GfZApRkw0YA0HYbFtlKrIeDGEDixzxpINQhckaAhRajYNJy6rmLjhMEHPEyE2kG5bGJXtpJThVyQTfZacUgHp7vFm9Cw49G3Od/4L9DFPXcFaexFuIIVPtIU3Fl756N2ZSZ3dFrKlIme5kk4GyVxXAnP5tmSxglQy3j+4hytH1lLF7th5k00umSFb+CQAudtWLLFnwKUNxKFk33DAkIyVIEwGXDw255+NUBzzjpQKLaX2rfVpmGmZDQc+NbVr452sjfVaMxmi2CrL6tBoSIy11MoEqCAfHxQpt4bAvvzLia8s5XBbTvgGCt1MLMqFs6P8zIRxXQncUEwS9pNio5Q5odoTP7V7HX3sB75BgHI0jthOY8VWapxJ5llUw9Dtr9KaLF0LOAN5fRLTVDq7SLuUP03AlJPoV+XNGSslOuZzBY1/3j5+uQxWo0zgPNjXC4JLsEzkoQdj5U9g/tiEAIm0p4Jxmi12mfXNDbHq2ff3EQQvwPyc4G6lVPkqw69tTnKsFnIBDbksZcedIWk+S034UjSFVVVLyPcavBVMKc3QCpq+3ESvhlOiizYQSSSk/di/Dk62bOzfOuPn3fG7K8ksEOybo88H8ML6NhU9kjPsn+niYgUA4ROT3ICYQFvFw4VrX7EOUSRx/4hI+uhD2IjbagyP1HeaxPpXbunzJXIJ+vW/gtfvD7hYMbbPW06tLPGIsvTCpFsmXfvbUT+9lvR5TwqBpmJLEw9VvMsYRwOfF+5yaLjsJQDpJuOX8finPygZycPod2VAlpIEZJCM0omi2wfM3gHKxUZEJkNUUeps3W5NkMa/Q8dgq3oiAUCYZZdgA/q4sAjYwu1HnbVqmJ4IFZOg+iIb2Kv2G3+u33bTjeJGWs4Kkb6TBWoAWtiHs9CW6GfiNaS93X+iP5x+kOSaJ/LJNyypDM4q5OvT2wchzJln4DPePLtrAGHBF5izwoFAYwLXPZGZ3uJhrOrlsTLPW/UfDj9F7btVZfaQHe3d9zdOgrKb6ZDxF6KUo314q6XthuVwfTyXM+8xZX9txoBW9KGFy9sBZsS+haZwtAMpvJwwqlijhD9EtCEZA8x0vugDOXd4H7FGtHEvSW73o1FF1REkoS2XPkyFqy0JfdSQGwKpw7zs=\\nworkload: hyper-protect-basic.m0rQOSXKp0LWh6SbT5glQIDRMlZYqkWPZJ7hRVso+qWMqlNW+EtPg14dKnxZBUj5Ybd3Gk4vx8JhfI/ytxizqcaSp5f1LAB1zviVOvJ2KTMi8gfomL8A85QbXBbdKRD1Zm+3s3VCoBisCwIQaMhR/GJyhENKNkJ2rYE92jTfBh9usJsbZhm+PhK601R6imMfSMF93lA+wX5Gg0pu405XXPQn+tRi+vFbkjefIXcHtptsOXgDVqQUiGKlC5/gzPu6RKrvWjT5SHRxEhCYO1SwnrYP34PewiT+AyBrOjJ0DtzFcYMxuSYG5nhIcJ7Dkl+AQvYZia18CDmuUs05yXNSlO4QA0UDWVU3TPSagNkFNQkLF8cCyg3cqaLUtSWcYv7YvPv6wo3lNWYElmYvXkvf6uGiR1QuIUEpMKmqLXCdbdWGXGMHzToDwgRZ1vP2ulZEec0t5oLrGhLTvTqNCvG+P22bBWSapUxQCUzRlcGGptBrGwOoAS8SB8tV+sePbPnm9TiBHBxBT/8M0/eDq/TQsEH2V+Pj6l0IYWtoQt1SUmWBgZKtOuCRlVl9le4/BUUkd//ekiRJViNB/h/K47e3ytZ1tjtr/suEoY8UxdiNF+uRqpRw5ubO66Zk1rYJOAquvjKudyvSSOdvgC3/Sb5sOgEPCQoSBpWWlmkaDQ4EwLU=.U2FsdGVkX19a7nbzk4ucV016xr6ZaZYnn51N1ksCU3aIZbulhLVSLIfrdKR0zBwNzSf8jW2VY7VCo/qCybzKsbiJhN5YEQhszRV5G4e2v2THn6j+3zkOLO0UTVDp51mVap2/G0i5PKf8GIWrnwiu960kPoonEaGL3jznG0n0mFvZ1+9qKYma7LRqxMYx3cIlJuBl4l7X9WLJv9PSYiYcyrJiSogxiL1JauarRUG9v00qv7lOjBFVWS8Gdwi/4wqzr5WkY8nHEfO7ykazdsNYQk6pPIyPclp0IxaMcRIQFi8QLLZckJIatsbyLwM0yTiTYsK7UtP9yE+WGZryQPXCC1qa5LGuqvdRfTwQp82U3fqOX2hsqNN8To4b3UTDUV+6ZZ3rGxJ+9HAAt8Fxs/VrlY7TTyrkUAk0BbsKhQsUum/5w+Mw1lvE4q1srrXmzCUpmfMDo/CDfbV9sphKSeGBfr3rOwlR0LhavjUZ9zTe8+1QUOiH4srFIkeLkdlqF8q1YXv9hhZB20VNAOGZ5MgFFMrqsEyxrfc7fNAvwNsDcMTjR5Uz/2FgmdwlfxFA7vo+5+C2YNdGSe++PFt4hfT5BX41KNsiatYrLu6+kS/XkNKG590C8uO5YVSWz3gvjPDNJuUbNt+APFQDEd6bDhuQi6SbHoAZL6G3xbYzAQUcG8WXfeRpL6zaTA6J91rQsJVJSkpCkCQFZjuyr9iyWPOQID2wUPe3eCeL/NCgty7FaOVafaNbrQp5o1TYyJep6/NGcs3eUyFanHGwo/LbtBKjWE+55vSBabgpCaa2lusVsdcNfcYYXvDsxoR8KVPS+yo7kWtSfp4ZdClpesz3UYoCymuzfH24FWVEQGka4n2iHwIDiHtrzeJi6ZhCWzZd25UO71EwLIoXZyoa8rs/Sev/PmccDrDayRLhD+vFGP+fuUlbGD5CHV2DX/DXEZ2wFjLOO+Pz6bZYL1tmMTF5PRg6U1EJ9rrmPMWE7pJZGnC2TgD2j+Fog87LzHmR6Cs3DPlaJ5CMr+PVpM/OYKp8/mjtS2QFWM3D6tcdfHSIRis0o625EmOTqYuo78ZfmwME+52ZlJrAauD6lePl+zSWIFZfEGQQmarTdCFagnPRqk55PpnWNn24IySMGaVtTxpX/gBSlMh9sN6dwJX4sAVc/aQAglALmTUfuQeQ7NiyaUxLa9zjHBDvcP169ptca2Oq40XlfZVA4R7TMqgt00k76hc3qA8zZJBrvRbjvu6qA84uIW07t+Mz4C8/Q39gEYt4pNcKlTr1ErtS0uF4MR7dF4KgovNDOnCVT0dN+BrgCcJBNEwE1ZmM4+XO2RijxdoXupakOuRWfcRlSXY9HhqrsUQQHhZ3jAaby57WjGOHiN/bZfcG9s67RC3Gxzi4w5S4eu3w/AU8n2vQsSumoJ2+HulIBHw6fY9Rm0Uk6oiYDbKGbYepZV/B6pQfhOeSDitDR9QcCMPX40IAWKsEW1f8KbCLnmIJtFyV0As9JO97+DkDL1ZX2nUwhrpD9yD4ZpaywoS5smN2i0wUat4wE69UuxfgMZhy7en2WmtwePnRXIb+qM8jmJ7hctBfuu8Y39KZfNkswN+NKKVEr3/BZwOb6PHLuTZ41E00Q+Ab1enh0pNOuBUK63tn88b1EFTsr7PUOELat1hl7yZ7DO2vVRx1OHPH1JJnEjJ7EqJVF9h/tn3X1fbZ93fpKSk9Ij03GZEdLxUspUtiquMscAyKSyvbZkqzsdKVyYerzcDBfuO+T22Q8BpyeisD4h88vvzXCS3Uxd19\\nenvWorkloadSignature: MZljuMd1lJjiVGNxxD6HLzJozuHxCmRdk+RhrchO23CHJmWglTHT/YZ+qGWUN9LMFc/9PZIyHaMp3FmcpVDKnTqFwOZFDl3BHrwgNbvknWgDb2sDb9YbFeoNfHwFSZ5WR5D32KEk2sN8ad5jFE+KR7Tvul1XW015ND0A37p9/OFkHScizF6C9G9nYJ9c9kVDpP/ZkqX0nCsEFKErjZ23OBLYy+7jF97fb/3ON3UU6bdWG8xfvy0MZH+BC4llD8Nmd+w1ysHSoJtWqcJ2bzDELOvPlF3H2LU7FsqhaYvs6xFq+4I84SHCK+sjgO857exL8OgElk5k8SyNGZJHPHBOQ60OmwW7MLsuLaYLiRy0yWl25SD78Z/zmOk9bBvxQ+vmAVXB59cFI440cR58vU0lyhX8jt6FuEo4Of3QCtgkTV9urV4lrnIlVUY3h7ydyoAfzLcbCg9Sd7Cfyr1DNNSkGbrefXaFJDSutQio9ly99wQUZgiWIhuIjFO5UkVU2DETZpceFuarv3ADz+cS3Bv+Exr7R6eayuJ3Qwy2MsqgjOA1tqRFudLto5ubAwD2fSvzL+1HYXJbaLRzPZTuoQl7BzDo2HsP+Twuvbu8m0LV5uZTHY7PlpD9VXLJWAEJXBwSU7XXWn8dokXGvDYpNBusvmokuN7lxNx2ySSsDGJXmO4=  \\n\",\"name\":\"k8sdemo\",\"selector\":{\"matchLabels\":{\"hpcr\":\"test\"}}}}\n"
+            },
+            "creationTimestamp": "2022-12-11T22:15:33Z",
+            "finalizers": [
+                "metacontroller.io/compositecontroller-hpcr-controller"
+            ],
+            "generation": 1,
+            "managedFields": [
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:contract": {},
+                            "f:name": {},
+                            "f:selector": {
+                                ".": {},
+                                "f:matchLabels": {
+                                    ".": {},
+                                    "f:hpcr": {}
+                                }
+                            }
+                        }
+                    },
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "time": "2022-12-11T22:15:33Z"
+                },
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:finalizers": {
+                                ".": {},
+                                "v:\"metacontroller.io/compositecontroller-hpcr-controller\"": {}
+                            }
+                        }
+                    },
+                    "manager": "metacontroller",
+                    "operation": "Update",
+                    "time": "2022-12-11T22:15:33Z"
+                }
+            ],
+            "name": "carsten-metadata",
+            "namespace": "default",
+            "resourceVersion": "4506",
+            "uid": "43861249-71b8-490c-ac2a-e7d0028f99e1"
+        },
+        "spec": {
+            "contract": "env: hyper-protect-basic.bAg1wCnctF5CQI/LTz5qrrDi4T1ksnMEm1TbnoKcpoIjUdrMO41Eb3s4VIZkJH+2Gq3zOoUmaEZRR+se9tD0VQeAa0EO+Uw6O7Wz4uZ1bMn24A4936Ef8RpKbyOpGhq0J9essNUwLByeyAHUBRTWI+hhjF7/jLxdCVTpsFXjlYqfuXokllh2IRZRVa3q4jXPmyUU6ogeEyFrZIfxWuWR2aM047HMN1OLCtGZUaSwk96ilBawHbplFr3ur4h5gOwblwHhfoXKnZtg1CO9j8lQdD7JjbZxKMGqJ+7PTY21ihPwiGTccAUCzix1kbVNxcyxO9mtPCjg2+A9HLwLxOrA9NpprjeUJtPhDuo+YG2nzEIAHpUYMiz0vAlB14FANy9SKAP379GdMI4MLOL8SVi/Qk3cfmyyEVdGjMlr1GXS8Tn161rPvX/zjRgfpwQ3PGpq+HazvszCQWWCc44XFaxm1V7GPMcslrbRJHLCXzI9gTDWf7UGgHww1LzIeYj+jmysOa9kYBAMwWUfVnNHGzmMsD7WCUTS5Igbkw1mECwnOfJzNbWRRUU0EiG0EOU2/ERJ+FGgid9rPD/bIwYACGl0AOaAQVsn6rZgzrZJrL6FneE9PvHXbuge/ZRa8pHO9U+qYdPanBEhSiKjoTwIaXk6BIyF7mVUTuSWeJBhCeNJuOM=.U2FsdGVkX18EUVfYj6K9hGe6asV/6l64yUbqPUisWhWjeY5Fjpxr4WJ+KeaLjCvVhAlCHC2s5eBTWog2v490CRulCv/uBXUNH0UEdgWZVnrja6qEIz6kWvkEGq3Pb7j6wji1DcIINq4TdOsPXgdUhdl+OgTszy2I8FK8+CL5SYeAHgQ5JB6yUguR16BxYL036d0IX3Fjqm5EhCNMDAK2mRYhAcGUoVuxdEZ0n/W5Wjh06Su/TP2lHmL/7rGRWkgu0xRxaToyyEfbwZ0F+CpdeV56CNYoUsRVIngFkixNkQOyKet814so7mJ8PVoRdOh7awfPllcS3T8djTOx51qkCJH506XFmKWDlX+3TuQDQgXmRKhvYUxQ7xaDgRb+ShMvFkfQozJW+kNpnvb4KBiVesFirWz6rKBafpJkbmxG1eSxo+6R0H50xtfc4Onor60gBG71PGb723kfj6Zq34iAB5VJWTCHOb4GyAwyYcpakkaKyLOg1hMmKMraTGPa+ijY2bMxTOXYKwUZeJ1F1Tp9t3TQRUz3HxnC0iv6FNcZK5O0DFj3pVMMnJlwSbfG/y9BrewIcMev6PRsvSQfbhAy4RCYLz07qbhdju8iJkznra6EqN8Anw+FTu1cUqmT5hZbolZwgVeT+dTnOjgu7qZA5jkg/CAAbgQN3fYzYb6r7i3ygJQxYOt1rGrNKeJ2xPj4TraXb6Qa/V7ajeZN2VezvvrelgccFbNyIk3n4nVhCYRxZNVcOFjj0RS7OgTMywPB4VKKR00H5fQ5agRt2pv4FmZ4Rj7fEQHAcHB1qUDiD9kNQVW3LcxVTaMuMT5qjztJkQWXESc/rG+kKu2ZdjO2GWuXPlq/JT89lwcwZixZ25e1YN5k4WdNABSoUnck+5q8wt+YY9nhKjA6zot1+iRBpVJ3cLJVPRg5+Zaal1Gq8z2c7//TeccqZKCtt8WRlOYvMaB8nATVa80nKQfxmVt41a+JtJ1bhONVJ1tLJBdea7Fihx35Sntfy2m4mbGx9tVezUXT0UJAG/P08HvgvRKKNNJMSHYG3gGyOtMKvITgDLKMH2LxmrwKqMB+LYG7kQWqwi1g9x1zqgEmRlus4No4mIjqCilz1gPUaXjgoWmmIgRalaSyr+tOThD9xlxJVpHFzXKq9jzkBXPn9er4LggY4spBuMdz5ozelfnKFReMqLLLbKxh4stkOJ3DwEZxped/6KD4SrXPCVj14UCkR5sIKfMLPx9vIHbxB9y3xf3rq4KzN/xxgstijAZAKXEdWgBT1Pr/KgwRHq4Jcca26nr1RJCPVwZ0GLWTZIiwBhs8Ho8=\r\nworkload: hyper-protect-basic.BXVmlnnQ81kJoEY2PW6ZH5tSY6x90U7w43YGWjGTjtNftNXxX2lEZXb4O2G9sldVN22ne8eJI7edzKWZFzKriscYx2DTQ22NOO8pgDMUbCr8hP5d3nv8LisIeYnx/S4ONE4Xn/r70kH6zY+YgrYSYM359QHzTBj/l1v66zCHkrqIug2RyUhvz604ofH0ZR+ElbcVD/IkhWygLsrS3q57OrBTj70zmRxB0QHkQQ8Z52eILT/QP6VqvHGXznjKFxAFxMxwsHRSwTSFG/jVDXgnGh4BbSc03LFrHni0tqbBDdlfZXtDzRkEyIv2Lxy/QMcqE6k7OG5hyIrws47fMe7Z7tqJbxWiz7VVuB4DeeB9n4tQ9V6+5WEguV/fT4BusStDTpKG4RpGSeJU2WjfKnHE6iwz++d4PCKQCKGXNrv1o2KMz/6OIh833zro6Ph7/kzIVqB+MPRNCHDxc3+mW+wZs4hO5oB5CT6MfOPwHPkg44Q3fMvoUQMXMXsyGxwfyAbyEFbBpZCoC9OcIFeFAyPoloCtESGpLl30JqI5ykaBDSnos4aYtOa32E/eb0F4C0I0OpG/58t2lGXtohk7ScKffOKzvs/dMKkYrqIZqMZKK+O3Trl5C3ezbFh/QOJUEoX6lFoyEe+VSjmuY7IGiPB+nhfAxjJ1bn2uPOQrU6zg5As=.U2FsdGVkX1/oFpD222sJ7imLHjvwoulXRw1rW+U5wQjsSxXKhTfsWYkHriqaAlnBTc2GlKnU2acD7oSa+dJ6T+N0bZoe5pUaJoECg3QRB4zlHYiKOUvdIBWKMDE+pozyUJvCwf5nnETLqLpExbSodOW9FOzj950RlA4i3a0CNL+QIWS3+LIeHkXL+fEjn8/rOkeM4E63c/IRtjzWVymXl0nsE041tmWvWMWPNfYDQtrpaP5qiasL9oW1o7kz+YcOU2x4wwCOTGcyURc6fhd2rcqWhwxkf4MY0GrYpf9Q0wZ9AoapH/Ya0vs9463E0K+LkkAhijmyc1EwN4py+1KgRuvTehgXecQn4DZ+22B5pk9iBYYq2Idxym8jwCPQpWqztrXC1eQVrTv352LJE50C0qJHBTk6Srv3W/ibnH1cbaAMHSLbFO/aKxyvzDB3Hjc/HJoGB2+5RKxaoowmq77XKUmOwjU3WEuOj6p3Ze/JRDC3OrAxrF3Bp9nEfjrPJdPImlTOCvQv2JZepga5kypaa2ogO2UcFP57aBWYrLrib/dMU98h9zEi9hCIH/fA13XMpvXxckYvtUditKAhlbwkdzVkM8trFepP6392eLgeJj2qfAO0oucuc+HuTB5tHU8lWBaALLNEVbYUS2dY3VS52knIWLsewYmEKfuNMQclnF6a4LA6XiV337rHzpkxzEAUaxKaPgbLPmcuhMFk8AFPVUgpxMfaJ76QnI/9UzqkugWU2qNzP01jxADV1rwiJ6ap8j1tnzQ5C+hp8JM8UKcVGZGJh8pR6CkKxw+RVJaX605+B3VrpM2euHTGN9x9assXVbJ9EVxhhAhAfacVRSotjDYrqhL7uKU6mKa0bRop2hn7baNXZFeliD3SkQ0aD03Bf3P2D2dMbonZZ3682d47l4lRopANFuNNa2/BNfuNxRuuYOJ9XZReUTA+xiuoX1i6kdTrcXLv2aYPwbvUeMKNeYcGIJnXZ2ZWyyZ8FqwMPAD8giptR0Lk67gQznhFnDvYHua8RJ8+yWuJ1ypP22BuCjLYJPEL4YAB6TIhuSm+CEnCnFrFqJQ5pcwKcftdr2Ea9F9zzeHYcWkxvGzjg6KMphqjg3Q2G4I4Nfx89Zneq5RfOXhIsx3hGzqFR2UbEvhkr6VW9Ifb8c2XIyhR3WWTvRgMTUu5xNg7dvFZHQvQPs5lFBjGmtNFUQE7YovV3Luuy+Gk+vy/pMjca4hgkh7V+85KG4rE1oAVIRCBFPP7ZYCdKRwjBIxXiHkxs37KvTvJzgid/TCQwdOJPpJEy/yNnrA79xZMRAp4r+aPEQv7Sn3u8+5WQKhs83FrjPY5yZ/l/7fopAwG+bHaYed4aWpXx6oAq3yFjwPS8W7ZfUdxCrwRNg9Z1kOs9jP5J208WWjx9pGFceXqgiAabZLUopQ6+R57IENk+X36GqP1IdtMPI5RYKYd1Cg+j9NvoDSJm55hc60JYQwQTIVZZoEAzRf91GSl/7GyK1zQToHU55Pwmb0B0aaJUCv9PcyhU4OHpLYlkpa9ZkkBKm7SkQzcsAG+GcYfkxC28UuH8SbzR8KA+uHNg28bUoa79OK6BTDuMqC376zRYv4soWRUMs5q6F//KZEyERIQ43B2NWl2twN7iVm8s1KIWzE0KPfymBD+ILrEHuNXTJpja3sZKLWGaq8vJENKSFu8CKUj+5hrnngpLZo3p5BzISqPoJaSIIVSJSAGr60r9djx421hS8hhKfvGbYgOdiaQWgd5eSKx/dKRj3ZqYWzxWriokIBSxz618SfR\r\nenvWorkloadSignature: Xmr4X5EiX2/5U4x94AVD9D7Pdt8FXnQ18LAKGAlupKFTYnjkus+VmEiC3RvNdjX9McGb0/2oW1DwRqYVyBe95kXP1IpeZ/4iDS9wlqe2GRRR7orlsvwM8dtmqsVtbzKFGdY3dmMbWLpNv9tFz6o7c97graXE1x2LDpkclRx7oSQ9ot8oiGoiyXeXQoMP3102I1L4LO7vpouiIeYEUP2Hz5AfxMWSRMhM/tZ5pR2A83W0LkFZDN6U6wtAlnvyc0Bd5CjuV7alqp3RfvlL7IRq420i6eu8YT+8fVYCYTlH6VsCs2M5sYjoYkfgHPAkDCIwjt1yaJ4pAwLB+ddMnxArF16sCWydOHt9t9+jMgg7POtCRVyvSn4YDB1XjF/PHveRnyW5V0zqzrz7BFiOzazNHkht3IBdCFIR8Mhe3TSYmKEG33EptA0lETWadLe+xmHMenFixbENKccDC+1qu0jgcG+uvaxF0R50LJXwjXU2j6qgSf3W/a8vHPkYxLS9KlEq4vxX+9LHNqSB0h6FHLO2FprpDXs1g4gheBhDhBCcXq4/+XwGg+ROz1qQJNmOwQ2ROOyP5pkQjo3Tr5OML5QMbsfykTGHw8KIKjJ2gVS6Tydu8BAO/yJNZz6tySjHoBgkoarc2E7oE83CrX8sjxc9bJeycTpSGNLfXB/3rEJgWdY=",
+            "name": "k8sdemo",
+            "selector": {
+                "matchLabels": {
+                    "hpcr": "test"
+                }
+            }
+        }
+    },
+    "children": {},
+    "related": {
+        "ConfigMap.v1": {
+            "vpc-apikey-configmap": {
+                "apiVersion": "v1",
+                "data": {
+                    "IBMCLOUD_API_KEY": "xxx"
+                },
+                "kind": "ConfigMap",
+                "metadata": {
+                    "annotations": {
+                        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"IBMCLOUD_API_KEY\":\"xxx\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"labels\":{\"hpcr\":\"test\"},\"name\":\"vpc-apikey-configmap\",\"namespace\":\"default\"}}\n"
+                    },
+                    "creationTimestamp": "2022-12-11T21:22:59Z",
+                    "labels": {
+                        "hpcr": "test"
+                    },
+                    "managedFields": [
+                        {
+                            "apiVersion": "v1",
+                            "fieldsType": "FieldsV1",
+                            "fieldsV1": {
+                                "f:data": {
+                                    ".": {},
+                                    "f:IBMCLOUD_API_KEY": {}
+                                },
+                                "f:metadata": {
+                                    "f:annotations": {
+                                        ".": {},
+                                        "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                                    },
+                                    "f:labels": {
+                                        ".": {},
+                                        "f:hpcr": {}
+                                    }
+                                }
+                            },
+                            "manager": "kubectl-client-side-apply",
+                            "operation": "Update",
+                            "time": "2022-12-11T21:22:59Z"
+                        }
+                    ],
+                    "name": "vpc-apikey-configmap",
+                    "namespace": "default",
+                    "resourceVersion": "2081",
+                    "uid": "93ab2bc5-81b1-43b6-b111-f57fa5e1bb08"
+                }
+            },
+            "vpc-deployment-configmap": {
+                "apiVersion": "v1",
+                "data": {
+                    "IBMCLOUD_REGION": "us-south",
+                    "IBMCLOUD_ZONE": "us-south-2",
+                    "TARGET_CONTRACT_PUB_KEY_FILENAME": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoCnfoQTXR+OJxEL1tYZs\n+nm/y6f2Pr0Asgb4/8kmLgRchnbCUxsQQNhhgvk8iJZYKu+6CS0dKYId0X1Twm4W\nH5NfOor4UYXHmTYHvqDmvCNKWByZk2xBAWEgPm76YtlQcsTJ01S0lNBVfIqs5gWN\no4Upv70uSPORyfINjZdMQ6a6mfI5Ittvbmx9c+VNKAXop3vVfUOlY1gFtKw9Kn/v\nuKJZ/JJXzpLx72Gq1B5k1brfCINbhXDNB9KsU/zkry1Gk1sGwLTY0xb/BzYIyis3\n+cPki+AyDmDOeBuVxYXC3j/ndWvlYiAIRVxn0zoJZxcsG9KqOoRaRRcNDYWEaNN9\nmi7mOeBczkAveSr9Jxtun6tZ4PRK/eD1HFBAcu7PtK39OcLdsayrD8Cn+tDdIFqj\n+lgHq4Z/rj11lRb9uk2aor0LnbbUhCeYQibrGN7hBz7wXm04MIpkUC1mNDhg2IuY\nuaBImbT8vt8uqsvLeLWcQg87B+gMMcOiyRu9aKFuAXYV3xsu5OckvAL+S7x43Bis\nTE2GSELABIxSgns5KniGu+V1EIN1AUJZMdECfgECuKmqCHvivy6IPa8I+y4QnXrj\nSA5Ecni8I/tCAvmMCHAzFysbjLvPoAUSYiOlW969Kc5iJuBvq40WOR8xba3NwJji\nCnzbhHxtOVAtLl5g92nLhv0CAwEAAQ==\n-----END PUBLIC KEY-----\n",
+                    "TARGET_IMAGE_NAME": "hpse-pipeline-dev-gen2-enclaved",
+                    "TARGET_PROFILE": "bz2e-2x8",
+                    "TARGET_VPC_NAME": "carsten-test-3"
+                },
+                "kind": "ConfigMap",
+                "metadata": {
+                    "annotations": {
+                        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"IBMCLOUD_REGION\":\"us-south\",\"IBMCLOUD_ZONE\":\"us-south-2\",\"TARGET_CONTRACT_PUB_KEY_FILENAME\":\"-----BEGIN PUBLIC KEY-----\\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoCnfoQTXR+OJxEL1tYZs\\n+nm/y6f2Pr0Asgb4/8kmLgRchnbCUxsQQNhhgvk8iJZYKu+6CS0dKYId0X1Twm4W\\nH5NfOor4UYXHmTYHvqDmvCNKWByZk2xBAWEgPm76YtlQcsTJ01S0lNBVfIqs5gWN\\no4Upv70uSPORyfINjZdMQ6a6mfI5Ittvbmx9c+VNKAXop3vVfUOlY1gFtKw9Kn/v\\nuKJZ/JJXzpLx72Gq1B5k1brfCINbhXDNB9KsU/zkry1Gk1sGwLTY0xb/BzYIyis3\\n+cPki+AyDmDOeBuVxYXC3j/ndWvlYiAIRVxn0zoJZxcsG9KqOoRaRRcNDYWEaNN9\\nmi7mOeBczkAveSr9Jxtun6tZ4PRK/eD1HFBAcu7PtK39OcLdsayrD8Cn+tDdIFqj\\n+lgHq4Z/rj11lRb9uk2aor0LnbbUhCeYQibrGN7hBz7wXm04MIpkUC1mNDhg2IuY\\nuaBImbT8vt8uqsvLeLWcQg87B+gMMcOiyRu9aKFuAXYV3xsu5OckvAL+S7x43Bis\\nTE2GSELABIxSgns5KniGu+V1EIN1AUJZMdECfgECuKmqCHvivy6IPa8I+y4QnXrj\\nSA5Ecni8I/tCAvmMCHAzFysbjLvPoAUSYiOlW969Kc5iJuBvq40WOR8xba3NwJji\\nCnzbhHxtOVAtLl5g92nLhv0CAwEAAQ==\\n-----END PUBLIC KEY-----\\n\",\"TARGET_IMAGE_NAME\":\"hpse-pipeline-dev-gen2-enclaved\",\"TARGET_PROFILE\":\"bz2e-2x8\",\"TARGET_VPC_NAME\":\"carsten-test-3\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"labels\":{\"hpcr\":\"test\"},\"name\":\"vpc-deployment-configmap\",\"namespace\":\"default\"}}\n"
+                    },
+                    "creationTimestamp": "2022-12-11T22:15:33Z",
+                    "labels": {
+                        "hpcr": "test"
+                    },
+                    "managedFields": [
+                        {
+                            "apiVersion": "v1",
+                            "fieldsType": "FieldsV1",
+                            "fieldsV1": {
+                                "f:data": {
+                                    ".": {},
+                                    "f:IBMCLOUD_REGION": {},
+                                    "f:IBMCLOUD_ZONE": {},
+                                    "f:TARGET_CONTRACT_PUB_KEY_FILENAME": {},
+                                    "f:TARGET_IMAGE_NAME": {},
+                                    "f:TARGET_PROFILE": {},
+                                    "f:TARGET_VPC_NAME": {}
+                                },
+                                "f:metadata": {
+                                    "f:annotations": {
+                                        ".": {},
+                                        "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                                    },
+                                    "f:labels": {
+                                        ".": {},
+                                        "f:hpcr": {}
+                                    }
+                                }
+                            },
+                            "manager": "kubectl-client-side-apply",
+                            "operation": "Update",
+                            "time": "2022-12-11T22:15:33Z"
+                        }
+                    ],
+                    "name": "vpc-deployment-configmap",
+                    "namespace": "default",
+                    "resourceVersion": "4504",
+                    "uid": "1ccdcc7b-c4ec-4d87-8584-c078f1f822cb"
+                }
+            },
+            "vpc-env-configmap": {
+                "apiVersion": "v1",
+                "data": {
+                    "IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT": "https://accountmanagement.stage1.ng.bluemix.net",
+                    "IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT": "https://us-south.certificate-manager.test.cloud.ibm.com",
+                    "IBMCLOUD_CIS_API_ENDPOINT": "https://api.cis.test.cloud.ibm.com",
+                    "IBMCLOUD_COS_CONFIG_ENDPOINT": "https://config.cloud-object-storage.test.cloud.ibm.com/v1",
+                    "IBMCLOUD_COS_ENDPOINT": "https://s3.us-west.cloud-object-storage.test.appdomain.cloud",
+                    "IBMCLOUD_CS_API_ENDPOINT": "https://containers.test.cloud.ibm.com/global",
+                    "IBMCLOUD_DL_API_ENDPOINT": "https://directlink.test.cloud.ibm.com/v1",
+                    "IBMCLOUD_GT_API_ENDPOINT": "https://tags.global-search-tagging.test.cloud.ibm.com",
+                    "IBMCLOUD_HPCS_API_ENDPOINT": "https://zcryptobroker.stage1.mybluemix.net/crypto_v2/",
+                    "IBMCLOUD_IAMPAP_API_ENDPOINT": "https://iam.test.cloud.ibm.com",
+                    "IBMCLOUD_IAM_API_ENDPOINT": "https://iam.test.cloud.ibm.com",
+                    "IBMCLOUD_ICD_API_ENDPOINT": "https://api.us-south.databases.test.cloud.ibm.com",
+                    "IBMCLOUD_IS_API_ENDPOINT": "https://us-south-stage01.iaasdev.cloud.ibm.com",
+                    "IBMCLOUD_IS_NG_API_ENDPOINT": "https://us-south-stage01.iaasdev.cloud.ibm.com/v1",
+                    "IBMCLOUD_KP_API_ENDPOINT": "https://qa.us-south.kms.test.cloud.ibm.com",
+                    "IBMCLOUD_MCCP_API_ENDPOINT": "https://mccp.us-south.cf.test.cloud.ibm.com",
+                    "IBMCLOUD_NAMESPACE_API_ENDPOINT": "https://us-south.functions.cloud.ibm.com/api/v1",
+                    "IBMCLOUD_PRIVATE_DNS_API_ENDPOINT": "https://api.dns-svcs.cloud.ibm.com/v1",
+                    "IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT": "https://globalcatalog.test.cloud.ibm.com",
+                    "IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT": "https://resource-controller.test.cloud.ibm.com",
+                    "IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT": "https://resource-controller.test.cloud.ibm.com",
+                    "IBMCLOUD_SCHEMATICS_API_ENDPOINT": "https://schematics.test.cloud.ibm.com",
+                    "IBMCLOUD_TG_API_ENDPOINT": "https://transit.test.cloud.ibm.com/v1",
+                    "IBMCLOUD_UAA_ENDPOINT": "https://login.stage1.ng.bluemix.net/UAALoginServerWAR",
+                    "IBMCLOUD_USER_MANAGEMENT_ENDPOINT": "https://user-management.test.cloud.ibm.com"
+                },
+                "kind": "ConfigMap",
+                "metadata": {
+                    "annotations": {
+                        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT\":\"https://accountmanagement.stage1.ng.bluemix.net\",\"IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT\":\"https://us-south.certificate-manager.test.cloud.ibm.com\",\"IBMCLOUD_CIS_API_ENDPOINT\":\"https://api.cis.test.cloud.ibm.com\",\"IBMCLOUD_COS_CONFIG_ENDPOINT\":\"https://config.cloud-object-storage.test.cloud.ibm.com/v1\",\"IBMCLOUD_COS_ENDPOINT\":\"https://s3.us-west.cloud-object-storage.test.appdomain.cloud\",\"IBMCLOUD_CS_API_ENDPOINT\":\"https://containers.test.cloud.ibm.com/global\",\"IBMCLOUD_DL_API_ENDPOINT\":\"https://directlink.test.cloud.ibm.com/v1\",\"IBMCLOUD_GT_API_ENDPOINT\":\"https://tags.global-search-tagging.test.cloud.ibm.com\",\"IBMCLOUD_HPCS_API_ENDPOINT\":\"https://zcryptobroker.stage1.mybluemix.net/crypto_v2/\",\"IBMCLOUD_IAMPAP_API_ENDPOINT\":\"https://iam.test.cloud.ibm.com\",\"IBMCLOUD_IAM_API_ENDPOINT\":\"https://iam.test.cloud.ibm.com\",\"IBMCLOUD_ICD_API_ENDPOINT\":\"https://api.us-south.databases.test.cloud.ibm.com\",\"IBMCLOUD_IS_API_ENDPOINT\":\"https://us-south-stage01.iaasdev.cloud.ibm.com\",\"IBMCLOUD_IS_NG_API_ENDPOINT\":\"https://us-south-stage01.iaasdev.cloud.ibm.com/v1\",\"IBMCLOUD_KP_API_ENDPOINT\":\"https://qa.us-south.kms.test.cloud.ibm.com\",\"IBMCLOUD_MCCP_API_ENDPOINT\":\"https://mccp.us-south.cf.test.cloud.ibm.com\",\"IBMCLOUD_NAMESPACE_API_ENDPOINT\":\"https://us-south.functions.cloud.ibm.com/api/v1\",\"IBMCLOUD_PRIVATE_DNS_API_ENDPOINT\":\"https://api.dns-svcs.cloud.ibm.com/v1\",\"IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT\":\"https://globalcatalog.test.cloud.ibm.com\",\"IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT\":\"https://resource-controller.test.cloud.ibm.com\",\"IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT\":\"https://resource-controller.test.cloud.ibm.com\",\"IBMCLOUD_SCHEMATICS_API_ENDPOINT\":\"https://schematics.test.cloud.ibm.com\",\"IBMCLOUD_TG_API_ENDPOINT\":\"https://transit.test.cloud.ibm.com/v1\",\"IBMCLOUD_UAA_ENDPOINT\":\"https://login.stage1.ng.bluemix.net/UAALoginServerWAR\",\"IBMCLOUD_USER_MANAGEMENT_ENDPOINT\":\"https://user-management.test.cloud.ibm.com\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"labels\":{\"hpcr\":\"test\"},\"name\":\"vpc-env-configmap\",\"namespace\":\"default\"}}\n"
+                    },
+                    "creationTimestamp": "2022-12-11T22:15:33Z",
+                    "labels": {
+                        "hpcr": "test"
+                    },
+                    "managedFields": [
+                        {
+                            "apiVersion": "v1",
+                            "fieldsType": "FieldsV1",
+                            "fieldsV1": {
+                                "f:data": {
+                                    ".": {},
+                                    "f:IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_CIS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_COS_CONFIG_ENDPOINT": {},
+                                    "f:IBMCLOUD_COS_ENDPOINT": {},
+                                    "f:IBMCLOUD_CS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_DL_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_GT_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_HPCS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_IAMPAP_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_IAM_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_ICD_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_IS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_IS_NG_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_KP_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_MCCP_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_NAMESPACE_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_PRIVATE_DNS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_SCHEMATICS_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_TG_API_ENDPOINT": {},
+                                    "f:IBMCLOUD_UAA_ENDPOINT": {},
+                                    "f:IBMCLOUD_USER_MANAGEMENT_ENDPOINT": {}
+                                },
+                                "f:metadata": {
+                                    "f:annotations": {
+                                        ".": {},
+                                        "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                                    },
+                                    "f:labels": {
+                                        ".": {},
+                                        "f:hpcr": {}
+                                    }
+                                }
+                            },
+                            "manager": "kubectl-client-side-apply",
+                            "operation": "Update",
+                            "time": "2022-12-11T22:15:33Z"
+                        }
+                    ],
+                    "name": "vpc-env-configmap",
+                    "namespace": "default",
+                    "resourceVersion": "4503",
+                    "uid": "f608a1d9-5709-402b-9045-9893670fef3c"
+                }
+            }
+        }
+    },
+    "finalizing": false
+}

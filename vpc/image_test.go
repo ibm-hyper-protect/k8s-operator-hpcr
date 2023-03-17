@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
-	"os"
+	"fmt"
+	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/stretchr/testify/require"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func TestFindImageService(t *testing.T) {
+	env, err := envFromDotEnv()
 	if err != nil {
-		log.Fatal(err)
+		t.Skipf("No .env file")
 	}
+
+	service, err := CreateVpcServiceFromEnv(env)
+	require.NoError(t, err)
+
+	img, err := FindStockImages(service)
+	require.NoError(t, err)
+
+	fmt.Println(img)
 }

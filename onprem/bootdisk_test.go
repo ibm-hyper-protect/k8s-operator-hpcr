@@ -12,18 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package onprem
 
 import (
-	"log"
-	"os"
+	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func TestBootDiskUpload(t *testing.T) {
+	config, err := defaultSSHConfig("../.env")
 	if err != nil {
-		log.Fatal(err)
+		t.SkipNow()
 	}
+
+	client, err := CreateLivirtClient(config)
+	require.NoError(t, err)
+
+	uploader := UploadBootDisk(client)
+
+	vol, err := uploader("libvirt", "hpcr.qcow2", "http://localhost:8080/hpcr.qcow2")
+	require.NoError(t, err)
+	assert.NotNil(t, vol)
 }

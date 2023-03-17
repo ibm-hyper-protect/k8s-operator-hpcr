@@ -12,18 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
-	"os"
+	"errors"
+	"fmt"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/IBM/vpc-go-sdk/vpcv1"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+var InstanceNotFound = errors.New("instance was not found")
+
+func FindInstance(service *vpcv1.VpcV1, name string) (*vpcv1.Instance, error) {
+	pager, err := service.NewInstancesPager(&vpcv1.ListInstancesOptions{Name: &name})
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
+	all, err := pager.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	count := len(all)
+	if count > 1 {
+		return nil, fmt.Errorf("instance is not unique, total number is [%d]", count)
+	}
+	if count == 0 {
+		return nil, InstanceNotFound
+	}
+	return &all[0], nil
 }

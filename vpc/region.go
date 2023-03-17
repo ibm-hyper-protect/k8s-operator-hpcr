@@ -12,18 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
-	"os"
-
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	E "github.com/ibm-hyper-protect/hpcr-controller/env"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+const (
+	DefaultRegion     = "us-south"
+	KeyIBMCloudRegion = "IBMCLOUD_REGION"
+)
+
+func GetRegion(env E.Environment) string {
+	region, ok := env[KeyIBMCloudRegion]
+	if ok {
+		return region
 	}
+	return DefaultRegion
 }

@@ -1,0 +1,169 @@
+{
+    "controller": {
+        "kind": "CompositeController",
+        "apiVersion": "metacontroller.k8s.io/v1alpha1",
+        "metadata": {
+            "name": "hpcr-controller-onprem",
+            "uid": "fde1160e-5754-4bff-a301-404dca2895db",
+            "resourceVersion": "906",
+            "generation": 1,
+            "creationTimestamp": "2023-03-15T21:32:15Z",
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"hpcr-controller-onprem\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/onprem/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"onprem-hpcrs\"},\"resyncPeriodSeconds\":60}}\n"
+            },
+            "managedFields": [
+                {
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "apiVersion": "metacontroller.k8s.io/v1alpha1",
+                    "time": "2023-03-15T21:32:15Z",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:generateSelector": {},
+                            "f:hooks": {
+                                ".": {},
+                                "f:customize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:finalize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:sync": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                }
+                            },
+                            "f:parentResource": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:resource": {}
+                            },
+                            "f:resyncPeriodSeconds": {}
+                        }
+                    }
+                }
+            ]
+        },
+        "spec": {
+            "parentResource": {
+                "apiVersion": "hpse.ibm.com/v1",
+                "resource": "onprem-hpcrs"
+            },
+            "hooks": {
+                "customize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/onprem/customize"
+                    }
+                },
+                "sync": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/onprem/sync"
+                    }
+                },
+                "finalize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://hpcr-controller.default:8080/onprem/finalize"
+                    }
+                }
+            },
+            "resyncPeriodSeconds": 60,
+            "generateSelector": true
+        },
+        "status": {}
+    },
+    "parent": {
+        "apiVersion": "hpse.ibm.com/v1",
+        "kind": "HyperProtectContainerRuntimeOnPrem",
+        "metadata": {
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"hpse.ibm.com/v1\",\"kind\":\"HyperProtectContainerRuntimeOnPrem\",\"metadata\":{\"annotations\":{},\"creationTimestamp\":null,\"labels\":{\"Carsten\":\"test\",\"version\":\"0.0.1\"},\"name\":\"onpremsample\",\"namespace\":\"default\"},\"spec\":{\"contract\":\"env: hyper-protect-basic.KxWoM/SzuSxudQBSy30ZXn43rMxcAm00uogDP1DV09igRGp8M5zcDMEIH8b8syAm4MUjYBLXelrJUKtZ3NvKEmEygR2KRCAaLdrc4uCqmOebqYzkfKr2dP+Bnu8+gzf2PAOeKNXERle5Eixd9kRQ+e4I4+m7AALOMFJc4PI3yjv/xJQ3w5cMxCyws8erZ0Q1FigD9Tzr5XiJbkUTSu3Iz6vHVW+gJiPZAKsj3Y//NAdknUvTvwXjQsCqMATTQ28/xVU5fVCWOhDoOWO7iG+nBVIq6WnOL/8rJnJU0ugK7K9Y9YdHcTittjRFe8z0RzzX6K+aSOuw2yYuLTLQpYkJYdC0AtFeVrTF9P/+GkJGgvX1LoqPRm7RqpZvZKLJSeBim1ddnVyA900hX3YbA4tFiQXd7rV9H2TA5K05kGyz3RbvyOvmKIyAFzXP5A/6KujLwmdD0Vj8CD/ulPfkdfuu96oM9zBxvVtECAw4rBEHorQCEyvWDgzqkT0wiDovK2FXbCIfMvpXjhO7FtgmESJfniEPYnhBfq7fp3hUPHhNq4sN/S3ImkLMnrhL7XBNt5KDdIWIMeIPUm1T8fc+5jBBro/FKjpqTwemkHIj3BCYJL9E2BZfGkp1tQopIvcsDhPIq/5TM3M41lkecvE1zoZj9vjnhVcI57e6fq06+d+nfBI=.U2FsdGVkX1+nwzfNuGIs2ZWUF5AjPyP88P3qSFfP8kusRmSYpqSLS7uB6KLXSut2fp6opmMFWP/mdLj3eLtndD7/XG9AlNk5KRJvNZwiYXZGiPxZsLl7FY26GsR5NFszI8cSCdRLLkApEvliMRACPEvsf4zPvHi6zGcA3Vo1E7kxvv4MxhMTZDn1njdpx5iqCHlItI4SHUNWnNq29QGL2O10kyWEOWuD6W3uJNL1fHJliKfrcQ/4ixfDSzBVyM/PKosG9hDzTQimaLI4xBKyxwAlnm6efVAWAgy0UCpwX0Axgj6aZ5DAaf1ftKi0unHMAtJfNLduaqp38Pv9dnmbWLDtNzb6/DCpa3C5e4ldPpJAhijIgJRO3j+u0Y0Mrul21Z8QBldksJKfCNVJNxPtAksurFpdtwcmfYkgzWZju4QfSOJYbS5xt9hRue/wbf7hGEpcvnVe16Asx+qRMxhhUYm0RVO6FJ5XDVaK21Y8uYcf/pkVHwpd3rvehHErVac13rg5vSp2ipMYpaQpmiHOhDaewKiVnM0rllJY3FxwIRzBEbhwbfBbIMGIk6AxsSr2RwDsx91367DE7tKZYOBlvNUXjq3pL+jGqsBVIpn4CN3vY7vSbHmx7VLhhiqkA2WtkAcmW9D82hvG8jk0S0JWybZRGICYoGw60Q5K8+5eh4uxRaz3WapnmAL7MNGSWKY+WCc2MVVCiabRJ38rzQ/3l+hGFKYNC9rNoGWvr2BkfnJu0jfV/sSkM2Vzl9Uria2xfP3weYU6v3i7xoJ1CNfT/FohL4j6+eCAuQ4C6fhmX7preJ1zy9iuh7D455VXDI/KM4E6hgU3PL3E9vqGkU9h5jQmIZJbQ4X7CXTqP8ouJxq/2TtKfAtzI3+JBOCZi8vvm8kEal8LAj4x3k1GxYR/gjh6yHwqFqV/CRK4WtVy+N3Xo1+OPmAaZ+JjHmTm65Ht2bknbNEgsnZpXIYkBzw0LdgcNv7mrDibXSDLEC7s5NMlx5C7YYFcXOYaaANNoBk7Yqa4ffyT0Luf5ue2Z7JnjFM6yODJXWbxuqfF+83HRBddyTrYhM5zkuivxQlKEQTBTJrdxPfK+m006XiJ1Wu1IazrB+Dupm/Hfxt1d/iSZviHnprRfT31xh298haTptqYgkAp7t238e7mgIcV41/yV1F8paAZazi+MQ2i1E9pHihEwkU8QpcX/mLmxncFAPgGi8w/J/lmwahp5g8IO0EGKR/iEWHKl0e1yDqgZQ93kq3GrppaxuJvBRDUKL1C9zVTtAVJQdjPOW2/zlINxlcv57DS5Znnly/Oysj4xmQMiqpBUAUSEAeo39+YnohKaTm7GQKLAgm8Mic0gEaOQFOlig==\\nenvWorkloadSignature: DU1MZ1HI7ZbXUORYEZNoLoQ0iHtbV1MDoDteC96GTVIFzv+ZWHV1/xjhKU820VX8GOsdM26d2w1MOHAJMuzUooFLBvoxmgXyf+Xe3OQ39YAiO2b/eUbfv9SOzesYf37+dbb/bAKzCvwWxkipet3qsQphgZw+6y5qO8UFCqf/7zHBqOJKwCm0lOdjfEaCeRTg+3kOQXZw1DVAcrH6SOTSrcHoEF1QOIoKk1s+bCOMKgVVMfS4CjG2IZqxowZUNuBiCZ6rjb9ATanf+JaSOuG9gP01wbDgdtvOi83sByQgF3xlhGiAwIQx2eB79H/P6enj/Emayc5hNMwEWdVS/39xp0CFWepH0p0gPoG9d2qk8WeteholJNw+Wbmqt65y/tN57a9djSkBblBjoQ/75zrqco7Fl3+1sbzJ5gcXnCVEAbacj3hW6HODT3RXDomXBPvhx+WrH+2BlNr8Hbl/GSJgWCa7BoD180hZe7IAfP5nRwh68KgXhCfFLBYFyHy9EXsGhcOVe73yi5M98jqEiIjo5gnJ4h2Oj9dpSG/C0EqKE91seST1uiiY5nlx54OYi5lZUe/9B4J6KeFoR9Z/WyIEHvZS3scfS+t0e1NOyjpHkJJ0Yo+tlahe+oFf68gIQ1uEP6NKzvDDlva0f36f2W+OrZbcXgccT3NvKNouXxqGWvo=\\nworkload: hyper-protect-basic.nIe8sKDBW5NmYVxO9mdptibIXvUu53dbBfEv/AGi1LZWpLEvkMrzceWhAqIa0GrrjPhopNo0Gi2RJHVJk+j7TV6NLEvQiTNyo/uFyQleKeZQDGzQ5ms+AyV3iE9mOIMjvKFXdfWKZPHbx6JIl5m+O/MNB0UmIF3fpT/jHm4Zzqa1jKFf8uOA1XfmZtuJWdSIunYqccUloVDqmL2ruUTVDCDjgQ1CeuZRT9fuyKD9uKnNls5NC1ATBxvhMSOV/BR0vpqkJZe8+c8QoiTsK8Qds4Ss5/1xcKWNz8PHB3h+Jid7XM256+yLXeUKn9/+1k3GYDPdLJ+hDHDfyq+dnTvRHSGhmg9LUKFwBkcFgX8rrnsJ7x/FdGTVq2db9T2Iki3qXU6n0uaIS7tZPryhA/zViCdv1fjvVKhR17Ne3OmZKkaGOkkTunx1BqGsZAzMMzMXIHk2MUtcN2i60bG/myW5AYN2+Vgz7ES52UULmpFN8GUXUEplYOwFr28lAS6IDQMrwZ6PlNaGrHr52dYcCaREUr2bvnFKNtkgVd10ZcNz6dLJVth0m5LJlAHVGU/32hiODWpncJ7bARrGttI8JndWw4WE1L3xU0EU6W6m4E3P+DpdiMG2kXKrnEPtmlfoRvaesbQ6a1yjNxcNZDEVfPYW6bDdk+UoU5ibUoCuf0z5QoU=.U2FsdGVkX19ZT+EJRN4dII4M+H1ng5UVsJPGsmlIr0LwQvXh7t3vExQ/zSAIa+9PCOHuXnFN+yas7f/lYTsE8RM+xae2WBxAjFceaJ8VBeULBWEsywmnZgLQn2L+LwnQRluWAdoZmlD/08srPecnGodu1yGZmTouW169mif4D8XwoS5u2Kt/Ua+m+x1iqCqkvJ/gaoEXCMb5RBW9U4OjYUdpXzZHIRVn6y0uUWRgo3XfLJos4zIrMtOJ/o7rHJqeiUiT6czM9ePQv8NtkgXztyfz90UWEtW0djMtGO04BoyGDmFUwGDJ8Y+ltUk4YSWHfR9U9tweT2c2RYFzT0dAUnizN3yphOCEfW1Toc6qy/tS0Be4rA9GjGz+bEUz1ksfu2u56VYF0WI/mYu9SPuZHXCRWIIL6q6Lto9iqVLHQFTALQxm9H569rtS+fGMxL/Jd0CsTmaZ3TrE90aVAEeYbD9HfpqA32kkPO54Dyrr8OKCnFjc3rT69BOrScoMm3YCfwygGXt7tD4+nKS+85TegaXjd0b358/qYnvcMpqSy7AHFrrQ7pvKql43Vx3vChrBluP5TA3gFqByMSagCv8Z/tO0hpWreB5hl867GT8Uc2g7ItvkqwVzT5hlSQFliV7Xz5VFkr0+oAvZy6w/RpX3ZJkmwzAaFGuYktGx03zSj0ctnyE8j5c7DSqxkqyr5CKbGfC7oxoubTPUZQZH3dbRtSioBV97DxLIvcZTZW1X+qGyDJ5a95tjogGgm7mnhOp41quWw+ZraZYXMLA5CUcyjIlZNMBt7eCRD7Ojur2snB2PpDYibm1vKoFJQyuU87f+Oavrv+UsV5/IB8OGmtO0u9392DsD7FK067Ws2iYJBLzM48R3IjUzXwXJiBIDiVQcXyVgxB6+69IUc2+FdOdp2A==\\n\",\"imageURL\":\"http://localhost:8080/hpcr.qcow2\",\"storagePool\":\"images\"}}\n"
+            },
+            "creationTimestamp": "2023-03-16T14:59:23Z",
+            "finalizers": [
+                "metacontroller.io/compositecontroller-hpcr-controller-onprem"
+            ],
+            "generation": 1,
+            "labels": {
+                "Carsten": "test",
+                "version": "0.0.1"
+            },
+            "managedFields": [
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            },
+                            "f:labels": {
+                                ".": {},
+                                "f:Carsten": {},
+                                "f:version": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:contract": {},
+                            "f:imageURL": {},
+                            "f:storagePool": {}
+                        }
+                    },
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "time": "2023-03-16T14:59:23Z"
+                },
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:finalizers": {
+                                ".": {},
+                                "v:\"metacontroller.io/compositecontroller-hpcr-controller-onprem\"": {}
+                            }
+                        }
+                    },
+                    "manager": "metacontroller",
+                    "operation": "Update",
+                    "time": "2023-03-16T14:59:23Z"
+                }
+            ],
+            "name": "onpremsample",
+            "namespace": "default",
+            "resourceVersion": "36679",
+            "uid": "903ce636-0c86-40d3-95bd-58603000e3f5"
+        },
+        "spec": {
+            "contract": "env: hyper-protect-basic.KxWoM/SzuSxudQBSy30ZXn43rMxcAm00uogDP1DV09igRGp8M5zcDMEIH8b8syAm4MUjYBLXelrJUKtZ3NvKEmEygR2KRCAaLdrc4uCqmOebqYzkfKr2dP+Bnu8+gzf2PAOeKNXERle5Eixd9kRQ+e4I4+m7AALOMFJc4PI3yjv/xJQ3w5cMxCyws8erZ0Q1FigD9Tzr5XiJbkUTSu3Iz6vHVW+gJiPZAKsj3Y//NAdknUvTvwXjQsCqMATTQ28/xVU5fVCWOhDoOWO7iG+nBVIq6WnOL/8rJnJU0ugK7K9Y9YdHcTittjRFe8z0RzzX6K+aSOuw2yYuLTLQpYkJYdC0AtFeVrTF9P/+GkJGgvX1LoqPRm7RqpZvZKLJSeBim1ddnVyA900hX3YbA4tFiQXd7rV9H2TA5K05kGyz3RbvyOvmKIyAFzXP5A/6KujLwmdD0Vj8CD/ulPfkdfuu96oM9zBxvVtECAw4rBEHorQCEyvWDgzqkT0wiDovK2FXbCIfMvpXjhO7FtgmESJfniEPYnhBfq7fp3hUPHhNq4sN/S3ImkLMnrhL7XBNt5KDdIWIMeIPUm1T8fc+5jBBro/FKjpqTwemkHIj3BCYJL9E2BZfGkp1tQopIvcsDhPIq/5TM3M41lkecvE1zoZj9vjnhVcI57e6fq06+d+nfBI=.U2FsdGVkX1+nwzfNuGIs2ZWUF5AjPyP88P3qSFfP8kusRmSYpqSLS7uB6KLXSut2fp6opmMFWP/mdLj3eLtndD7/XG9AlNk5KRJvNZwiYXZGiPxZsLl7FY26GsR5NFszI8cSCdRLLkApEvliMRACPEvsf4zPvHi6zGcA3Vo1E7kxvv4MxhMTZDn1njdpx5iqCHlItI4SHUNWnNq29QGL2O10kyWEOWuD6W3uJNL1fHJliKfrcQ/4ixfDSzBVyM/PKosG9hDzTQimaLI4xBKyxwAlnm6efVAWAgy0UCpwX0Axgj6aZ5DAaf1ftKi0unHMAtJfNLduaqp38Pv9dnmbWLDtNzb6/DCpa3C5e4ldPpJAhijIgJRO3j+u0Y0Mrul21Z8QBldksJKfCNVJNxPtAksurFpdtwcmfYkgzWZju4QfSOJYbS5xt9hRue/wbf7hGEpcvnVe16Asx+qRMxhhUYm0RVO6FJ5XDVaK21Y8uYcf/pkVHwpd3rvehHErVac13rg5vSp2ipMYpaQpmiHOhDaewKiVnM0rllJY3FxwIRzBEbhwbfBbIMGIk6AxsSr2RwDsx91367DE7tKZYOBlvNUXjq3pL+jGqsBVIpn4CN3vY7vSbHmx7VLhhiqkA2WtkAcmW9D82hvG8jk0S0JWybZRGICYoGw60Q5K8+5eh4uxRaz3WapnmAL7MNGSWKY+WCc2MVVCiabRJ38rzQ/3l+hGFKYNC9rNoGWvr2BkfnJu0jfV/sSkM2Vzl9Uria2xfP3weYU6v3i7xoJ1CNfT/FohL4j6+eCAuQ4C6fhmX7preJ1zy9iuh7D455VXDI/KM4E6hgU3PL3E9vqGkU9h5jQmIZJbQ4X7CXTqP8ouJxq/2TtKfAtzI3+JBOCZi8vvm8kEal8LAj4x3k1GxYR/gjh6yHwqFqV/CRK4WtVy+N3Xo1+OPmAaZ+JjHmTm65Ht2bknbNEgsnZpXIYkBzw0LdgcNv7mrDibXSDLEC7s5NMlx5C7YYFcXOYaaANNoBk7Yqa4ffyT0Luf5ue2Z7JnjFM6yODJXWbxuqfF+83HRBddyTrYhM5zkuivxQlKEQTBTJrdxPfK+m006XiJ1Wu1IazrB+Dupm/Hfxt1d/iSZviHnprRfT31xh298haTptqYgkAp7t238e7mgIcV41/yV1F8paAZazi+MQ2i1E9pHihEwkU8QpcX/mLmxncFAPgGi8w/J/lmwahp5g8IO0EGKR/iEWHKl0e1yDqgZQ93kq3GrppaxuJvBRDUKL1C9zVTtAVJQdjPOW2/zlINxlcv57DS5Znnly/Oysj4xmQMiqpBUAUSEAeo39+YnohKaTm7GQKLAgm8Mic0gEaOQFOlig==\nenvWorkloadSignature: DU1MZ1HI7ZbXUORYEZNoLoQ0iHtbV1MDoDteC96GTVIFzv+ZWHV1/xjhKU820VX8GOsdM26d2w1MOHAJMuzUooFLBvoxmgXyf+Xe3OQ39YAiO2b/eUbfv9SOzesYf37+dbb/bAKzCvwWxkipet3qsQphgZw+6y5qO8UFCqf/7zHBqOJKwCm0lOdjfEaCeRTg+3kOQXZw1DVAcrH6SOTSrcHoEF1QOIoKk1s+bCOMKgVVMfS4CjG2IZqxowZUNuBiCZ6rjb9ATanf+JaSOuG9gP01wbDgdtvOi83sByQgF3xlhGiAwIQx2eB79H/P6enj/Emayc5hNMwEWdVS/39xp0CFWepH0p0gPoG9d2qk8WeteholJNw+Wbmqt65y/tN57a9djSkBblBjoQ/75zrqco7Fl3+1sbzJ5gcXnCVEAbacj3hW6HODT3RXDomXBPvhx+WrH+2BlNr8Hbl/GSJgWCa7BoD180hZe7IAfP5nRwh68KgXhCfFLBYFyHy9EXsGhcOVe73yi5M98jqEiIjo5gnJ4h2Oj9dpSG/C0EqKE91seST1uiiY5nlx54OYi5lZUe/9B4J6KeFoR9Z/WyIEHvZS3scfS+t0e1NOyjpHkJJ0Yo+tlahe+oFf68gIQ1uEP6NKzvDDlva0f36f2W+OrZbcXgccT3NvKNouXxqGWvo=\nworkload: hyper-protect-basic.nIe8sKDBW5NmYVxO9mdptibIXvUu53dbBfEv/AGi1LZWpLEvkMrzceWhAqIa0GrrjPhopNo0Gi2RJHVJk+j7TV6NLEvQiTNyo/uFyQleKeZQDGzQ5ms+AyV3iE9mOIMjvKFXdfWKZPHbx6JIl5m+O/MNB0UmIF3fpT/jHm4Zzqa1jKFf8uOA1XfmZtuJWdSIunYqccUloVDqmL2ruUTVDCDjgQ1CeuZRT9fuyKD9uKnNls5NC1ATBxvhMSOV/BR0vpqkJZe8+c8QoiTsK8Qds4Ss5/1xcKWNz8PHB3h+Jid7XM256+yLXeUKn9/+1k3GYDPdLJ+hDHDfyq+dnTvRHSGhmg9LUKFwBkcFgX8rrnsJ7x/FdGTVq2db9T2Iki3qXU6n0uaIS7tZPryhA/zViCdv1fjvVKhR17Ne3OmZKkaGOkkTunx1BqGsZAzMMzMXIHk2MUtcN2i60bG/myW5AYN2+Vgz7ES52UULmpFN8GUXUEplYOwFr28lAS6IDQMrwZ6PlNaGrHr52dYcCaREUr2bvnFKNtkgVd10ZcNz6dLJVth0m5LJlAHVGU/32hiODWpncJ7bARrGttI8JndWw4WE1L3xU0EU6W6m4E3P+DpdiMG2kXKrnEPtmlfoRvaesbQ6a1yjNxcNZDEVfPYW6bDdk+UoU5ibUoCuf0z5QoU=.U2FsdGVkX19ZT+EJRN4dII4M+H1ng5UVsJPGsmlIr0LwQvXh7t3vExQ/zSAIa+9PCOHuXnFN+yas7f/lYTsE8RM+xae2WBxAjFceaJ8VBeULBWEsywmnZgLQn2L+LwnQRluWAdoZmlD/08srPecnGodu1yGZmTouW169mif4D8XwoS5u2Kt/Ua+m+x1iqCqkvJ/gaoEXCMb5RBW9U4OjYUdpXzZHIRVn6y0uUWRgo3XfLJos4zIrMtOJ/o7rHJqeiUiT6czM9ePQv8NtkgXztyfz90UWEtW0djMtGO04BoyGDmFUwGDJ8Y+ltUk4YSWHfR9U9tweT2c2RYFzT0dAUnizN3yphOCEfW1Toc6qy/tS0Be4rA9GjGz+bEUz1ksfu2u56VYF0WI/mYu9SPuZHXCRWIIL6q6Lto9iqVLHQFTALQxm9H569rtS+fGMxL/Jd0CsTmaZ3TrE90aVAEeYbD9HfpqA32kkPO54Dyrr8OKCnFjc3rT69BOrScoMm3YCfwygGXt7tD4+nKS+85TegaXjd0b358/qYnvcMpqSy7AHFrrQ7pvKql43Vx3vChrBluP5TA3gFqByMSagCv8Z/tO0hpWreB5hl867GT8Uc2g7ItvkqwVzT5hlSQFliV7Xz5VFkr0+oAvZy6w/RpX3ZJkmwzAaFGuYktGx03zSj0ctnyE8j5c7DSqxkqyr5CKbGfC7oxoubTPUZQZH3dbRtSioBV97DxLIvcZTZW1X+qGyDJ5a95tjogGgm7mnhOp41quWw+ZraZYXMLA5CUcyjIlZNMBt7eCRD7Ojur2snB2PpDYibm1vKoFJQyuU87f+Oavrv+UsV5/IB8OGmtO0u9392DsD7FK067Ws2iYJBLzM48R3IjUzXwXJiBIDiVQcXyVgxB6+69IUc2+FdOdp2A==\n",
+            "imageURL": "http://localhost:8080/hpcr.qcow2",
+            "storagePool": "images"
+        }
+    }
+}

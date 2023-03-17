@@ -12,18 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package contract
 
 import (
-	"log"
-	"os"
+	"fmt"
+	"testing"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
+	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
+	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
+	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
+	"github.com/joho/godotenv"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func TestSimpleContract(t *testing.T) {
+	// load env
+	env, err := godotenv.Read("../.env")
 	if err != nil {
-		log.Fatal(err)
+		t.SkipNow()
 	}
+	// build
+
+	ctr := F.Pipe5(
+		env,
+		CreateBusyboxContract,
+		E.Chain(ValidateContract),
+		C.MapRefRawMapE,
+		E.Chain(C.StringifyRawMapE),
+		E.Map[error](B.ToString),
+	)
+
+	fmt.Println(ctr)
 }

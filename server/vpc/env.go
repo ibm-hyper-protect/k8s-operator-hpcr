@@ -12,18 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package vpc
 
 import (
-	"log"
 	"os"
+	"path/filepath"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	"github.com/ibm-hyper-protect/hpcr-controller/vpc"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func envFromDotEnv() (env.Environment, error) {
+	// read the file
+	dir, err := os.Getwd()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
+	return vpc.EnvFromDotEnv(filepath.Join(dir, "..", ".."))
 }

@@ -1,0 +1,266 @@
+{
+  "controller": {
+    "kind": "CompositeController",
+    "apiVersion": "metacontroller.k8s.io/v1alpha1",
+    "metadata": {
+      "name": "hpcr-controller",
+      "uid": "cd66a453-5b14-4168-ab10-23e3e2ba227a",
+      "resourceVersion": "97344",
+      "generation": 5,
+      "creationTimestamp": "2022-11-14T14:11:23Z",
+      "annotations": {
+        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"hpcr-controller\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://hpcr-controller.default:8080/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"hpcrs\"}}}\n"
+      },
+      "managedFields": [
+        {
+          "manager": "kubectl-client-side-apply",
+          "operation": "Update",
+          "apiVersion": "metacontroller.k8s.io/v1alpha1",
+          "time": "2022-11-15T08:53:49Z",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:metadata": {
+              "f:annotations": {
+                ".": {},
+                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+              }
+            },
+            "f:spec": {
+              ".": {},
+              "f:generateSelector": {},
+              "f:hooks": {
+                ".": {},
+                "f:customize": {
+                  ".": {},
+                  "f:version": {},
+                  "f:webhook": {
+                    ".": {},
+                    "f:url": {}
+                  }
+                },
+                "f:finalize": {
+                  ".": {},
+                  "f:version": {},
+                  "f:webhook": {
+                    ".": {},
+                    "f:url": {}
+                  }
+                },
+                "f:sync": {
+                  ".": {},
+                  "f:version": {},
+                  "f:webhook": {
+                    ".": {},
+                    "f:url": {}
+                  }
+                }
+              },
+              "f:parentResource": {
+                ".": {},
+                "f:apiVersion": {},
+                "f:resource": {}
+              }
+            }
+          }
+        }
+      ]
+    },
+    "spec": {
+      "parentResource": {
+        "apiVersion": "hpse.ibm.com/v1",
+        "resource": "hpcrs"
+      },
+      "hooks": {
+        "customize": {
+          "version": "v1",
+          "webhook": {
+            "url": "http://hpcr-controller.default:8080/customize"
+          }
+        },
+        "sync": {
+          "version": "v1",
+          "webhook": {
+            "url": "http://hpcr-controller.default:8080/sync"
+          }
+        },
+        "finalize": {
+          "version": "v1",
+          "webhook": {
+            "url": "http://hpcr-controller.default:8080/finalize"
+          }
+        }
+      },
+      "generateSelector": true
+    },
+    "status": {}
+  },
+  "parent": {
+    "apiVersion": "hpse.ibm.com/v1",
+    "kind": "HyperProtectContainerRuntime",
+    "metadata": {
+      "annotations": {
+        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"hpse.ibm.com/v1\",\"kind\":\"HyperProtectContainerRuntime\",\"metadata\":{\"annotations\":{},\"name\":\"carsten-metadata\",\"namespace\":\"default\"},\"spec\":{\"contract\":\"this is the contract4\",\"selector\":{\"matchLabels\":{\"hpcr\":\"test\"}}}}\n"
+      },
+      "creationTimestamp": "2022-11-15T08:32:29Z",
+      "finalizers": [
+        "metacontroller.io/compositecontroller-hpcr-controller"
+      ],
+      "generation": 4,
+      "managedFields": [
+        {
+          "apiVersion": "hpse.ibm.com/v1",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:metadata": {
+              "f:finalizers": {
+                ".": {},
+                "v:\"metacontroller.io/compositecontroller-hpcr-controller\"": {}
+              }
+            }
+          },
+          "manager": "metacontroller",
+          "operation": "Update",
+          "time": "2022-11-15T08:53:50Z"
+        },
+        {
+          "apiVersion": "hpse.ibm.com/v1",
+          "fieldsType": "FieldsV1",
+          "fieldsV1": {
+            "f:metadata": {
+              "f:annotations": {
+                ".": {},
+                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+              }
+            },
+            "f:spec": {
+              ".": {},
+              "f:contract": {},
+              "f:selector": {
+                ".": {},
+                "f:matchLabels": {
+                  ".": {},
+                  "f:hpcr": {}
+                }
+              }
+            }
+          },
+          "manager": "kubectl-client-side-apply",
+          "operation": "Update",
+          "time": "2022-12-10T20:58:20Z"
+        }
+      ],
+      "name": "carsten-metadata",
+      "namespace": "default",
+      "resourceVersion": "169975",
+      "uid": "1b1a0ebd-b8e7-4077-b208-95a814ded9f4"
+    },
+    "spec": {
+      "contract": "this is the contract4",
+      "selector": {
+        "matchLabels": {
+          "hpcr": "test"
+        }
+      }
+    }
+  },
+  "children": {},
+  "related": {
+    "ConfigMap.v1": {
+      "vpc-env-configmap": {
+        "apiVersion": "v1",
+        "data": {
+          "IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT": "https://accountmanagement.stage1.ng.bluemix.net",
+          "IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT": "https://us-south.certificate-manager.test.cloud.ibm.com",
+          "IBMCLOUD_CIS_API_ENDPOINT": "https://api.cis.test.cloud.ibm.com",
+          "IBMCLOUD_COS_CONFIG_ENDPOINT": "https://config.cloud-object-storage.test.cloud.ibm.com/v1",
+          "IBMCLOUD_COS_ENDPOINT": "https://s3.us-west.cloud-object-storage.test.appdomain.cloud",
+          "IBMCLOUD_CS_API_ENDPOINT": "https://containers.test.cloud.ibm.com/global",
+          "IBMCLOUD_DL_API_ENDPOINT": "https://directlink.test.cloud.ibm.com/v1",
+          "IBMCLOUD_GT_API_ENDPOINT": "https://tags.global-search-tagging.test.cloud.ibm.com",
+          "IBMCLOUD_HPCS_API_ENDPOINT": "https://zcryptobroker.stage1.mybluemix.net/crypto_v2/",
+          "IBMCLOUD_IAMPAP_API_ENDPOINT": "https://iam.test.cloud.ibm.com",
+          "IBMCLOUD_IAM_API_ENDPOINT": "https://iam.test.cloud.ibm.com",
+          "IBMCLOUD_ICD_API_ENDPOINT": "https://api.us-south.databases.test.cloud.ibm.com",
+          "IBMCLOUD_IS_API_ENDPOINT": "https://us-south-stage01.iaasdev.cloud.ibm.com",
+          "IBMCLOUD_IS_NG_API_ENDPOINT": "https://us-south-stage01.iaasdev.cloud.ibm.com/v1",
+          "IBMCLOUD_KP_API_ENDPOINT": "https://qa.us-south.kms.test.cloud.ibm.com",
+          "IBMCLOUD_MCCP_API_ENDPOINT": "https://mccp.us-south.cf.test.cloud.ibm.com",
+          "IBMCLOUD_NAMESPACE_API_ENDPOINT": "https://us-south.functions.cloud.ibm.com/api/v1",
+          "IBMCLOUD_PRIVATE_DNS_API_ENDPOINT": "https://api.dns-svcs.cloud.ibm.com/v1",
+          "IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT": "https://globalcatalog.test.cloud.ibm.com",
+          "IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT": "https://resource-controller.test.cloud.ibm.com",
+          "IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT": "https://resource-controller.test.cloud.ibm.com",
+          "IBMCLOUD_SCHEMATICS_API_ENDPOINT": "https://schematics.test.cloud.ibm.com",
+          "IBMCLOUD_TG_API_ENDPOINT": "https://transit.test.cloud.ibm.com/v1",
+          "IBMCLOUD_UAA_ENDPOINT": "https://login.stage1.ng.bluemix.net/UAALoginServerWAR",
+          "IBMCLOUD_USER_MANAGEMENT_ENDPOINT": "https://user-management.test.cloud.ibm.com"
+        },
+        "kind": "ConfigMap",
+        "metadata": {
+          "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT\":\"https://accountmanagement.stage1.ng.bluemix.net\",\"IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT\":\"https://us-south.certificate-manager.test.cloud.ibm.com\",\"IBMCLOUD_CIS_API_ENDPOINT\":\"https://api.cis.test.cloud.ibm.com\",\"IBMCLOUD_COS_CONFIG_ENDPOINT\":\"https://config.cloud-object-storage.test.cloud.ibm.com/v1\",\"IBMCLOUD_COS_ENDPOINT\":\"https://s3.us-west.cloud-object-storage.test.appdomain.cloud\",\"IBMCLOUD_CS_API_ENDPOINT\":\"https://containers.test.cloud.ibm.com/global\",\"IBMCLOUD_DL_API_ENDPOINT\":\"https://directlink.test.cloud.ibm.com/v1\",\"IBMCLOUD_GT_API_ENDPOINT\":\"https://tags.global-search-tagging.test.cloud.ibm.com\",\"IBMCLOUD_HPCS_API_ENDPOINT\":\"https://zcryptobroker.stage1.mybluemix.net/crypto_v2/\",\"IBMCLOUD_IAMPAP_API_ENDPOINT\":\"https://iam.test.cloud.ibm.com\",\"IBMCLOUD_IAM_API_ENDPOINT\":\"https://iam.test.cloud.ibm.com\",\"IBMCLOUD_ICD_API_ENDPOINT\":\"https://api.us-south.databases.test.cloud.ibm.com\",\"IBMCLOUD_IS_API_ENDPOINT\":\"https://us-south-stage01.iaasdev.cloud.ibm.com\",\"IBMCLOUD_IS_NG_API_ENDPOINT\":\"https://us-south-stage01.iaasdev.cloud.ibm.com/v1\",\"IBMCLOUD_KP_API_ENDPOINT\":\"https://qa.us-south.kms.test.cloud.ibm.com\",\"IBMCLOUD_MCCP_API_ENDPOINT\":\"https://mccp.us-south.cf.test.cloud.ibm.com\",\"IBMCLOUD_NAMESPACE_API_ENDPOINT\":\"https://us-south.functions.cloud.ibm.com/api/v1\",\"IBMCLOUD_PRIVATE_DNS_API_ENDPOINT\":\"https://api.dns-svcs.cloud.ibm.com/v1\",\"IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT\":\"https://globalcatalog.test.cloud.ibm.com\",\"IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT\":\"https://resource-controller.test.cloud.ibm.com\",\"IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT\":\"https://resource-controller.test.cloud.ibm.com\",\"IBMCLOUD_SCHEMATICS_API_ENDPOINT\":\"https://schematics.test.cloud.ibm.com\",\"IBMCLOUD_TG_API_ENDPOINT\":\"https://transit.test.cloud.ibm.com/v1\",\"IBMCLOUD_UAA_ENDPOINT\":\"https://login.stage1.ng.bluemix.net/UAALoginServerWAR\",\"IBMCLOUD_USER_MANAGEMENT_ENDPOINT\":\"https://user-management.test.cloud.ibm.com\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"labels\":{\"hpcr\":\"test\"},\"name\":\"vpc-env-configmap\",\"namespace\":\"default\"}}\n"
+          },
+          "creationTimestamp": "2022-11-15T08:32:29Z",
+          "labels": {
+            "hpcr": "test"
+          },
+          "managedFields": [
+            {
+              "apiVersion": "v1",
+              "fieldsType": "FieldsV1",
+              "fieldsV1": {
+                "f:data": {
+                  ".": {},
+                  "f:IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT": {},
+                  "f:IBMCLOUD_CERTIFICATE_MANAGER_API_ENDPOINT": {},
+                  "f:IBMCLOUD_CIS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_COS_CONFIG_ENDPOINT": {},
+                  "f:IBMCLOUD_COS_ENDPOINT": {},
+                  "f:IBMCLOUD_CS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_DL_API_ENDPOINT": {},
+                  "f:IBMCLOUD_GT_API_ENDPOINT": {},
+                  "f:IBMCLOUD_HPCS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_IAMPAP_API_ENDPOINT": {},
+                  "f:IBMCLOUD_IAM_API_ENDPOINT": {},
+                  "f:IBMCLOUD_ICD_API_ENDPOINT": {},
+                  "f:IBMCLOUD_IS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_IS_NG_API_ENDPOINT": {},
+                  "f:IBMCLOUD_KP_API_ENDPOINT": {},
+                  "f:IBMCLOUD_MCCP_API_ENDPOINT": {},
+                  "f:IBMCLOUD_NAMESPACE_API_ENDPOINT": {},
+                  "f:IBMCLOUD_PRIVATE_DNS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT": {},
+                  "f:IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT": {},
+                  "f:IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT": {},
+                  "f:IBMCLOUD_SCHEMATICS_API_ENDPOINT": {},
+                  "f:IBMCLOUD_TG_API_ENDPOINT": {},
+                  "f:IBMCLOUD_UAA_ENDPOINT": {},
+                  "f:IBMCLOUD_USER_MANAGEMENT_ENDPOINT": {}
+                },
+                "f:metadata": {
+                  "f:annotations": {
+                    ".": {},
+                    "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                  },
+                  "f:labels": {
+                    ".": {},
+                    "f:hpcr": {}
+                  }
+                }
+              },
+              "manager": "kubectl-client-side-apply",
+              "operation": "Update",
+              "time": "2022-12-10T13:09:03Z"
+            }
+          ],
+          "name": "vpc-env-configmap",
+          "namespace": "default",
+          "resourceVersion": "150050",
+          "uid": "db15dd28-de68-4508-ae6a-384dc21fd9c5"
+        }
+      }
+    },
+    "Namespace.v1": {}
+  },
+  "finalizing": false
+}

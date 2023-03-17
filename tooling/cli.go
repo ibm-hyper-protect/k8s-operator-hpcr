@@ -19,10 +19,23 @@ import (
 	"os"
 
 	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	c "github.com/urfave/cli/v2"
 )
 
+// CreateApp creates the application that starts the operator
+func CreateApp() *c.App {
+	return &c.App{
+		Name:  "hpse-k8s-tools",
+		Usage: "Some tooling",
+		Commands: []*c.Command{
+			cli.CreateSSHConfigCommand(),
+			cli.CreateOnPremCommand(),
+		},
+	}
+}
+
 func main() {
-	err := cli.CreateApp().Run(os.Args)
+	err := CreateApp().Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}

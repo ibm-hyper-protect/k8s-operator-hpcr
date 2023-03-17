@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package cli
 
-import (
-	"log"
-	"os"
-
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+const (
+	KeyName          = "name"
+	KeyLabel         = "label"
+	KeyImageURL      = "image-url"
+	KeyStoragePool   = "storage-pool"
+	KeyCertPath      = "cert"
+	KeyComposeFolder = "compose"
 )
-
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
-}

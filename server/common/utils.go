@@ -12,18 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package common
 
-import (
-	"log"
-	"os"
+import "encoding/json"
 
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
-)
-
-func main() {
-	err := cli.CreateApp().Run(os.Args)
+func Transcode[T any](value any) (T, error) {
+	var result T
+	data, err := json.Marshal(value)
 	if err != nil {
-		log.Fatal(err)
+		return result, err
 	}
+	err = json.Unmarshal(data, &result)
+	return result, err
 }

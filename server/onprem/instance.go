@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package main
+package onprem
 
 import (
-	"log"
-	"os"
-
-	"github.com/ibm-hyper-protect/hpcr-controller/cli"
+	"github.com/ibm-hyper-protect/hpcr-controller/env"
+	"github.com/ibm-hyper-protect/hpcr-controller/onprem"
 )
 
-func main() {
-	err := cli.CreateApp().Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+// onpremInstanceOptionsFromConfigMap decodes the information required to create a VSI
+// from the k8s resource
+func onpremInstanceOptionsFromConfigMap(data *OnPremConfigResource, envMap env.Environment) (*onprem.InstanceOptions, error) {
+	spec := data.Parent.Spec
+	opt := &onprem.InstanceOptions{
+		Name:        string(data.Parent.UID),
+		UserData:    spec.Contract,
+		ImageURL:    spec.ImageURL,
+		StoragePool: spec.StoragePool,
 	}
+	return opt, nil
 }

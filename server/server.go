@@ -1,0 +1,43 @@
+// Copyright 2023 IBM Corp.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//	http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.package datasource
+
+package server
+
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/ibm-hyper-protect/hpcr-controller/server/onprem"
+	"github.com/ibm-hyper-protect/hpcr-controller/server/vpc"
+)
+
+// CreateServer creates the server that implements the actual controller
+func CreateServer(version, compileTime string) func(port int) error {
+	r := gin.Default()
+	// register the VPC routes
+	r.GET("/vpc/ping", vpc.CreatePingRouteVPC(version, compileTime))
+	r.POST("/vpc/sync", vpc.CreateControllerSyncRouteVPC())
+	r.POST("/vpc/finalize", vpc.CreateControllerFinalizeRouteVPC())
+	r.POST("/vpc/customize", vpc.CreateControllerCustomizeRouteVPC())
+	// register the onprem routes
+	r.GET("/onprem/ping", onprem.CreatePingRouteOnPrem(version, compileTime))
+	r.POST("/onprem/sync", onprem.CreateControllerSyncRouteOnPrem())
+	r.POST("/onprem/finalize", onprem.CreateControllerFinalizeRouteOnPrem())
+	r.POST("/onprem/customize", onprem.CreateControllerCustomizeRouteOnPrem())
+
+	return func(port int) error {
+		return r.Run(fmt.Sprintf(":%d", port))
+	}
+}
