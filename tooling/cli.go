@@ -25,7 +25,7 @@ import (
 // CreateApp creates the application that starts the operator
 func CreateApp() *c.App {
 	return &c.App{
-		Name:  "hpse-k8s-tools",
+		Name:  "hpcr-k8s-tools",
 		Usage: "Some tooling",
 		Commands: []*c.Command{
 			cli.CreateSSHConfigCommand(),

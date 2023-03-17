@@ -1,6 +1,6 @@
 # HPCR Controller
 
-The [hpse-k8s-controller](https://github.com/ibm-hyper-protect/hpcr-controller) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
+The [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) implements a custom k8s resource that starts ah HPCR VSI based on a custom resource definition. 
 
 ## Limitations
 
@@ -398,7 +398,7 @@ docker run --rm -it -p <PORT>:80 docker-eu-public.artifactory.swg-devops.com/sys
   kubectl apply -k https://github.com/metacontroller/metacontroller/manifests/production
   ```
 
-- Setup [Pull Secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials) when using private registries for the [hpse-k8s-controller](https://github.com/ibm-hyper-protect/hpcr-controller) image. 
+- Setup [Pull Secrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials) when using private registries for the [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) image. 
   
   The name of the [Pull Secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#registry-secret-existing-credentials) needs to match the value of the `imagePullSecrets` field in the [webhook.yaml](k8s/webhook.yaml) file. The value of the secrets needs to allow for pull access to the image specified in the `image` field of the [webhook.yaml](k8s/webhook.yaml) file. e.g.
   ```bash
