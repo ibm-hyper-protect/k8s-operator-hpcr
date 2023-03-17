@@ -1,6 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+      "config:base",
+      ":dependencyDashboard"
+  ],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major", "minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "groupName": "go dependencies",
+      "excludePackageNames": ["github.com/IBM/vpc-go-sdk"]
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "matchPackageNames": ["github.com/IBM/vpc-go-sdk"]
+    }
   ]
 }
