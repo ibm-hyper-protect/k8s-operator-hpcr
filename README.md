@@ -13,7 +13,7 @@ The [hpcr-controller](https://github.com/ibm-hyper-protect/hpcr-controller) impl
 The controller defines a [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to deploy a [HPCR VSI](https://cloud.ibm.com/docs/vpc?topic=vpc-about-se) to an LPAR. The controller does the following:
 
 - make the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime) available on the LPAR
-- manage the artifacts require to start the VSI (cloud init disk, boot disk, external disk, logging)
+- manage the artifacts required to start the VSI (cloud init disk, boot disk, external disk, logging)
 - start the VSI on the LPAR
 - monitor the status of the VSI on the LPAR
 - destroy the VSI on the LPAR and clean up the associated resources
@@ -44,7 +44,7 @@ The operator uses the following pieces of configuration.
 
 The SSH configuration consists of the hostname of the libvirt host and the required SSH parameters (key, known hosts, etc) to connect to that host via SSH.
 
-**Important:** make sure to give the config map sensible labels so it can be selected by the custom resource defining the VSI. In the following example we use the label `app:onpremtest` for selection.
+**Important:** make sure to give the config map sensible labels so it can be referenced by the custom resource defining the VSI. In the following example we use the label `app:onpremtest` for selection.
 
 The same config map can be used for multiple VSIs running on the same LPAR.
 
@@ -101,7 +101,7 @@ Where the fields carry the following semantic:
 
 - `contract`: the [contract document](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se) (a string). Note that this operator does **not** deal with encrypting the contract. You might want to use [documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se) or [tooling](https://github.com/ibm-hyper-protect/linuxone-vsi-automation-samples/tree/master/terraform-hpvs/create-contract) to do so.
 - `imageURL`: an HTTP(s) URL serving the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime). The URL should have a filename part and that filename will be used as an identifier of the HPCR image on the LPAR. See a discussion below how to provision such a URL
-- `storagePool`: during the deployment of the VSI the controller manages serveral volumes on the LPAR. This settings identifies the name of the storage pool on that LPAR that host these volumes. The storage pool has to exist and it has to be large enough to hold the volumes.
+- `storagePool`: during the deployment of the VSI the controller manages several volumes on the LPAR. This setting identifies the name of the storage pool on that LPAR that hosts these volumes. The storage pool has to exist and it has to be large enough to hold the volumes.
 - `targetSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the config map that holds the SSH configuration
 
 #### IBM Hyper Protect Container Runtime Image
@@ -114,7 +114,7 @@ The mechanism to provision the image is out of the scope of this controller desi
 - it could be a pod running in the cluster
 - it could be a full fledged file server that not only allows to download the image but that would also allow to upload new images
 
-One very simple way to provision the image is by compiling a docker image that packages the image and deploy that as a pod in the cluster, i.e. like so:
+One very simple way to provision the image is by compiling a docker image that packages the image, push to a known container registry and deploy that as a pod or other workload resource in the cluster, e.g.
 
 - The docker file packages the qcow2 image (and for completeness the encryption key) and exposes it via HTTP.
 
@@ -183,7 +183,7 @@ One very simple way to provision the image is by compiling a docker image that p
 
 ### Debugging
 
-After deploying a custom resource of type `HyperProtectContainerRuntimeOnPrem` the controller will try to create the described VSI instance and will monitor it. The status of this process is captured in the `status` field of the resource. This field looks like so:
+After deploying a custom resource of type `HyperProtectContainerRuntimeOnPrem` the controller will try to create the described VSI instance and will synchronise it state. The state of this process is captured in the `status` field of the `HyperProtectContainerRuntimeOnPrem` resource as shown:
 
 ```yaml
 status:
