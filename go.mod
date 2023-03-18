@@ -19,8 +19,8 @@ require (
 	github.com/stretchr/testify v1.8.2
 	github.com/urfave/cli/v2 v2.25.0
 	golang.org/x/crypto v0.7.0
-	k8s.io/api v0.26.2
-	k8s.io/apimachinery v0.26.2
+	k8s.io/api v0.26.3
+	k8s.io/apimachinery v0.26.3
 	libvirt.org/go/libvirtxml v1.9001.0
 )
 
