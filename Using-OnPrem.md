@@ -181,8 +181,22 @@ Data disks represent persistent volumes. They are created via the custom resourc
 The following example defines a data disk:
 
 ```yaml
-
+---
+kind: HyperProtectContainerRuntimeOnPremDataDisk
+apiVersion: hpse.ibm.com/v1
+metadata:
+  name: sampledisk
+  labels:
+    app: hpcr
+spec:
+  size: 107374182400
+  storagePool: images
+  targetSelector:
+    matchLabels:
+      config: onpremsample
 ```
+
+Notice how the selector `config: onpremsample` selects the SSH configuration
 
 ## Debugging
 
