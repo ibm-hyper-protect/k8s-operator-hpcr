@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package vpc
+package datadisk
 
 import (
 	"encoding/json"
@@ -21,8 +21,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
-	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
+	v1 "k8s.io/api/core/v1"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -34,51 +35,58 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 	}
 }
 
-func syncVPC(req map[string]any) common.Action {
+// syncDataDisk is invoked to synchronize the state of our resource
+func syncDataDisk(req map[string]any) common.Action {
+	// just a poor man's solution for now
+	if !lock.TryLock() {
+		return common.CreateStatusAction(common.Waiting)
+	}
+	defer lock.Unlock()
+	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMaps(req)
 
-	vpcSvc, err := vpc.CreateVpcServiceFromEnv(env)
+	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	taggingSvc, err := vpc.CreateTaggingServiceFromEnv(env)
+	cfg, err := common.Transcode[*DataDiskConfigResource](req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	cfg, err := common.Transcode[*InstanceConfigResource](req)
+	opt, err := dataDiskOptionsFromConfigMap(cfg, env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	opt, err := InstanceOptionsFromConfigMap(vpcSvc, cfg, env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	return CreateSyncAction(vpcSvc, taggingSvc, opt)
+	return CreateSyncAction(client, opt)
 }
 
-func finalizeVPC(req map[string]any) common.Action {
+func finalizeDataDisk(req map[string]any) common.Action {
+	if !lock.TryLock() {
+		return common.CreateStatusAction(common.Waiting)
+	}
+	defer lock.Unlock()
+
 	env := common.EnvFromConfigMaps(req)
 
-	service, err := vpc.CreateVpcServiceFromEnv(env)
+	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	cfg, err := common.Transcode[*InstanceConfigResource](req)
+	cfg, err := common.Transcode[*DataDiskConfigResource](req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	opt, err := InstanceOptionsFromConfigMap(service, cfg, env)
+	opt, err := dataDiskOptionsFromConfigMap(cfg, env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	return CreateFinalizeAction(service, opt)
+	return CreateFinalizeAction(client, opt)
 }
 
 func CreateControllerSyncRoute() gin.HandlerFunc {
@@ -93,6 +101,7 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 			})
 			return
 		}
+		// decode the input
 		var req map[string]any
 		err = json.Unmarshal(jsonData, &req)
 		if err != nil {
@@ -102,13 +111,17 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 			})
 			return
 		}
+		// log the request
+		// log.Printf("JSON Input [%s]", string(jsonData))
 		// constuct the action
-		action := syncVPC(req)
+		action := syncDataDisk(req)
 		// execute and handle
 		state, err := action()
 		if err != nil {
-			// Handle error
-			c.JSON(http.StatusBadRequest, common.ResourceStatusToResponse(state))
+			log.Printf("Error [%v]", err)
+			// switch into error mode
+			c.JSON(http.StatusOK, common.ResourceStatusToResponse(state))
+			// bail out
 			return
 		}
 		// done
@@ -120,7 +133,6 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		// done
 		c.JSON(http.StatusOK, resp)
 	}
-
 }
 
 func CreateControllerFinalizeRoute() gin.HandlerFunc {
@@ -145,12 +157,16 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 			return
 		}
 		// constuct the action
-		action := finalizeVPC(req)
+		action := finalizeDataDisk(req)
 		// execute and handle
 		state, err := action()
 		if err != nil {
-			// Handle error
-			c.JSON(http.StatusOK, common.ResourceStatusToResponse(state))
+			log.Printf("Error [%v]", err)
+			// Handle error TODO really handle error
+			c.JSON(http.StatusOK, gin.H{
+				"finalized": true,
+			})
+			// bail out
 			return
 		}
 		// done finalizing
@@ -161,40 +177,64 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 		if !finalized {
 			resp["resyncAfterSeconds"] = 10
 		}
+		// final response
 		c.JSON(http.StatusOK, resp)
+		log.Printf("Finalized: [%t]", finalized)
 	}
 }
 
+// CreateControllerCustomizeRoute is invoked to
 func CreateControllerCustomizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		// parse body
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			// Handle error
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
-		} else {
-			log.Printf("CUSTOMIZE body: %s", string(jsonData))
-
-			resp := common.CustomizeHookResponse{
-				RelatedResourceRules: []*common.RelatedResourceRule{
-					{
-						ResourceRule: common.ResourceRule{
-							APIVersion: "v1",
-							Resource:   "configmaps",
-						},
-						// TODO fix
-						Namespace: "default",
-						Names:     []string{"vpc-env-configmap", "vpc-apikey-configmap", "vpc-deployment-configmap"},
-					}},
-			}
-
-			out, _ := json.Marshal(resp)
-			log.Printf("CUSTOMIZE response: %s", string(out))
-
-			// done
-			c.JSON(http.StatusOK, resp)
+			return
 		}
+		// decode the input
+		var req map[string]any
+		err = json.Unmarshal(jsonData, &req)
+		if err != nil {
+			// Handle error
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		// transcode to the expected format
+		cfg, err := common.Transcode[*DataDiskConfigResource](req)
+		if err != nil {
+			// Handle error
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		// print namespace
+		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
+		// produce a response
+		resp := common.CustomizeHookResponse{
+			RelatedResourceRules: []*common.RelatedResourceRule{
+				{
+					ResourceRule: common.ResourceRule{
+						APIVersion: "v1",
+						Resource:   string(v1.ResourceConfigMaps),
+					},
+					// select by label
+					LabelSelector: cfg.Parent.Spec.TargetSelector,
+				}},
+		}
+		// dump it
+		data, err := json.Marshal(resp)
+		if err != nil {
+			log.Printf("customize response [%s]", string(data))
+		}
+
+		// done
+		c.JSON(http.StatusOK, resp)
 	}
 }

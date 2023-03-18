@@ -174,6 +174,16 @@ The CIData disk is an ISO disk containing the [contract](https://cloud.ibm.com/d
 
 The operator configures the VSI to log the console output to a file and it reserves storage space for that file in form of a logging volume. The log file will be used to track the startup progress (and potential errors) of the VSI.
 
+#### DataDisk
+
+Data disks represent persistent volumes. They are created via the custom resource `HyperProtectContainerRuntimeOnPremDataDisk` and linked to the VSI via labels.
+
+The following example defines a data disk:
+
+```yaml
+
+```
+
 ## Debugging
 
 After deploying a custom resource of type `HyperProtectContainerRuntimeOnPrem` the controller will try to create the described VSI instance and will synchronise it state. The state of this process is captured in the `status` field of the `HyperProtectContainerRuntimeOnPrem` resource as shown:

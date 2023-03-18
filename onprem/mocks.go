@@ -37,6 +37,8 @@ import (
 const (
 	// KeyOnPremConfig is the key into the environment to read the name of the ssh config
 	KeyOnPremConfig = "ONPREM_CONFIG"
+	// KeyStoragePool is the key into the environment to read the name of the target storage pool
+	KeyStoragePool = "STORAGE_POOL"
 )
 
 // GetSSHConfigPath returns the path to the SSH config file

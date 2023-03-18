@@ -36,6 +36,15 @@ type OnPremCustomResourceSpec struct {
 	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
 }
 
+type DataDiskCustomResourceSpec struct {
+	// size of the data disk, defaults to 100GiB
+	Size uint64 `json:"size"`
+	// name of the storage pool, must exist and must be large enough
+	StoragePool string `json:"storagePool"`
+	// specification of the associated config maps
+	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
+}
+
 type OnPremCustomResource struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object's metadata.
@@ -47,6 +56,19 @@ type OnPremCustomResource struct {
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	// +optional
 	Spec OnPremCustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+}
+
+type DataDiskCustomResource struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Specification of the desired behavior of the pod.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	Spec DataDiskCustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 }
 
 type OnPremCustomResourceOptions struct {
