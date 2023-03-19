@@ -43,6 +43,15 @@ type InstanceOptions struct {
 	StoragePool string
 }
 
+type DataDiskOptions struct {
+	// name of the data disk
+	Name string
+	// name of the libvirt storage pool, the pool must exist
+	StoragePool string
+	// size of the disk
+	Size uint64
+}
+
 func GetCIDataVolumeName(name string) string {
 	return fmt.Sprintf("cidata-%s.iso", name)
 }
@@ -119,11 +128,11 @@ func IsInstanceValid(client *LivirtClient) func(opt *InstanceOptions) (*libvirtx
 		newHash := CreateInstanceHash(opt)
 		if metadata.Hash == newHash {
 			// nothing to do
-			log.Printf("Domain [%s] is already up to date, hashes match ...", name)
+			log.Printf("Domain [%s] is already up to date, hashes match.", name)
 			return existingXML, true
 		}
 		// needs update
-		log.Printf("Domain [%s] needs an update, hashes differ ...", name)
+		log.Printf("Domain [%s] needs an update, hashes differ!", name)
 		return existingXML, false
 	}
 }

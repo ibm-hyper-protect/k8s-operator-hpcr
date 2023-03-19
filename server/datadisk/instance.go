@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package onprem
+package datadisk
 
 import (
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 )
+
+func boxSize(size uint64) uint64 {
+	if size <= 0 {
+		return onprem.DefaultDataDiskSize
+	}
+	return size
+}
 
 func boxStoragePool(pool string) string {
 	if len(pool) <= 0 {
@@ -26,15 +33,14 @@ func boxStoragePool(pool string) string {
 	return pool
 }
 
-// onpremInstanceOptionsFromConfigMap decodes the information required to create a VSI
+// dataDiskOptionsFromConfigMap decodes the information required to create a data disk
 // from the k8s resource
-func onpremInstanceOptionsFromConfigMap(data *OnPremConfigResource, envMap env.Environment) (*onprem.InstanceOptions, error) {
+func dataDiskOptionsFromConfigMap(data *DataDiskConfigResource, envMap env.Environment) (*onprem.DataDiskOptions, error) {
 	spec := data.Parent.Spec
-	opt := &onprem.InstanceOptions{
+	opt := &onprem.DataDiskOptions{
 		Name:        string(data.Parent.UID),
-		UserData:    spec.Contract,
-		ImageURL:    spec.ImageURL,
 		StoragePool: boxStoragePool(spec.StoragePool),
+		Size:        boxSize(spec.Size),
 	}
 	return opt, nil
 }

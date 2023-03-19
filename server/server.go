@@ -19,6 +19,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/vpc"
 )
@@ -27,15 +28,20 @@ import (
 func CreateServer(version, compileTime string) func(port int) error {
 	r := gin.Default()
 	// register the VPC routes
-	r.GET("/vpc/ping", vpc.CreatePingRouteVPC(version, compileTime))
-	r.POST("/vpc/sync", vpc.CreateControllerSyncRouteVPC())
-	r.POST("/vpc/finalize", vpc.CreateControllerFinalizeRouteVPC())
-	r.POST("/vpc/customize", vpc.CreateControllerCustomizeRouteVPC())
+	r.GET("/vpc/ping", vpc.CreatePingRoute(version, compileTime))
+	r.POST("/vpc/sync", vpc.CreateControllerSyncRoute())
+	r.POST("/vpc/finalize", vpc.CreateControllerFinalizeRoute())
+	r.POST("/vpc/customize", vpc.CreateControllerCustomizeRoute())
 	// register the onprem routes
-	r.GET("/onprem/ping", onprem.CreatePingRouteOnPrem(version, compileTime))
-	r.POST("/onprem/sync", onprem.CreateControllerSyncRouteOnPrem())
-	r.POST("/onprem/finalize", onprem.CreateControllerFinalizeRouteOnPrem())
-	r.POST("/onprem/customize", onprem.CreateControllerCustomizeRouteOnPrem())
+	r.GET("/onprem/ping", onprem.CreatePingRoute(version, compileTime))
+	r.POST("/onprem/sync", onprem.CreateControllerSyncRoute())
+	r.POST("/onprem/finalize", onprem.CreateControllerFinalizeRoute())
+	r.POST("/onprem/customize", onprem.CreateControllerCustomizeRoute())
+	// register the data disk routes
+	r.GET("/datadisk/ping", datadisk.CreatePingRoute(version, compileTime))
+	r.POST("/datadisk/sync", datadisk.CreateControllerSyncRoute())
+	r.POST("/datadisk/finalize", datadisk.CreateControllerFinalizeRoute())
+	r.POST("/datadisk/customize", datadisk.CreateControllerCustomizeRoute())
 
 	return func(port int) error {
 		return r.Run(fmt.Sprintf(":%d", port))

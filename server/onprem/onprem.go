@@ -26,7 +26,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-func CreatePingRouteOnPrem(version, compileTime string) gin.HandlerFunc {
+func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"version": version,
@@ -89,7 +89,7 @@ func finalizeOnPrem(req map[string]any) common.Action {
 	return CreateFinalizeAction(client, opt)
 }
 
-func CreateControllerSyncRouteOnPrem() gin.HandlerFunc {
+func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		log.Printf("synchronizing ...")
@@ -135,7 +135,7 @@ func CreateControllerSyncRouteOnPrem() gin.HandlerFunc {
 	}
 }
 
-func CreateControllerFinalizeRouteOnPrem() gin.HandlerFunc {
+func CreateControllerFinalizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		log.Printf("finalizing ...")
 
@@ -183,8 +183,8 @@ func CreateControllerFinalizeRouteOnPrem() gin.HandlerFunc {
 	}
 }
 
-// CreateControllerCustomizeRouteOnPrem is invoked to
-func CreateControllerCustomizeRouteOnPrem() gin.HandlerFunc {
+// CreateControllerCustomizeRoute is invoked to
+func CreateControllerCustomizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// parse body
 		jsonData, err := io.ReadAll(c.Request.Body)

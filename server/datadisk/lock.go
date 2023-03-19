@@ -12,17 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package onprem
+package datadisk
 
-const (
-	DefaultStoragePool  = "default"
-	DefaultDataDiskSize = uint64(100 * 1024 * 1024 * 1024)
+import (
+	"sync"
+)
 
-	userDataFilename   = "user-data"
-	metaDataFilename   = "meta-data"
-	vendorDataFilename = "vendor-data"
-	ciDataVolumeName   = "cidata"
-
-	APIVersion = "hpse.ibm.com/v1"
-	Kind       = "HyperProtectContainerRuntimeOnPrem"
+var (
+	lock sync.Mutex
 )

@@ -1,0 +1,13 @@
+---
+kind: HyperProtectContainerRuntimeOnPremDataDisk
+apiVersion: hpse.ibm.com/v1
+metadata:
+  name: sampledisk
+  labels:
+    app: hpcr
+spec:
+  size: 107374182400
+  storagePool: images
+  targetSelector:
+    matchLabels:
+      config: onpremsample
