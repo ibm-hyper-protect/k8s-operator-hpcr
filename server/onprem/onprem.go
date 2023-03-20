@@ -142,6 +142,12 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		if state.Status != common.Ready {
 			resp["resyncAfterSeconds"] = 10
 		}
+
+		// data, err := json.Marshal(resp)
+		// if err == nil {
+		// 	log.Printf("Sync Response: [%s]", string(data))
+		// }
+
 		// done
 		c.JSON(http.StatusOK, resp)
 	}

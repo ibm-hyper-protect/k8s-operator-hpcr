@@ -72,12 +72,14 @@ spec:
             status:
               type: object
               properties:
-                status: 
+                status:
                   type: integer
-                description: 
+                description:
                   type: string
                 metadata:
                   type: object
+                  additionalProperties: true
+              additionalProperties: true
           required:
             - spec
 ---
@@ -174,12 +176,14 @@ spec:
             status:
               type: object
               properties:
-                status: 
+                status:
                   type: integer
-                description: 
+                description:
                   type: string
                 metadata:
                   type: object
+                  additionalProperties: true
+              additionalProperties: true
           required:
             - spec
 ---
@@ -254,11 +258,13 @@ spec:
             status:
               type: object
               properties:
-                status: 
+                status:
                   type: integer
-                description: 
+                description:
                   type: string
                 metadata:
                   type: object
+                  additionalProperties: true
+              additionalProperties: true
           required:
             - spec
