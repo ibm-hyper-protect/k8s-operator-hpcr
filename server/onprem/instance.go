@@ -19,13 +19,6 @@ import (
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 )
 
-func boxStoragePool(pool string) string {
-	if len(pool) <= 0 {
-		return onprem.DefaultStoragePool
-	}
-	return pool
-}
-
 // onpremInstanceOptionsFromConfigMap decodes the information required to create a VSI
 // from the k8s resource
 func onpremInstanceOptionsFromConfigMap(data *OnPremConfigResource, envMap env.Environment) (*onprem.InstanceOptions, error) {
@@ -34,7 +27,7 @@ func onpremInstanceOptionsFromConfigMap(data *OnPremConfigResource, envMap env.E
 		Name:        string(data.Parent.UID),
 		UserData:    spec.Contract,
 		ImageURL:    spec.ImageURL,
-		StoragePool: boxStoragePool(spec.StoragePool),
+		StoragePool: onprem.BoxStoragePool(spec.StoragePool),
 	}
 	return opt, nil
 }

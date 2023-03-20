@@ -45,7 +45,7 @@ func TestOptionsService(t *testing.T) {
 	cfg, err := common.Transcode[InstanceConfigResource](data)
 	require.NoError(t, err)
 
-	assert.Equal(t, "43861249-71b8-490c-ac2a-e7d0028f99e1", cfg.Parent.Metadata.UID)
+	assert.Equal(t, "43861249-71b8-490c-ac2a-e7d0028f99e1", cfg.Parent.UID)
 }
 
 func TestInstanceOptionsFromConfigMap(t *testing.T) {

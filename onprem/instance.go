@@ -32,6 +32,13 @@ type InstanceMetadata struct {
 	Hash    string   `xml:"hash"`
 }
 
+type AttachedDataDisk struct {
+	// name of the attached data disk
+	Name string
+	// name of the libvirt storage pool, the pool must exist
+	StoragePool string
+}
+
 type InstanceOptions struct {
 	// name of the instance, will also be the hostname
 	Name string
@@ -41,6 +48,8 @@ type InstanceOptions struct {
 	ImageURL string
 	// name of the libvirt storage pool, the pool must exist
 	StoragePool string
+	// attached data disks
+	DataDisks []*AttachedDataDisk
 }
 
 type DataDiskOptions struct {
@@ -71,6 +80,11 @@ func CreateInstanceHash(opt *InstanceOptions) string {
 	h.Write([]byte(opt.ImageURL))
 	h.Write([]byte(opt.StoragePool))
 	h.Write([]byte(opt.UserData))
+	// add the data disks to the mix
+	for _, disk := range opt.DataDisks {
+		h.Write([]byte(disk.Name))
+		h.Write([]byte(disk.StoragePool))
+	}
 	bs := h.Sum(nil)
 	return hex.EncodeToString(bs)
 }
@@ -151,6 +165,7 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 
 	createLoggingVolume := CreateLoggingVolume(client)
 	isInstanceValid := IsInstanceValid(client)
+	createDataDiskXML := CreateDataDiskXML(client)
 
 	return func(opt *InstanceOptions) (*libvirtxml.Domain, error) {
 		// prepare some names
@@ -223,6 +238,14 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 		domainXML.Name = name
 		domainXML.Metadata.XML = metadataXML
 		domainXML.Devices.Disks = append(domainXML.Devices.Disks, *bootXML, *cidataXML) // order of disks is important
+		// add data disks
+		for _, dataDisk := range opt.DataDisks {
+			diskXML, err := createDataDiskXML(dataDisk.StoragePool, dataDisk.Name)
+			if err != nil {
+				return nil, err
+			}
+			domainXML.Devices.Disks = append(domainXML.Devices.Disks, *diskXML)
+		}
 		// write console log to a file
 		domainXML.Devices.Consoles[0].Log = &libvirtxml.DomainChardevLog{
 			File:   logVolume.Key,

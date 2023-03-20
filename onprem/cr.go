@@ -34,6 +34,8 @@ type OnPremCustomResourceSpec struct {
 	StoragePool string `json:"storagePool"`
 	// specification of the associated config maps
 	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
+	// specification of the associated data disks
+	DiskSelector *metav1.LabelSelector `json:"diskSelector"`
 }
 
 type DataDiskCustomResourceSpec struct {
@@ -122,7 +124,7 @@ func CreateCustomResource(opt *OnPremCustomResourceOptions) E.Either[error, *OnP
 		E.Map[error](func(contract string) *OnPremCustomResource {
 			return &OnPremCustomResource{
 				TypeMeta: metav1.TypeMeta{
-					Kind:       Kind,
+					Kind:       KindVSI,
 					APIVersion: APIVersion,
 				},
 				ObjectMeta: metav1.ObjectMeta{
