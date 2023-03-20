@@ -76,6 +76,8 @@ spec:
                   type: integer
                 description: 
                   type: string
+                metadata:
+                  type: object
           required:
             - spec
 ---
@@ -176,6 +178,8 @@ spec:
                   type: integer
                 description: 
                   type: string
+                metadata:
+                  type: object
           required:
             - spec
 ---
@@ -254,5 +258,7 @@ spec:
                   type: integer
                 description: 
                   type: string
+                metadata:
+                  type: object
           required:
             - spec

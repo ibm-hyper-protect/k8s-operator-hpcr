@@ -20,6 +20,7 @@ import (
 
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"libvirt.org/go/libvirtxml"
@@ -63,11 +64,19 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 		}
 		// check if we are still booting
 		if onprem.VSIStartedSuccessfully(success) {
+			// some logs
+			logs := strings.Join(lines, "\n")
+			// assemble some metadata
+			metadata := C.RawMap{
+				"logs":     logs,
+				"instance": inst,
+			}
 			// juhuuu
 			return &common.ResourceStatus{
 				Status:      common.Ready,
-				Description: strings.Join(lines, "\n"),
+				Description: logs,
 				Error:       nil,
+				Metadata:    metadata,
 			}, nil
 		}
 		// log this

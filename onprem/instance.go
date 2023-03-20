@@ -239,8 +239,8 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 		domainXML.Metadata.XML = metadataXML
 		domainXML.Devices.Disks = append(domainXML.Devices.Disks, *bootXML, *cidataXML) // order of disks is important
 		// add data disks
-		for _, dataDisk := range opt.DataDisks {
-			diskXML, err := createDataDiskXML(dataDisk.StoragePool, dataDisk.Name)
+		for idx, dataDisk := range opt.DataDisks {
+			diskXML, err := createDataDiskXML(dataDisk.StoragePool, dataDisk.Name, idx)
 			if err != nil {
 				return nil, err
 			}

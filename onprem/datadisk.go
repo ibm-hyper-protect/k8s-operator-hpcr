@@ -90,10 +90,10 @@ func CreateDataDisk(client *LivirtClient) func(storagePool, name string, size ui
 }
 
 // CreateDataDiskXML creates the XML for the data disk
-func CreateDataDiskXML(client *LivirtClient) func(storagePool, name string) (*libvirtxml.DomainDisk, error) {
+func CreateDataDiskXML(client *LivirtClient) func(storagePool, name string, index int) (*libvirtxml.DomainDisk, error) {
 	conn := client.LibVirt
 
-	return func(storagePool, name string) (*libvirtxml.DomainDisk, error) {
+	return func(storagePool, name string, index int) (*libvirtxml.DomainDisk, error) {
 		// check if we already know the disk
 		pool, err := conn.StoragePoolLookupByName(storagePool)
 		if err != nil {
@@ -111,9 +111,15 @@ func CreateDataDiskXML(client *LivirtClient) func(storagePool, name string) (*li
 			return nil, err
 		}
 
+		// define the bus by index
+		dev := fmt.Sprintf("vd%x", index+13) // use offset 13 so it starts with 'd' for `vdd`
+
+		log.Printf("Defining data disk [%s] on path [%s]", dev, path)
+
 		return &libvirtxml.DomainDisk{
 			Device: "disk",
 			Target: &libvirtxml.DomainDiskTarget{
+				Dev: dev,
 				Bus: "virtio",
 			},
 			Driver: &libvirtxml.DomainDiskDriver{
