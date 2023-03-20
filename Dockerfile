@@ -18,7 +18,7 @@ COPY . /src
 
 RUN cd /src && \
     mkdir -p /build && \
-    go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/k8s-operator-hpcr main.go 
+    CGO_ENABLED=0 go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/k8s-operator-hpcr main.go 
     
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal as base_layer
@@ -28,10 +28,6 @@ FROM scratch
 COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
-COPY --from=base_layer /lib64/libc.so.6 /lib64/
-COPY --from=base_layer /lib64/libpthread.so.0 /lib64/
-COPY --from=base_layer /lib64/ld-linux-x86-64.so.2 /lib64/
-COPY --from=base_layer /lib64/libresolv.so.2 /lib64/
 
 COPY --from=build_layer /build/k8s-operator-hpcr /k8s-operator-hpcr
 
