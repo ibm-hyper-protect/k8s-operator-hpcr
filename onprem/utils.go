@@ -122,3 +122,17 @@ func safeClose(closer io.Closer) {
 		log.Printf("Error during close: %v", err)
 	}
 }
+
+func BoxStoragePool(pool string) string {
+	if len(pool) <= 0 {
+		return DefaultStoragePool
+	}
+	return pool
+}
+
+func BoxDataDiskSize(size uint64) uint64 {
+	if size <= 0 {
+		return DefaultDataDiskSize
+	}
+	return size
+}

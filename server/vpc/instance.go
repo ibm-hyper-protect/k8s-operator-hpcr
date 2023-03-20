@@ -21,6 +21,8 @@ import (
 	"github.com/IBM/vpc-go-sdk/vpcv1"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 const (
@@ -42,17 +44,28 @@ type (
 		UserData    string
 	}
 
+	CustomResourceSpec struct {
+		Contract    string  `json:"contract"`
+		SubnetID    *string `json:"subnetID"`
+		ProfileName *string `json:"profileName"`
+		// specification of the associated config maps
+		TargetSelector *metav1.LabelSelector `json:"targetSelector"`
+	}
+
+	CustomResource struct {
+		metav1.TypeMeta `json:",inline"`
+		// Standard object's metadata.
+		// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+		// +optional
+		metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+		// Specification of the desired behavior of the pod.
+		// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+		// +optional
+		Spec CustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+	}
+
 	InstanceConfigResource struct {
-		Parent struct {
-			Metadata struct {
-				UID string `json:"uid"`
-			} `json:"metadata"`
-			Spec struct {
-				Contract    string  `json:"contract"`
-				SubnetID    *string `json:"subnetID"`
-				ProfileName *string `json:"profileName"`
-			} `json:"spec"`
-		} `json:"parent"`
+		Parent CustomResource `json:"parent"`
 	}
 )
 
@@ -74,7 +87,7 @@ func CreateVpcInstanceOptions(opt *InstanceOptions) (*vpcv1.CreateInstanceOption
 	return options, nil
 }
 
-func InstanceNameFromUID(uid string) string {
+func InstanceNameFromUID(uid types.UID) string {
 	return fmt.Sprintf("%s-%s", ServicePrefix, uid)
 }
 
@@ -146,7 +159,7 @@ func InstanceOptionsFromConfigMap(service *vpcv1.VpcV1, data *InstanceConfigReso
 	}
 	// convert
 	opt := InstanceOptions{
-		Name:        InstanceNameFromUID(data.Parent.Metadata.UID),
+		Name:        InstanceNameFromUID(data.Parent.UID),
 		VpcID:       *subnet.VPC.ID,
 		ImageID:     imageID,
 		ProfileName: profile,

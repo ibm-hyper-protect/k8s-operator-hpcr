@@ -45,6 +45,12 @@ func syncOnPrem(req map[string]any) common.Action {
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMaps(req)
 
+	// assemble information about the attached data disks
+	dataDisks, err := onprem.DataDisksFromRelated(req)
+	if err != nil {
+		return common.CreateErrorAction(err)
+	}
+
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
 		return common.CreateErrorAction(err)
@@ -60,6 +66,12 @@ func syncOnPrem(req map[string]any) common.Action {
 		return common.CreateErrorAction(err)
 	}
 
+	log.Printf("DataDisks: %v", dataDisks)
+
+	// attach data disks
+	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
+
+	// make sure to construct the VSI
 	return CreateSyncAction(client, opt)
 }
 
@@ -130,6 +142,12 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		if state.Status != common.Ready {
 			resp["resyncAfterSeconds"] = 10
 		}
+
+		// data, err := json.Marshal(resp)
+		// if err == nil {
+		// 	log.Printf("Sync Response: [%s]", string(data))
+		// }
+
 		// done
 		c.JSON(http.StatusOK, resp)
 	}
@@ -219,14 +237,25 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		// produce a response
 		resp := common.CustomizeHookResponse{
 			RelatedResourceRules: []*common.RelatedResourceRule{
+				// select the config map(s) that describe the environment settings
 				{
 					ResourceRule: common.ResourceRule{
 						APIVersion: "v1",
 						Resource:   string(v1.ResourceConfigMaps),
 					},
-					// select by label
+					// select config maps by label
 					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				}},
+				},
+				// select the attached data disks
+				{
+					ResourceRule: common.ResourceRule{
+						APIVersion: onprem.APIVersion,
+						Resource:   onprem.ResourceNameDataDisks,
+					},
+					// select disks by label
+					LabelSelector: cfg.Parent.Spec.DiskSelector,
+				},
+			},
 		}
 		// dump it
 		data, err := json.Marshal(resp)

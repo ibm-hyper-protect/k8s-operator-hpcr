@@ -16,6 +16,7 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
+	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 )
 
 type Status int
@@ -30,6 +31,7 @@ type ResourceStatus struct {
 	Status      Status
 	Description string
 	Error       error
+	Metadata    C.RawMap
 }
 
 type Action func() (*ResourceStatus, error)
@@ -67,6 +69,7 @@ func ResourceStatusToResponse(state *ResourceStatus) gin.H {
 		"status": gin.H{
 			"status":      state.Status,
 			"description": state.Description,
+			"metadata":    state.Metadata,
 		},
 	}
 }

@@ -23,6 +23,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
+	v1 "k8s.io/api/core/v1"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -174,27 +175,47 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
-		} else {
-			log.Printf("CUSTOMIZE body: %s", string(jsonData))
-
-			resp := common.CustomizeHookResponse{
-				RelatedResourceRules: []*common.RelatedResourceRule{
-					{
-						ResourceRule: common.ResourceRule{
-							APIVersion: "v1",
-							Resource:   "configmaps",
-						},
-						// TODO fix
-						Namespace: "default",
-						Names:     []string{"vpc-env-configmap", "vpc-apikey-configmap", "vpc-deployment-configmap"},
-					}},
-			}
-
-			out, _ := json.Marshal(resp)
-			log.Printf("CUSTOMIZE response: %s", string(out))
-
-			// done
-			c.JSON(http.StatusOK, resp)
+			return
 		}
+		// decode the input
+		var req map[string]any
+		err = json.Unmarshal(jsonData, &req)
+		if err != nil {
+			// Handle error
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		// transcode to the expected format
+		cfg, err := common.Transcode[*InstanceConfigResource](req)
+		if err != nil {
+			// Handle error
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		// print namespace
+		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
+
+		resp := common.CustomizeHookResponse{
+			RelatedResourceRules: []*common.RelatedResourceRule{
+				{
+					ResourceRule: common.ResourceRule{
+						APIVersion: "v1",
+						Resource:   string(v1.ResourceConfigMaps),
+					},
+					// select by label
+					LabelSelector: cfg.Parent.Spec.TargetSelector,
+				}},
+		}
+
+		out, _ := json.Marshal(resp)
+		log.Printf("CUSTOMIZE response: %s", string(out))
+
+		// done
+		c.JSON(http.StatusOK, resp)
 	}
+
 }

@@ -20,6 +20,7 @@ import (
 
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"libvirt.org/go/libvirtxml"
@@ -43,6 +44,8 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 				Error:       err,
 			}, err
 		}
+		// marshal the instance
+		instStrg, err := onprem.XMLMarshall(inst)
 		// parse log into lines
 		lines := F.Pipe1(
 			strings.Split(data, "\n"),
@@ -52,22 +55,40 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 		success, failure := onprem.PartitionLogs(lines)
 		if onprem.VSIFailedToStart(failure) {
 			// print some error details
-			desc := strings.Join(failure, "\n")
-			log.Printf("Domain [%s] failed to start, errors: [%s]", opt.Name, desc)
+			logs := strings.Join(failure, "\n")
+			log.Printf("Domain [%s] failed to start, errors: [%s]", opt.Name, logs)
+			// assemble some metadata
+			metadata := C.RawMap{
+				"logs": logs,
+			}
+			if err == nil {
+				metadata["domainXML"] = instStrg
+			}
 			// VSI is ready but in an error state. It won't start at the next attempt
 			return &common.ResourceStatus{
 				Status:      common.Ready,
-				Description: desc,
+				Description: logs,
 				Error:       nil,
+				Metadata:    metadata,
 			}, nil
 		}
 		// check if we are still booting
 		if onprem.VSIStartedSuccessfully(success) {
+			// some logs
+			logs := strings.Join(lines, "\n")
+			// assemble some metadata
+			metadata := C.RawMap{
+				"logs": logs,
+			}
+			if err == nil {
+				metadata["domainXML"] = instStrg
+			}
 			// juhuuu
 			return &common.ResourceStatus{
 				Status:      common.Ready,
-				Description: strings.Join(lines, "\n"),
+				Description: logs,
 				Error:       nil,
+				Metadata:    metadata,
 			}, nil
 		}
 		// log this

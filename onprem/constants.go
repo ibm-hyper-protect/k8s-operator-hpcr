@@ -23,6 +23,10 @@ const (
 	vendorDataFilename = "vendor-data"
 	ciDataVolumeName   = "cidata"
 
-	APIVersion = "hpse.ibm.com/v1"
-	Kind       = "HyperProtectContainerRuntimeOnPrem"
+	APIVersion   = "hpse.ibm.com/v1"
+	KindVSI      = "HyperProtectContainerRuntimeOnPrem"
+	KindDataDisk = "HyperProtectContainerRuntimeOnPremDataDisk"
+
+	ResourceNameDataDisks = "onprem-datadisks"
+	ResourceNameVSIs      = "onprem-hpcrs"
 )

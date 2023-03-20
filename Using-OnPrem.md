@@ -1,7 +1,7 @@
 
 # Using k8s-operator-hpcr to manage IBM Hyper Protect Virtual Servers on a LPAR
 
-Now that you have installed the Hyper Protect Virtual Servers Kubernetes Operator, create Kubernetes artifacts that will be used to create IBM Hyper Protect Virtual Servers through the libvirt API.  The operator defines a [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to deploy a [Hyper Protect Virtual Server](https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-setting-up-configuring-hyper-protect-virtual) to an LPAR. The controller does the following:
+Now that you have installed the Hyper Protect Virtual Servers Kubernetes Operator, create Kubernetes artifacts that will be used to create [IBM Hyper Protect Virtual Servers](https://cloud.ibm.com/docs/vpc?topic=vpc-about-se) through the libvirt API.  The operator defines a [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) to deploy a [Hyper Protect Virtual Server](https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-setting-up-configuring-hyper-protect-virtual) to an LPAR. The controller does the following:
 
 - make the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime) available on the LPAR
 - manage the artifacts required to start the VSI (cloud init disk, boot disk, external disk, logging)
@@ -126,8 +126,11 @@ One very simple way to provision the image is by compiling a docker image that p
 
 ## 3. Deploying a Hyper Protect Container Runtime KVM guest
 
-
 The `HyperProtectContainerRuntimeOnPrem` custom resource describes the properties of the HPCR KVM guest. Since the guest runs on a remote LPAR, this configuration needs to reference the config map with the related SSH login information. This reference is done via a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
+
+### a. Deploying a VSI without a Data Disk
+
+The following example shows how to deploy a VSI that does not need persistent storage.
 
 Example:
 
@@ -152,7 +155,56 @@ Where the fields carry the following semantic:
 - `storagePool`: during the deployment of the VSI the controller manages several volumes on the LPAR. This setting identifies the name of the storage pool on that LPAR that hosts these volumes. The storage pool has to exist and it has to be large enough to hold the volumes.
 - `targetSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the config map that holds the SSH configuration
 
+### b. Deploying a VSI with a Data Disk
 
+The following example shows how to deploy a VSI that does need persistent storage.
+
+1. Define the data disk. Note that the disk is labeled as `app:hpcr`
+
+    ```yaml
+    ---
+    kind: HyperProtectContainerRuntimeOnPremDataDisk
+    apiVersion: hpse.ibm.com/v1
+    metadata:
+      name: sampledisk
+      labels:
+        app: hpcr
+    spec:
+      size: 107374182400
+      storagePool: images
+      targetSelector:
+        matchLabels:
+          config: onpremsample
+    ```
+
+2. Define the VSI and reference the data disk:
+
+    ```yaml
+    apiVersion: hpse.ibm.com/v1
+    kind: HyperProtectContainerRuntimeOnPrem
+    metadata:
+      name: onpremsample
+    spec:
+      contract: ...
+      imageURL: ...
+      storagePool: ...
+      targetSelector: 
+        matchLabels:
+          ...
+      diskSelector: 
+        matchLabels:
+          app: hpcr
+    ```
+
+    Where the fields carry the following semantic:
+
+    - `contract`: the [contract document](https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-about-contract) (a string). Note that this operator does **not** deal with encrypting the contract. You might want to use [tooling](https://github.com/ibm-hyper-protect/linuxone-vsi-automation-samples/tree/master/terraform-hpvs/create-contract) to do so.
+    - `imageURL`: an HTTP(s) URL serving the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime). The URL should be resolvable from the Kubernetes cluster, have a filename part, and that filename will be used as an identifier of the HPCR image on the LPAR. 
+    - `storagePool`: during the deployment of the VSI the controller manages several volumes on the LPAR. This setting identifies the name of the storage pool on that LPAR that hosts these volumes. The storage pool has to exist and it has to be large enough to hold the volumes.
+    - `targetSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the config map that holds the SSH configuration
+    - `diskSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the data disk descriptor
+
+    **Note:** In this setup we attach the data disk to the VSI but in order to be useable to an OCI container it has to be [mounted via the contract](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_volumes).
 
 ## Footnotes
 
@@ -196,7 +248,9 @@ spec:
       config: onpremsample
 ```
 
-Notice how the selector `config: onpremsample` selects the SSH configuration
+Notice how the selector `config: onpremsample` selects the SSH configuration.
+
+The data disk may be stored on a different storage pool than the boot disk of the VSI.
 
 ## Debugging
 

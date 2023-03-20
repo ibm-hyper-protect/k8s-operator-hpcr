@@ -15,10 +15,18 @@
 package onprem
 
 import (
+	"fmt"
 	"log"
 
 	libvirt "github.com/digitalocean/go-libvirt"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
+)
+
+var (
+	// full identifier of the disk config entry
+	KeyDiskConfig = fmt.Sprintf("%s.%s", KindDataDisk, APIVersion)
 )
 
 // RemoveDataDisk removes the data disk
@@ -82,33 +90,51 @@ func CreateDataDisk(client *LivirtClient) func(storagePool, name string, size ui
 }
 
 // CreateDataDiskXML creates the XML for the data disk
-// func CreateDataDiskXML(client *LivirtClient) func(name string, size uint64) (*libvirtxml.DomainDisk, error) {
-// 	conn := client.LibVirt
+func CreateDataDiskXML(client *LivirtClient) func(storagePool, name string, index int) (*libvirtxml.DomainDisk, error) {
+	conn := client.LibVirt
 
-// 	return func(name string, size uint64) (*libvirtxml.DomainDisk, error) {
+	return func(storagePool, name string, index int) (*libvirtxml.DomainDisk, error) {
+		// check if we already know the disk
+		pool, err := conn.StoragePoolLookupByName(storagePool)
+		if err != nil {
+			return nil, err
+		}
+		// check if the volume exists
+		existing, err := conn.StorageVolLookupByName(pool, name)
+		if err != nil {
+			return nil, err
+		}
 
-// 		return &libvirtxml.DomainDisk{
-// 			Device: "disk",
-// 			Target: &libvirtxml.DomainDiskTarget{
-// 				Dev: "vda",
-// 				Bus: "virtio",
-// 			},
-// 			Driver: &libvirtxml.DomainDiskDriver{
-// 				Name:  "qemu",
-// 				Type:  "qcow2",
-// 				IOMMU: "on",
-// 			},
-// 			Source: &libvirtxml.DomainDiskSource{
-// 				File: &libvirtxml.DomainDiskSourceFile{
-// 					File: diskVolumeFile,
-// 				},
-// 			},
-// 			Boot: &libvirtxml.DomainDeviceBoot{
-// 				Order: 1,
-// 			},
-// 		}, nil
-// 	}
-// }
+		// get the path to the file
+		path, err := conn.StorageVolGetPath(existing)
+		if err != nil {
+			return nil, err
+		}
+
+		// define the bus by index
+		dev := fmt.Sprintf("vd%x", index+13) // use offset 13 so it starts with 'd' for `vdd`
+
+		log.Printf("Defining data disk [%s] on path [%s]", dev, path)
+
+		return &libvirtxml.DomainDisk{
+			Device: "disk",
+			Target: &libvirtxml.DomainDiskTarget{
+				Dev: dev,
+				Bus: "virtio",
+			},
+			Driver: &libvirtxml.DomainDiskDriver{
+				Name:  "qemu",
+				Type:  "qcow2",
+				IOMMU: "on",
+			},
+			Source: &libvirtxml.DomainDiskSource{
+				File: &libvirtxml.DomainDiskSourceFile{
+					File: path,
+				},
+			},
+		}, nil
+	}
+}
 
 // DeleteDataDiskSync (synchronously) deletes a data disk
 func DeleteDataDiskSync(client *LivirtClient) func(storagePool, name string) error {
@@ -176,3 +202,34 @@ func CreateDataDiskSync(client *LivirtClient) func(opt *DataDiskOptions) (*libvi
 		return createDataDisk(opt.StoragePool, opt.Name, opt.Size)
 	}
 }
+
+// DataDisksFromRelated decodes the set of configured data disks from the related data structure
+func DataDisksFromRelated(data map[string]any) ([]*DataDiskCustomResource, error) {
+	var result []*DataDiskCustomResource
+	if related, ok := data["related"].(map[string]any); ok {
+		// all config maps
+		if dataDisks, ok := related[KeyDiskConfig].(map[string]any); ok {
+			// decode each disk
+			for _, dataDisk := range dataDisks {
+				// transcode to the expected format
+				cfg, err := common.Transcode[*DataDiskCustomResource](dataDisk)
+				if err != nil {
+					return nil, err
+				}
+				result = append(result, cfg)
+			}
+		}
+	}
+	// ok
+	return result, nil
+}
+
+func dataDiskCustomResourceToAttachedDataDisk(res *DataDiskCustomResource) *AttachedDataDisk {
+	return &AttachedDataDisk{
+		StoragePool: res.Spec.StoragePool,
+		Name:        string(res.UID),
+	}
+}
+
+// DataDiskCustomResourcesToAttachedDataDisks converts from an array of DataDiskCustomResource to an array of attached disks
+var DataDiskCustomResourcesToAttachedDataDisks = A.Map(dataDiskCustomResourceToAttachedDataDisk)
