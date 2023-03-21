@@ -71,15 +71,30 @@ dockers:
   - --label=org.opencontainers.image.version={{ .Version }}
   - --label=org.opencontainers.image.revision={{ .FullCommit }}
   - --label=org.opencontainers.image.licenses=Apache
+- image_templates: ["ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-arm64"]
+  goarch: arm64
+  dockerfile: Dockerfile
+  use: buildx
+  build_flag_templates:
+  - --platform=linux/arm64
+  - --label=org.opencontainers.image.title={{ .ProjectName }}
+  - --label=org.opencontainers.image.description={{ .ProjectName }}
+  - --label=org.opencontainers.image.url=https://github.com/ibm-hyper-protect/{{ .ProjectName }}
+  - --label=org.opencontainers.image.source=https://github.com/ibm-hyper-protect/{{ .ProjectName }}
+  - --label=org.opencontainers.image.version={{ .Version }}
+  - --label=org.opencontainers.image.revision={{ .FullCommit }}
+  - --label=org.opencontainers.image.licenses=Apache
 docker_manifests:
 - name_template: ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}
   image_templates:
   - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-amd64
   - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-s390x
+  - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-arm64
 - name_template: ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:latest
   image_templates:
   - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-amd64
   - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-s390x
+  - ghcr.io/ibm-hyper-protect/{{ .ProjectName }}:{{ .Version }}-arm64
 
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
