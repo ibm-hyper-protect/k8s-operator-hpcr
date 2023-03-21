@@ -7,24 +7,28 @@ name: Controller Package
 on:
   push:
     branches:
-      - 'main'
+      - "main"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ 'linux' ]
-        architecture: [ 'amd64', 's390x', 'arm64' ]
+        os: ["linux"]
+        architecture: ["amd64", "s390x", "arm64"]
     permissions:
       contents: read
       packages: write
     steps:
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       # https://github.com/actions/setup-go
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '>=1.20.0'
+          go-version: ">=1.20.0"
       - run: go version
       - run: mkdir -p target
 
@@ -32,7 +36,7 @@ jobs:
         run: go test ./...
 
       - name: Build ${{ matrix.os }}/${{ matrix.architecture }}
-        run: CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.architecture }} build -v -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o target/${{ matrix.os }}/${{ matrix.architecture }}/k8s-operator-hpcr main.go         
+        run: CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.architecture }} build -v -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o target/${{ matrix.os }}/${{ matrix.architecture }}/k8s-operator-hpcr main.go
       - run: cp Dockerfile target/${{ matrix.os }}/${{ matrix.architecture }}/Dockerfile
 
       - name: Login to GitHub Container Registry
