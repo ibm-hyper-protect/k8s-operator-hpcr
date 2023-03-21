@@ -29,7 +29,7 @@ jobs:
       - run: mkdir -p target
 
       - name: Test
-        run: go test .\...
+        run: go test ./...
 
       - name: Build ${{ matrix.os }}/${{ matrix.architecture }}
         run: CGO_ENABLED=0 GOOS=${{ matrix.os }} GOARCH=${{ matrix.architecture }} build -v -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o target/${{ matrix.os }}/${{ matrix.architecture }}/k8s-operator-hpcr main.go         
