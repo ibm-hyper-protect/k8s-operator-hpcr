@@ -44,57 +44,57 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-dockers:
-- image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64"]
-  goarch: amd64
-  dockerfile: Dockerfile
-  use: buildx
-  build_flag_templates:
-  - --platform=linux/amd64
-  - --label=org.opencontainers.image.title={{ .ProjectName }}
-  - --label=org.opencontainers.image.description={{ .ProjectName }}
-  - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.version={{ .Version }}
-  - --label=org.opencontainers.image.revision={{ .FullCommit }}
-  - --label=org.opencontainers.image.licenses=Apache
-- image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x"]
-  goarch: s390x
-  dockerfile: Dockerfile
-  use: buildx
-  build_flag_templates:
-  - --platform=linux/s390x
-  - --label=org.opencontainers.image.title={{ .ProjectName }}
-  - --label=org.opencontainers.image.description={{ .ProjectName }}
-  - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.version={{ .Version }}
-  - --label=org.opencontainers.image.revision={{ .FullCommit }}
-  - --label=org.opencontainers.image.licenses=Apache
-- image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64"]
-  goarch: arm64
-  dockerfile: Dockerfile
-  use: buildx
-  build_flag_templates:
-  - --platform=linux/arm64
-  - --label=org.opencontainers.image.title={{ .ProjectName }}
-  - --label=org.opencontainers.image.description={{ .ProjectName }}
-  - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
-  - --label=org.opencontainers.image.version={{ .Version }}
-  - --label=org.opencontainers.image.revision={{ .FullCommit }}
-  - --label=org.opencontainers.image.licenses=Apache
-docker_manifests:
-- name_template: ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}
-  image_templates:
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64
-- name_template: ghcr.io/olira/{{ .ProjectName }}:latest
-  image_templates:
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x
-  - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64
+# dockers:
+# - image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64"]
+#   goarch: amd64
+#   dockerfile: Dockerfile
+#   use: buildx
+#   build_flag_templates:
+#   - --platform=linux/amd64
+#   - --label=org.opencontainers.image.title={{ .ProjectName }}
+#   - --label=org.opencontainers.image.description={{ .ProjectName }}
+#   - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.version={{ .Version }}
+#   - --label=org.opencontainers.image.revision={{ .FullCommit }}
+#   - --label=org.opencontainers.image.licenses=Apache
+# - image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x"]
+#   goarch: s390x
+#   dockerfile: Dockerfile
+#   use: buildx
+#   build_flag_templates:
+#   - --platform=linux/s390x
+#   - --label=org.opencontainers.image.title={{ .ProjectName }}
+#   - --label=org.opencontainers.image.description={{ .ProjectName }}
+#   - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.version={{ .Version }}
+#   - --label=org.opencontainers.image.revision={{ .FullCommit }}
+#   - --label=org.opencontainers.image.licenses=Apache
+# - image_templates: ["ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64"]
+#   goarch: arm64
+#   dockerfile: Dockerfile
+#   use: buildx
+#   build_flag_templates:
+#   - --platform=linux/arm64
+#   - --label=org.opencontainers.image.title={{ .ProjectName }}
+#   - --label=org.opencontainers.image.description={{ .ProjectName }}
+#   - --label=org.opencontainers.image.url=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.source=https://github.com/olira/{{ .ProjectName }}
+#   - --label=org.opencontainers.image.version={{ .Version }}
+#   - --label=org.opencontainers.image.revision={{ .FullCommit }}
+#   - --label=org.opencontainers.image.licenses=Apache
+# docker_manifests:
+# - name_template: ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}
+#   image_templates:
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64
+# - name_template: ghcr.io/olira/{{ .ProjectName }}:latest
+#   image_templates:
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-amd64
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-s390x
+#   - ghcr.io/olira/{{ .ProjectName }}:{{ .Version }}-arm64
 
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
