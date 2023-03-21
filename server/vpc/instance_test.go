@@ -24,6 +24,7 @@ import (
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 func loadMap(name string) (map[string]any, error) {
@@ -45,7 +46,7 @@ func TestOptionsService(t *testing.T) {
 	cfg, err := common.Transcode[InstanceConfigResource](data)
 	require.NoError(t, err)
 
-	assert.Equal(t, "43861249-71b8-490c-ac2a-e7d0028f99e1", cfg.Parent.UID)
+	assert.Equal(t, types.UID("43861249-71b8-490c-ac2a-e7d0028f99e1"), cfg.Parent.UID)
 }
 
 func TestInstanceOptionsFromConfigMap(t *testing.T) {

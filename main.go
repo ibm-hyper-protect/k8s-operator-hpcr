@@ -21,8 +21,15 @@ import (
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/cli"
 )
 
+// version number, will be injected by the build
+var (
+	version  string
+	compiled string
+	commit   string
+)
+
 func main() {
-	err := cli.CreateApp().Run(os.Args)
+	err := cli.CreateApp(version, compiled, commit).Run(os.Args)
 	if err != nil {
 		log.Fatal(err)
 	}

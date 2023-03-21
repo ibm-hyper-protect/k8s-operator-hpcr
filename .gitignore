@@ -4,3 +4,5 @@ k8s-operator-hpcr
 .env
 samples/apikey.yaml
 main.exe
+
+dist/

@@ -27,14 +27,8 @@ const (
 	portFlagName = "port"
 )
 
-// version number, will be injected by the build
-var (
-	version  string
-	compiled string
-)
-
 // CreateApp creates the application that starts the operator
-func CreateApp() *c.App {
+func CreateApp(version, compiled, commit string) *c.App {
 	compileTime, _ := strconv.ParseInt(compiled, 10, 64)
 	compiledAt := time.UnixMilli(compileTime * 1000)
 	return &c.App{
