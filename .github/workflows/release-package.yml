@@ -12,6 +12,9 @@ on:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     env:
       DOCKER_CLI_EXPERIMENTAL: "enabled"
     steps:
