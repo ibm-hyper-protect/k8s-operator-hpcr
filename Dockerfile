@@ -11,16 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.package datasource
-
-FROM golang as build_layer
-
-COPY . /src
-
-RUN cd /src && \
-    mkdir -p /build && \
-    CGO_ENABLED=0 go build -ldflags "-X github.com/ibm-hyper-protect/k8s-operator-hpcr/cli.compiled=$(date +%s) -s -w" -o /build/k8s-operator-hpcr main.go 
-    
-
 FROM registry.access.redhat.com/ubi8/ubi-minimal as base_layer
 
 FROM scratch
@@ -29,7 +19,7 @@ COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
 
-COPY --from=build_layer /build/k8s-operator-hpcr /k8s-operator-hpcr
+COPY k8s-operator-hpcr /k8s-operator-hpcr
 
 EXPOSE 8080
 
