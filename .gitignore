@@ -6,3 +6,5 @@ samples/apikey.yaml
 main.exe
 
 dist/
+
+node_modules
