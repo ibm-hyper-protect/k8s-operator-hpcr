@@ -65,5 +65,4 @@ k8s-operator-hpcr   1/1     1            1           6m35s
 
 ```bash
 kubectl logs -l app=k8s-operator-hpcr
-``` 
- 
+```
