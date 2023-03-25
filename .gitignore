@@ -6,3 +6,4 @@ samples/apikey.yaml
 main.exe
 
 dist/
+private/

@@ -128,7 +128,7 @@ func getSubnet(service *vpcv1.VpcV1, data *InstanceConfigResource, envMap env.En
 	if data.Parent.Spec.SubnetID != nil {
 		subnetID = *data.Parent.Spec.SubnetID
 		// log this
-		log.Printf("Reading subnet ID [%s] from CRD.", subnetID)
+		log.Printf("Reading Subnet ID [%s] from CRD.", subnetID)
 	} else {
 		// get the subnet ID from the environment
 		subnetIDFromEnv, ok := envMap[KeySubnetID]
@@ -136,7 +136,7 @@ func getSubnet(service *vpcv1.VpcV1, data *InstanceConfigResource, envMap env.En
 			return nil, fmt.Errorf("unable to load the subnet ID from config value [%s]", KeySubnetID)
 		}
 		// log this
-		log.Printf("Reading subnet ID [%s] from environment [%s].", subnetIDFromEnv, KeySubnetID)
+		log.Printf("Reading Subnet ID [%s] from environment [%s].", subnetIDFromEnv, KeySubnetID)
 		subnetID = subnetIDFromEnv
 	}
 	// try to find the subnet
