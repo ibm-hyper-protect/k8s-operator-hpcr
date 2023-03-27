@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 	v1 "k8s.io/api/core/v1"
@@ -36,7 +37,13 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 }
 
 func syncVPC(req map[string]any) common.Action {
-	env := common.EnvFromConfigMaps(req)
+
+	dbg, err := json.Marshal(req)
+	if err == nil {
+		log.Printf("Input [%s]", string(dbg))
+	}
+
+	env := common.EnvFromConfigMapsOrSecrets(req)
 
 	vpcSvc, err := vpc.CreateVpcServiceFromEnv(env)
 	if err != nil {
@@ -62,7 +69,7 @@ func syncVPC(req map[string]any) common.Action {
 }
 
 func finalizeVPC(req map[string]any) common.Action {
-	env := common.EnvFromConfigMaps(req)
+	env := common.EnvFromConfigMapsOrSecrets(req)
 
 	service, err := vpc.CreateVpcServiceFromEnv(env)
 	if err != nil {
@@ -88,6 +95,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		log.Printf("synchronizing ...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
+			// print stome log
+			log.Printf("Error accessing the request body, cause: [%v]", err)
 			// Handle error
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -97,6 +106,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		var req map[string]any
 		err = json.Unmarshal(jsonData, &req)
 		if err != nil {
+			// print stome log
+			log.Printf("Error during unmarshaling, cause: [%v]", err)
 			// Handle error
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -108,6 +119,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		// execute and handle
 		state, err := action()
 		if err != nil {
+			// print some log
+			log.Printf("Error executing the sync, cause: [%v]", err)
 			// Handle error
 			c.JSON(http.StatusBadRequest, common.ResourceStatusToResponse(state))
 			return
@@ -203,12 +216,20 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 			RelatedResourceRules: []*common.RelatedResourceRule{
 				{
 					ResourceRule: common.ResourceRule{
-						APIVersion: "v1",
+						APIVersion: C.K8SAPIVersion,
 						Resource:   string(v1.ResourceConfigMaps),
 					},
 					// select by label
 					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				}},
+				}, {
+					ResourceRule: common.ResourceRule{
+						APIVersion: C.K8SAPIVersion,
+						Resource:   string(v1.ResourceSecrets),
+					},
+					// select by label
+					LabelSelector: cfg.Parent.Spec.TargetSelector,
+				},
+			},
 		}
 
 		out, _ := json.Marshal(resp)

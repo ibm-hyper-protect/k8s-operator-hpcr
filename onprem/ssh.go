@@ -176,13 +176,23 @@ func CreateSSHDialer(config *SSHConfig) socket.Dialer {
 	return &sshDialer{config: config}
 }
 
+func getSSHPrivateKey(envMap env.Environment) string {
+	// use the standard k8s name for the ssh private key
+	key, ok := envMap[v1.SSHAuthPrivateKey]
+	if ok {
+		return key
+	}
+	// fallback to key
+	return envMap[KeyPrivateKey]
+}
+
 // GetSSHConfigFromEnvMap deserializes an SSH config from a set of (env) parameters
 func GetSSHConfigFromEnvMap(envMap env.Environment) *SSHConfig {
 
 	result := &SSHConfig{}
 
 	result.Hostname = envMap[KeyHostname]
-	result.Key = envMap[KeyPrivateKey]
+	result.Key = getSSHPrivateKey(envMap)
 	result.User = envMap[KeyUser]
 
 	port, ok := envMap[KeyPort]

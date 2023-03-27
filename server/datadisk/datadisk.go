@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	v1 "k8s.io/api/core/v1"
@@ -43,7 +44,7 @@ func syncDataDisk(req map[string]any) common.Action {
 	}
 	defer lock.Unlock()
 	// assemble all information about the environment by merging the config maps
-	env := common.EnvFromConfigMaps(req)
+	env := common.EnvFromConfigMapsOrSecrets(req)
 
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
@@ -69,7 +70,7 @@ func finalizeDataDisk(req map[string]any) common.Action {
 	}
 	defer lock.Unlock()
 
-	env := common.EnvFromConfigMaps(req)
+	env := common.EnvFromConfigMapsOrSecrets(req)
 
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
@@ -221,7 +222,7 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 			RelatedResourceRules: []*common.RelatedResourceRule{
 				{
 					ResourceRule: common.ResourceRule{
-						APIVersion: "v1",
+						APIVersion: C.K8SAPIVersion,
 						Resource:   string(v1.ResourceConfigMaps),
 					},
 					// select by label

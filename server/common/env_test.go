@@ -39,7 +39,7 @@ func TestEnvFromConfigMaps1(t *testing.T) {
 	data, err := readJson("create_resource.json")
 	require.NoError(t, err)
 
-	env := EnvFromConfigMaps(data)
+	env := EnvFromConfigMapsOrSecrets(data)
 	assert.NotNil(t, env["IBMCLOUD_IS_API_ENDPOINT"])
 }
 
@@ -47,7 +47,7 @@ func TestEnvFromConfigMaps2(t *testing.T) {
 	data, err := readJson("create_resource_full.json")
 	require.NoError(t, err)
 
-	env := EnvFromConfigMaps(data)
+	env := EnvFromConfigMapsOrSecrets(data)
 
 	apiKey, err := vpc.GetIBMCloudApiKey(env)
 	require.NoError(t, err)
