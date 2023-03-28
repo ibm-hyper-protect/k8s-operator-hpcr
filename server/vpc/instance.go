@@ -35,13 +35,13 @@ const (
 
 type (
 	InstanceOptions struct {
-		Name        string
-		VpcID       string
-		ProfileName string
-		ImageID     string
-		ZoneName    string
-		SubnetID    string
-		UserData    string
+		Name        string `json:"name"`
+		VpcID       string `json:"vpcID"`
+		ProfileName string `json:"profileName"`
+		ImageID     string `json:"imageID"`
+		ZoneName    string `json:"zone"`
+		SubnetID    string `json:"subnetID"`
+		UserData    string `json:"userData"`
 	}
 
 	CustomResourceSpec struct {
@@ -121,7 +121,7 @@ func getImageID(service *vpcv1.VpcV1, envMap env.Environment) (string, error) {
 	return vpc.FindLatestStockImage(service)
 }
 
-func getSubnet(service *vpcv1.VpcV1, data *InstanceConfigResource, envMap env.Environment) (*vpcv1.Subnet, error) {
+func getSubnetID(data *InstanceConfigResource, envMap env.Environment) (string, error) {
 	// the ID
 	var subnetID string
 	// check if we have a subnet ID in the config
@@ -133,11 +133,21 @@ func getSubnet(service *vpcv1.VpcV1, data *InstanceConfigResource, envMap env.En
 		// get the subnet ID from the environment
 		subnetIDFromEnv, ok := envMap[KeySubnetID]
 		if !ok {
-			return nil, fmt.Errorf("unable to load the subnet ID from config value [%s]", KeySubnetID)
+			return "", fmt.Errorf("unable to load the subnet ID from config value [%s]", KeySubnetID)
 		}
 		// log this
 		log.Printf("Reading Subnet ID [%s] from environment [%s].", subnetIDFromEnv, KeySubnetID)
 		subnetID = subnetIDFromEnv
+	}
+	// try to find the subnet
+	return subnetID, nil
+}
+
+func getSubnet(service *vpcv1.VpcV1, data *InstanceConfigResource, envMap env.Environment) (*vpcv1.Subnet, error) {
+	// the ID
+	subnetID, err := getSubnetID(data, envMap)
+	if err != nil {
+		return nil, err
 	}
 	// try to find the subnet
 	subnet, _, err := service.GetSubnet(&vpcv1.GetSubnetOptions{ID: &subnetID})

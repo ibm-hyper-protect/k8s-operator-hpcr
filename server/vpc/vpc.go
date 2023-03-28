@@ -20,12 +20,22 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/IBM/go-sdk-core/core"
+	"github.com/IBM/vpc-go-sdk/vpcv1"
 	"github.com/gin-gonic/gin"
 	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
+	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
 	v1 "k8s.io/api/core/v1"
 )
+
+type RuntimeConfig struct {
+	Authenticator core.Authenticator
+	Service       *vpcv1.VpcV1
+	Options       *InstanceOptions
+	Env           E.Environment
+}
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -36,57 +46,82 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 	}
 }
 
-func syncVPC(req map[string]any) common.Action {
-
-	dbg, err := json.Marshal(req)
-	if err == nil {
-		log.Printf("Input [%s]", string(dbg))
-	}
-
+func createRuntimeConfig(req map[string]any) (*RuntimeConfig, error) {
 	env := common.EnvFromConfigMapsOrSecrets(req)
-
-	vpcSvc, err := vpc.CreateVpcServiceFromEnv(env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	taggingSvc, err := vpc.CreateTaggingServiceFromEnv(env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
 
 	cfg, err := common.Transcode[*InstanceConfigResource](req)
 	if err != nil {
-		return common.CreateErrorAction(err)
+		log.Printf("Unable to convert input to InstanceConfigResource, cause: [%v]", err)
+		return nil, err
+	}
+
+	auth, err := vpc.CreateAuthenticatorFromEnv(env)
+	if err != nil {
+		log.Printf("Unable to create authenticator, cause: [%v]", err)
+		return nil, err
+	}
+
+	searchSvc, err := vpc.CreateGlobalSearchServiceFromEnv(auth, env)
+	if err != nil {
+		log.Printf("Unable to create global search service, cause: [%v]", err)
+		return nil, err
+	}
+
+	subnetID, err := getSubnetID(cfg, env)
+	if err != nil {
+		log.Printf("Unable to find subnet, cause: [%v]", err)
+		return nil, err
+	}
+
+	region, err := vpc.FindRegionFromSubnet(searchSvc)(subnetID)
+	if err != nil {
+		log.Printf("Unable to find region, cause: [%v]", err)
+		return nil, err
+	}
+
+	vpcSvc, err := vpc.CreateVpcServiceFromEnvAndRegion(auth, region, env)
+	if err != nil {
+		log.Printf("Unable to create VPC service, cause: [%v]", err)
+		return nil, err
 	}
 
 	opt, err := InstanceOptionsFromConfigMap(vpcSvc, cfg, env)
 	if err != nil {
+		log.Printf("Unable to create options, cause: [%v]", err)
+		return nil, err
+	}
+
+	return &RuntimeConfig{
+		Authenticator: auth,
+		Service:       vpcSvc,
+		Options:       opt,
+		Env:           env,
+	}, nil
+}
+
+func syncVPC(req map[string]any) common.Action {
+
+	cfg, err := createRuntimeConfig(req)
+	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	return CreateSyncAction(vpcSvc, taggingSvc, opt)
+	taggingSvc, err := vpc.CreateTaggingServiceFromEnv(cfg.Authenticator, cfg.Env)
+	if err != nil {
+		return common.CreateErrorAction(err)
+	}
+
+	return CreateSyncAction(cfg.Service, taggingSvc, cfg.Options)
 }
 
 func finalizeVPC(req map[string]any) common.Action {
-	env := common.EnvFromConfigMapsOrSecrets(req)
 
-	service, err := vpc.CreateVpcServiceFromEnv(env)
+	cfg, err := createRuntimeConfig(req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	cfg, err := common.Transcode[*InstanceConfigResource](req)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	opt, err := InstanceOptionsFromConfigMap(service, cfg, env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	return CreateFinalizeAction(service, opt)
+	return CreateFinalizeAction(cfg.Service, cfg.Options)
 }
 
 func CreateControllerSyncRoute() gin.HandlerFunc {

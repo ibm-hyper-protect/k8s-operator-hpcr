@@ -16,11 +16,13 @@ package vpc
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"strings"
 
+	"github.com/IBM/platform-services-go-sdk/globaltaggingv1"
 	"github.com/IBM/vpc-go-sdk/vpcv1"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/vpc"
@@ -51,7 +53,7 @@ func createTag(data string) (string, error) {
 	return fmt.Sprintf("%s:%x", TagPrefix, bs), nil
 }
 
-func createInstanceAction(service *vpcv1.VpcV1, taggingSvc *vpc.GlobalTagging, vpcOp *vpcv1.CreateInstanceOptions, opt *InstanceOptions) common.Action {
+func createInstanceAction(service *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, vpcOp *vpcv1.CreateInstanceOptions, opt *InstanceOptions) common.Action {
 	return func() (*common.ResourceStatus, error) {
 		// construct instance
 		inst, _, err := service.CreateInstance(vpcOp)
@@ -64,10 +66,11 @@ func createInstanceAction(service *vpcv1.VpcV1, taggingSvc *vpc.GlobalTagging, v
 			return common.CreateErrorAction(err)()
 		}
 		// attach this service tag
-		tagType := vpc.AttachTagsOptionsTagTypeUser
-		res, _, err := taggingSvc.AttachTags(&vpc.AttachTagsOptions{TagType: &tagType}, &vpc.AttachTagsBody{
-			Resources: []vpc.Resource{{ResourceID: *inst.CRN}},
+		tagType := globaltaggingv1.AttachTagOptionsTagTypeUserConst
+		res, _, err := taggingSvc.AttachTag(&globaltaggingv1.AttachTagOptions{
+			Resources: []globaltaggingv1.Resource{{ResourceID: inst.CRN}},
 			TagNames:  []string{tag},
+			TagType:   &tagType,
 		})
 		if err != nil {
 			return common.CreateErrorAction(err)()
@@ -98,17 +101,17 @@ func isSubnet(opt *InstanceOptions, inst *vpcv1.Instance) bool {
 	return false
 }
 
-func getTags(taggingSvc *vpc.GlobalTagging, inst *vpcv1.Instance) ([]vpc.Tag, error) {
+func getTags(taggingSvc *globaltaggingv1.GlobalTaggingV1, inst *vpcv1.Instance) (*globaltaggingv1.TagList, error) {
 	// read the attached tag
-	tagType := vpc.AttachTagsOptionsTagTypeUser
-	tagsPager, err := taggingSvc.NewTagsPager(&vpc.ListTagsOptions{TagType: &tagType, AttachedTo: inst.CRN})
+	tagType := globaltaggingv1.AttachTagOptionsTagTypeUserConst
+	list, _, err := taggingSvc.ListTags(&globaltaggingv1.ListTagsOptions{TagType: &tagType, AttachedTo: inst.CRN})
 	if err != nil {
 		return nil, err
 	}
-	return tagsPager.GetAll()
+	return list, nil
 }
 
-func isTag(opt *InstanceOptions, inst *vpcv1.Instance, tags []vpc.Tag) bool {
+func isTag(opt *InstanceOptions, inst *vpcv1.Instance, tags *globaltaggingv1.TagList) bool {
 	// compute the tag for reference
 	localTag, err := createTag(opt.UserData)
 	if err != nil {
@@ -116,8 +119,8 @@ func isTag(opt *InstanceOptions, inst *vpcv1.Instance, tags []vpc.Tag) bool {
 		return false
 	}
 	// check if the tags contain the desired one
-	for _, tag := range tags {
-		if tag.Name == localTag {
+	for _, tag := range tags.Items {
+		if tag.Name != nil && *tag.Name == localTag {
 			return true
 		}
 	}
@@ -126,7 +129,7 @@ func isTag(opt *InstanceOptions, inst *vpcv1.Instance, tags []vpc.Tag) bool {
 	return false
 }
 
-func isVsiConfigValid(opt *InstanceOptions, inst *vpcv1.Instance, tags []vpc.Tag) bool {
+func isVsiConfigValid(opt *InstanceOptions, inst *vpcv1.Instance, tags *globaltaggingv1.TagList) bool {
 	// validate
 	return isString("vpc", opt.VpcID, *inst.VPC.ID) &&
 		isString("zone", opt.ZoneName, *inst.Zone.Name) &&
@@ -136,7 +139,26 @@ func isVsiConfigValid(opt *InstanceOptions, inst *vpcv1.Instance, tags []vpc.Tag
 		isTag(opt, inst, tags)
 }
 
-func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *vpc.GlobalTagging, opt *InstanceOptions) common.Action {
+func createRunningInstanceAction(inst *vpcv1.Instance, opt *InstanceOptions) common.Action {
+	return func() (*common.ResourceStatus, error) {
+		// prepare some metadata
+		metadata := make(map[string]any)
+		instData, err := json.Marshal(inst)
+		if err == nil {
+			metadata["instance"] = string(instData)
+		}
+		// return the status
+		return &common.ResourceStatus{
+			Status:      common.Ready,
+			Description: *inst.Name,
+			Error:       nil,
+			Metadata:    metadata,
+		}, nil
+
+	}
+}
+
+func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, opt *InstanceOptions) common.Action {
 	// check for the existence of the instance
 	inst, err := vpc.FindInstance(vpcSvc, opt.Name)
 	if err != nil {
@@ -187,7 +209,7 @@ func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *vpc.GlobalTagging, opt *I
 			return common.CreateErrorAction(err)
 		}
 		if isVsiConfigValid(opt, inst, tags) {
-			return common.CreateReadyAction()
+			return createRunningInstanceAction(inst, opt)
 		}
 		// if config is not ok, delete the instance
 		return deleteInstanceAction(vpcSvc, inst)

@@ -28,10 +28,13 @@ func TestAction(t *testing.T) {
 	if err != nil {
 		t.Skipf("No .env file")
 	}
-	vpcSvc, err := vpc.CreateVpcServiceFromEnv(env)
+	auth, err := vpc.CreateAuthenticatorFromEnv(env)
 	require.NoError(t, err)
 
-	taggingSvc, err := vpc.CreateTaggingServiceFromEnv(env)
+	vpcSvc, err := vpc.CreateVpcServiceFromEnv(auth, env)
+	require.NoError(t, err)
+
+	taggingSvc, err := vpc.CreateTaggingServiceFromEnv(auth, env)
 	require.NoError(t, err)
 
 	// load some data

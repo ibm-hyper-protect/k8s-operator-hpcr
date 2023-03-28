@@ -59,7 +59,10 @@ func TestInstanceOptionsFromConfigMap(t *testing.T) {
 	data, err := loadMap("../samples/create_resource_full.json")
 	require.NoError(t, err)
 
-	service, err := vpc.CreateVpcServiceFromEnv(envMap)
+	auth, err := vpc.CreateAuthenticatorFromEnv(envMap)
+	require.NoError(t, err)
+
+	service, err := vpc.CreateVpcServiceFromEnv(auth, envMap)
 	require.NoError(t, err)
 
 	cfg, err := common.Transcode[*InstanceConfigResource](data)

@@ -26,6 +26,10 @@ import (
 	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
+const (
+	KeySubnetID = "TARGET_SUBNET_ID"
+)
+
 func envFromDotEnv() (E.Environment, error) {
 	// read the file
 	dir, err := os.Getwd()
@@ -41,7 +45,10 @@ func TestCreateService(t *testing.T) {
 		t.Skipf("No .env file")
 	}
 
-	service, err := CreateVpcServiceFromEnv(env)
+	auth, err := CreateAuthenticatorFromEnv(env)
+	require.NoError(t, err)
+
+	service, err := CreateVpcServiceFromEnv(auth, env)
 	require.NoError(t, err)
 
 	vpcsPager, err := service.NewVpcsPager(&vpcv1.ListVpcsOptions{})
@@ -58,16 +65,20 @@ func TestCreateService(t *testing.T) {
 }
 
 func TestSubnet(t *testing.T) {
-	subnetid := "0726-b3c4aa3a-928a-4c8f-97b7-02ad4723c4e4"
 	env, err := envFromDotEnv()
 	if err != nil {
 		t.Skipf("No .env file")
 	}
+	subnetID, ok := env[KeySubnetID]
+	require.True(t, ok)
 
-	service, err := CreateVpcServiceFromEnv(env)
+	auth, err := CreateAuthenticatorFromEnv(env)
 	require.NoError(t, err)
 
-	subnet, _, err := service.GetSubnet(&vpcv1.GetSubnetOptions{ID: &subnetid})
+	service, err := CreateVpcServiceFromEnv(auth, env)
+	require.NoError(t, err)
+
+	subnet, _, err := service.GetSubnet(&vpcv1.GetSubnetOptions{ID: &subnetID})
 	require.NoError(t, err)
 
 	vpcid := subnet.VPC.ID

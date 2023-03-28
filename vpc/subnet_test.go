@@ -16,19 +16,30 @@ package vpc
 
 import (
 	"fmt"
+	"testing"
 
-	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func GetDefaultIBMCloudApiEndpoint(region string) string {
-	return fmt.Sprintf("https://%s.iaas.cloud.ibm.com", region)
-}
-
-// GetIBMCloudApiEndpoint returns the configured endpoint URL for the VPC APIs
-func GetIBMCloudApiEndpoint(env E.Environment, defEndpoint string) string {
-	endpoint, ok := env[KeyIBMCloudIsApiEndpoint]
-	if ok {
-		return endpoint
+func TestFindSubnet(t *testing.T) {
+	env, err := envFromDotEnv()
+	if err != nil {
+		t.Skipf("No .env file")
 	}
-	return defEndpoint
+	subnetID, ok := env[KeySubnetID]
+	require.True(t, ok)
+
+	auth, err := CreateAuthenticatorFromEnv(env)
+	require.NoError(t, err)
+
+	service, err := CreateGlobalSearchServiceFromEnv(auth, env)
+	require.NoError(t, err)
+
+	region, err := FindRegionFromSubnet(service)(subnetID)
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, region)
+
+	fmt.Println(region)
 }
