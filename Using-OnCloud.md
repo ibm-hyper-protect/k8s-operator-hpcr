@@ -20,16 +20,16 @@ Before you begin, you need to decide upon a [label](https://kubernetes.io/docs/c
 
 ## 1. Creating a Kubernetes ConfigMap for your IBM Cloud API key
 
-Create a ConfigMap to store the IBM Cloud API key.
+Create a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) to store the IBM Cloud API key.
 
 ```yaml
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
   name: vpc-apikey
   labels:
     app: my-sample
-data:
+stringData:
   IBMCLOUD_API_KEY: xxx
 ```
 
@@ -60,13 +60,11 @@ metadata:
   labels:
     app: my-sample
 data:
-  IBMCLOUD_REGION: us-east
   TARGET_SUBNET_ID: "xxx"
 ```
 
 | ConfigMap Setting | Description |
 |-------------------|-------------|
-| IBMCLOUD_REGION   | The region where your VPC is located. |
 | TARGET_SUBNET_ID  | The subnet where you want to deploy the HPCR VSI. |
 | TARGET_IMAGE_NAME (**optional**) | The **name** of the base image for the HPCR VSI. If this is not set, the controller will use the latest HPCR stock image. |
 | TARGET_PROFILE (**optional**)   | The **name** of the compute hardware profile to use to create the HPCR VSI. If this is not set, the controller defaults to `bz2e-2x8`. |
@@ -97,3 +95,18 @@ Use `kubectl apply` to create your `HyperProtectContainerRuntimeVPC` resource an
 1. Each custom resource definition will get a UUID assigned by k8s. The controller uses this UUID to construct the name of the HPCR VSI, i.e. the name of the VSI is not user-friendly.
 2. The custom controller is configured to re-validate the state of the VSI every 60s. If the VSI is not in running state (e.g. because it has been deleted manually on VPC) it will be re-created.
 3. If your contract uses an OCI image from an outside registry, you may need to add a Public Gateway to your VPC subnet.
+
+## Debugging
+
+After deploying a custom resource of type `HyperProtectContainerRuntimeVPC` the controller will try to create the described VSI instance and will synchronise it state. The state of this process is captured in the `status` field of the `HyperProtectContainerRuntimeVPC` resource as shown:
+
+```yaml
+status:
+  description: k8s-operator-hpcr-baf43d67-2f16-43b3-b896-290bd32c12fa
+  metadata:
+    instance: '{"availability_policy":{"host_failure":"restart"},"bandwidth":4000,"boot_volume_attachment":{"device":{"id":"02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e-vdbhf"},"href":"https://br-sao.iaas.cloud.ibm.com/v1/instances/02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706/volume_attachments/02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e","id":"02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e","name":"omnivore-frosting-unbolted-molecule","volume":{"crn":"crn:v1:bluemix:public:is:br-sao-2:a/b3fabd5a6aaf4af09142ad425ffeaee8::volume:r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","href":"https://br-sao.iaas.cloud.ibm.com/v1/volumes/r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","id":"r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","name":"ambitious-capital-luckless-pacific"}},"created_at":"2023-03-28T13:36:28.000Z","crn":"crn:v1:bluemix:public:is:br-sao-2:a/b3fabd5a6aaf4af09142ad425ffeaee8::instance:02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706","disks":[],"href":"https://br-sao.iaas.cloud.ibm.com/v1/instances/02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706","id":"02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706","image":{"crn":"crn:v1:bluemix:public:is:br-sao:a/811f8abfbd32425597dc7ba40da98fa6::image:r042-9d1e6bf1-6161-4392-a9b2-6ab97c71e367","href":"https://br-sao.iaas.cloud.ibm.com/v1/images/r042-9d1e6bf1-6161-4392-a9b2-6ab97c71e367","id":"r042-9d1e6bf1-6161-4392-a9b2-6ab97c71e367","name":"ibm-hyper-protect-container-runtime-1-0-s390x-9"},"lifecycle_reasons":[],"lifecycle_state":"stable","memory":8,"metadata_service":{"enabled":false,"protocol":"http","response_hop_limit":1},"name":"k8s-operator-hpcr-baf43d67-2f16-43b3-b896-290bd32c12fa","network_interfaces":[{"href":"https://br-sao.iaas.cloud.ibm.com/v1/instances/02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706/network_interfaces/02u7-a41c39de-0945-4ae9-8c80-769132ea50e9","id":"02u7-a41c39de-0945-4ae9-8c80-769132ea50e9","name":"cone-swore-trickle-proponent","primary_ip":{"address":"10.250.64.10","href":"https://br-sao.iaas.cloud.ibm.com/v1/subnets/02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd/reserved_ips/02u7-3af34e10-289f-4a0a-b1ba-4a5cf55621ce","id":"02u7-3af34e10-289f-4a0a-b1ba-4a5cf55621ce","name":"neon-hatbox-atom-creation","resource_type":"subnet_reserved_ip"},"resource_type":"network_interface","subnet":{"crn":"crn:v1:bluemix:public:is:br-sao-2:a/b3fabd5a6aaf4af09142ad425ffeaee8::subnet:02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","href":"https://br-sao.iaas.cloud.ibm.com/v1/subnets/02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","id":"02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","name":"r3df970ce505b6f9f229a18cc9e57d511edce85455034e7d0c687d263f6b136","resource_type":"subnet"}}],"primary_network_interface":{"href":"https://br-sao.iaas.cloud.ibm.com/v1/instances/02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706/network_interfaces/02u7-a41c39de-0945-4ae9-8c80-769132ea50e9","id":"02u7-a41c39de-0945-4ae9-8c80-769132ea50e9","name":"cone-swore-trickle-proponent","primary_ip":{"address":"10.250.64.10","href":"https://br-sao.iaas.cloud.ibm.com/v1/subnets/02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd/reserved_ips/02u7-3af34e10-289f-4a0a-b1ba-4a5cf55621ce","id":"02u7-3af34e10-289f-4a0a-b1ba-4a5cf55621ce","name":"neon-hatbox-atom-creation","resource_type":"subnet_reserved_ip"},"resource_type":"network_interface","subnet":{"crn":"crn:v1:bluemix:public:is:br-sao-2:a/b3fabd5a6aaf4af09142ad425ffeaee8::subnet:02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","href":"https://br-sao.iaas.cloud.ibm.com/v1/subnets/02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","id":"02u7-41252784-f50b-4d82-bd50-eca9a02bb6fd","name":"r3df970ce505b6f9f229a18cc9e57d511edce85455034e7d0c687d263f6b136","resource_type":"subnet"}},"profile":{"href":"https://br-sao.iaas.cloud.ibm.com/v1/instance/profiles/bz2e-2x8","name":"bz2e-2x8"},"resource_group":{"href":"https://resource-controller.cloud.ibm.com/v2/resource_groups/8bf261ed77b447e3a5d8c7f5dfbc8428","id":"8bf261ed77b447e3a5d8c7f5dfbc8428","name":"hosting-tribe-se"},"resource_type":"instance","startable":true,"status":"running","status_reasons":[],"total_network_bandwidth":3000,"total_volume_bandwidth":1000,"vcpu":{"architecture":"s390x","count":2},"volume_attachments":[{"device":{"id":"02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e-vdbhf"},"href":"https://br-sao.iaas.cloud.ibm.com/v1/instances/02u7_17e574b4-a5b6-45d4-9c1a-d0db40bfc706/volume_attachments/02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e","id":"02u7-b7c701b0-4060-43f0-ab09-5595791a8d5e","name":"omnivore-frosting-unbolted-molecule","volume":{"crn":"crn:v1:bluemix:public:is:br-sao-2:a/b3fabd5a6aaf4af09142ad425ffeaee8::volume:r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","href":"https://br-sao.iaas.cloud.ibm.com/v1/volumes/r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","id":"r042-69ee8418-4e37-4c1f-8c26-32b84644f72f","name":"ambitious-capital-luckless-pacific"}}],"vpc":{"crn":"crn:v1:bluemix:public:is:br-sao:a/b3fabd5a6aaf4af09142ad425ffeaee8::vpc:r042-9ae36eb1-d450-4af1-a846-f8c9fda2ad47","href":"https://br-sao.iaas.cloud.ibm.com/v1/vpcs/r042-9ae36eb1-d450-4af1-a846-f8c9fda2ad47","id":"r042-9ae36eb1-d450-4af1-a846-f8c9fda2ad47","name":"hpcr-tests","resource_type":"vpc"},"zone":{"href":"https://br-sao.iaas.cloud.ibm.com/v1/regions/br-sao/zones/br-sao-2","name":"br-sao-2"}}'
+  observedGeneration: 1
+  status: 1
+```
+
+The `instance` field contains the JSON serialization the VPC VSI representation.

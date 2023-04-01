@@ -17,6 +17,7 @@ package vpc
 import (
 	"fmt"
 
+	"github.com/IBM/go-sdk-core/v5/core"
 	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
@@ -26,12 +27,12 @@ const (
 	KeyIBMCloudApiKey             = "IBMCLOUD_API_KEY" // #nosec
 )
 
-func GetIBMCloudIAMApiEndpoint(env E.Environment, defEndpoint string) string {
+func GetIBMCloudIAMApiEndpoint(env E.Environment) string {
 	endpoint, ok := env[KeyIBMCloudIAMApiEndpoint]
 	if ok {
 		return endpoint
 	}
-	return defEndpoint
+	return DefaultIBMCloudIAMApiEndpoint
 }
 
 func GetIBMCloudApiKey(env E.Environment) (string, error) {
@@ -40,4 +41,21 @@ func GetIBMCloudApiKey(env E.Environment) (string, error) {
 		return apiKey, nil
 	}
 	return apiKey, fmt.Errorf("API Key [%s] not found", KeyIBMCloudApiKey)
+}
+
+func CreateAuthenticator(apiKey string, isIAMApiEndpoint string) (core.Authenticator, error) {
+	return &core.IamAuthenticator{
+		ApiKey: apiKey,
+		URL:    isIAMApiEndpoint,
+	}, nil
+}
+
+func CreateAuthenticatorFromEnv(env E.Environment) (core.Authenticator, error) {
+	apiKey, err := GetIBMCloudApiKey(env)
+	if err != nil {
+		return nil, err
+	}
+	iamEndpoint := GetIBMCloudIAMApiEndpoint(env)
+
+	return CreateAuthenticator(apiKey, iamEndpoint)
 }

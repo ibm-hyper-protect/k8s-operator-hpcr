@@ -16,6 +16,7 @@ package vpc
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/IBM/vpc-go-sdk/vpcv1"
@@ -23,55 +24,29 @@ import (
 	E "github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 )
 
-func CreateAuthenticator(apiKey string, isIAMApiEndpoint string) (*core.IamAuthenticator, error) {
-	return &core.IamAuthenticator{
-		ApiKey: apiKey,
-		URL:    isIAMApiEndpoint,
-	}, nil
-}
-
-func CreateVpcService(apiKey string, isApiEndpoint string, isIAMApiEndpoint string) (*vpcv1.VpcV1, error) {
+func CreateVpcService(auth core.Authenticator, isApiEndpoint string) (*vpcv1.VpcV1, error) {
 	vpcService, err := vpcv1.NewVpcV1(&vpcv1.VpcV1Options{
-		Authenticator: &core.IamAuthenticator{
-			ApiKey: apiKey,
-			URL:    isIAMApiEndpoint,
-		},
-		URL: fmt.Sprintf("%s/v1", isApiEndpoint),
+		Authenticator: auth,
+		URL:           fmt.Sprintf("%s/v1", isApiEndpoint),
 	})
 	if err != nil {
+		log.Printf("Unable to create VPC Service, cause [%v]", err)
 		return nil, err
 	}
 	return vpcService, nil
 }
 
-func CreateVpcServiceFromEnv(env E.Environment) (*vpcv1.VpcV1, error) {
-	apiKey, err := GetIBMCloudApiKey(env)
-	if err != nil {
-		return nil, err
-	}
-	region := GetRegion(env)
+func CreateVpcServiceFromEnvAndRegion(auth core.Authenticator, region string, env E.Environment) (*vpcv1.VpcV1, error) {
+	// some logging
+	log.Printf("Getting VPC service for region [%s] ...", region)
+	// locate the endpoint
 	defEndpoint := GetDefaultIBMCloudApiEndpoint(region)
 	endpoint := GetIBMCloudApiEndpoint(env, defEndpoint)
-	iamEndpoint := GetIBMCloudIAMApiEndpoint(env, DefaultIBMCloudIAMApiEndpoint)
 
 	// create the service
-	return CreateVpcService(apiKey, endpoint, iamEndpoint)
+	return CreateVpcService(auth, endpoint)
 }
 
-func CreateTaggingServiceFromEnv(env E.Environment) (*GlobalTagging, error) {
-	apiKey, err := GetIBMCloudApiKey(env)
-	if err != nil {
-		return nil, err
-	}
-	endpoint := GetIBMCloudGtApiEndpoint(env)
-	iamEndpoint := GetIBMCloudIAMApiEndpoint(env, DefaultIBMCloudIAMApiEndpoint)
-
-	return CreateGlobalTagging(&GlobalTaggingOptions{
-		Authenticator: &core.IamAuthenticator{
-			ApiKey: apiKey,
-			URL:    iamEndpoint,
-		},
-		URL: fmt.Sprintf("%s/v3", endpoint),
-	})
-
+func CreateVpcServiceFromEnv(auth core.Authenticator, env E.Environment) (*vpcv1.VpcV1, error) {
+	return CreateVpcServiceFromEnvAndRegion(auth, GetRegion(env), env)
 }

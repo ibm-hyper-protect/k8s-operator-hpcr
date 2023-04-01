@@ -28,8 +28,10 @@ func TestFindInstance(t *testing.T) {
 	if err != nil {
 		t.Skipf("No .env file")
 	}
+	auth, err := CreateAuthenticatorFromEnv(env)
+	require.NoError(t, err)
 
-	service, err := CreateVpcServiceFromEnv(env)
+	service, err := CreateVpcServiceFromEnv(auth, env)
 	require.NoError(t, err)
 
 	inst, err := FindInstance(service, "start-hello-world")
@@ -43,8 +45,10 @@ func TestFindMissingInstance(t *testing.T) {
 	if err != nil {
 		t.Skipf("No .env file")
 	}
+	auth, err := CreateAuthenticatorFromEnv(env)
+	require.NoError(t, err)
 
-	service, err := CreateVpcServiceFromEnv(env)
+	service, err := CreateVpcServiceFromEnv(auth, env)
 	require.NoError(t, err)
 
 	inst, err := FindInstance(service, "does-not-exist")

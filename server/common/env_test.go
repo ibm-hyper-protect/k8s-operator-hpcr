@@ -55,7 +55,7 @@ func TestEnvFromConfigMaps2(t *testing.T) {
 	region := vpc.GetRegion(env)
 	defEndpoint := vpc.GetDefaultIBMCloudApiEndpoint(region)
 	endpoint := vpc.GetIBMCloudApiEndpoint(env, defEndpoint)
-	iamEndpoint := vpc.GetIBMCloudIAMApiEndpoint(env, vpc.DefaultIBMCloudIAMApiEndpoint)
+	iamEndpoint := vpc.GetIBMCloudIAMApiEndpoint(env)
 
 	assert.Equal(t, "xxx", apiKey)
 	assert.Equal(t, "https://us-south-stage01.iaasdev.cloud.ibm.com", endpoint)
