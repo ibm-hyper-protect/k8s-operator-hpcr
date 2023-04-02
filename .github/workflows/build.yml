@@ -1,0 +1,100 @@
+name: Controller Package CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'Dry-Run'
+        default: 'true'
+        required: false
+
+env:
+  # Currently no way to detect automatically
+  DEFAULT_BRANCH: main
+  GO_VERSION: 1.20.0
+  NODE_VERSION: 18
+  DRY_RUN: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # full checkout for semantic-release
+      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+        with:
+          fetch-depth: 0
+      - name: Set up go ${{env.GO_VERSION}}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{env.GO_VERSION}}
+      -
+        name: Tests
+        run: |
+          go mod tidy
+          go test -v ./...
+
+  release:
+    needs: [build]
+    if: github.repository == 'ibm-hyper-protect/k8s-operator-hpcr' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      packages: write
+
+    steps:
+      # full checkout for semantic-release
+      - name: Full checkout
+        uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Set up go ${{env.GO_VERSION}}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{env.GO_VERSION}}
+
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: latest
+          install-only: true
+
+      # The dry-run evaluation is only made for non PR events. Manual trigger w/dryRun true, main branch and any tagged branches will set DRY run to false
+      - name: Check dry run
+        run: |
+          if [[ "${{github.event_name}}" == "workflow_dispatch" && "${{ github.event.inputs.dryRun }}" != "true"  ]]; then
+              echo "DRY_RUN=false" >> $GITHUB_ENV
+          elif [[ "${{github.ref}}" == "refs/heads/${{env.DEFAULT_BRANCH}}" ]]; then
+            echo "DRY_RUN=false" >> $GITHUB_ENV
+          elif [[ "${{github.ref}}" =~ ^refs/heads/v[0-9]+(\.[0-9]+)?$ ]]; then
+            echo "DRY_RUN=false" >> $GITHUB_ENV
+          fi
+
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Semantic Release
+        run: |
+          npx -p @semantic-release/changelog -p @semantic-release/exec -p @semantic-release/git -p conventional-changelog-conventionalcommits semantic-release --dry-run ${{env.DRY_RUN}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
