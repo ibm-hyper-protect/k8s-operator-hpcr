@@ -20,7 +20,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/IBM/go-sdk-core/core"
+	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/IBM/vpc-go-sdk/vpcv1"
 	"github.com/gin-gonic/gin"
 	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
