@@ -17,7 +17,7 @@ on:
 env:
   # Currently no way to detect automatically
   DEFAULT_BRANCH: main
-  GO_VERSION: 1.20.0 # renovate: datasource=golang-version depName=golang
+  GO_VERSION: 1.20.3 # renovate: datasource=golang-version depName=golang
   NODE_VERSION: 18
   DRY_RUN: true
 
