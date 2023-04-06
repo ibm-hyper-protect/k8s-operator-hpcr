@@ -19,7 +19,7 @@
     },
     {
       "matchDatasources": ["golang-version"],
-      "groupName": "golang-verison"
+      "groupName": "golang-version"
     }
   ],
   "regexManagers": [
