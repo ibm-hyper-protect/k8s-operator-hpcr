@@ -19,7 +19,7 @@ require (
 	github.com/qri-io/jsonschema v0.2.1
 	github.com/stretchr/testify v1.8.2
 	github.com/urfave/cli/v2 v2.25.1
-	golang.org/x/crypto v0.7.0
+	golang.org/x/crypto v0.8.0
 	k8s.io/api v0.26.3
 	k8s.io/apimachinery v0.26.3
 	libvirt.org/go/libvirtxml v1.9001.0
@@ -85,9 +85,9 @@ require (
 	github.com/zclconf/go-cty v1.13.1 // indirect
 	go.mongodb.org/mongo-driver v1.11.3 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/net v0.8.0 // indirect
-	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/text v0.8.0 // indirect
+	golang.org/x/net v0.9.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
