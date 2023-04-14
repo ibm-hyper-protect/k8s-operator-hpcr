@@ -98,12 +98,12 @@ func getHostKeyCallback(config *SSHConfig) (ssh.HostKeyCallback, error) {
 	tmpDir := os.TempDir()
 	err := os.MkdirAll(tmpDir, os.ModePerm)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to create the temporary directory [%s], cause: [%w]", tmpDir, err)
 	}
 	// parse the hosts
-	file, err := os.CreateTemp(os.TempDir(), "knownHosts")
+	file, err := os.CreateTemp(tmpDir, "knownHosts")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable to create a temporary known host file in [%s], cause: [%w]", tmpDir, err)
 	}
 	defer func() {
 		file.Close() // #nosec: G104 - manually audited
