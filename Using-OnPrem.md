@@ -31,7 +31,7 @@ data:
     -----BEGIN RSA PRIVATE KEY-----
     ...
     -----END RSA PRIVATE KEY-----
-  PORT: 22
+  PORT: "22"
   KNOWN_HOSTS: |
     ...
     ...
@@ -117,6 +117,8 @@ One very simple way to provision the image is by compiling a docker image that p
     - port: 8080
       targetPort: 80
   ```
+
+  **Note:** in case the image resides in a private container registry, make sure to add [imagePullSecrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/). If you prefer to use a local image please consult the documentation of your k8s cluster to see how to import an image to the cluster.
 
 - for such a configuration the imageURL to be used would be (assuming deployment into the `default` namespace)
 
