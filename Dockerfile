@@ -13,15 +13,13 @@
 # limitations under the License.package datasource
 FROM registry.access.redhat.com/ubi8/ubi-minimal as base_layer
 
-RUN mkdir -p /base_tmp/
-
 FROM scratch
 
 COPY --from=base_layer /etc/ssl/certs/ /etc/ssl/certs/
 COPY --from=base_layer /etc/pki/tls/ /etc/pki/tls/
 COPY --from=base_layer /etc/pki/ca-trust/ /etc/pki/ca-trust/
 
-COPY --from=base_layer /base_tmp/ /tmp/
+COPY --from=base_layer /tmp/ /tmp/
 
 COPY k8s-operator-hpcr /k8s-operator-hpcr
 
