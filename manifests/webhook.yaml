@@ -18,7 +18,6 @@ spec:
       containers:
       - name: controller
         image: ghcr.io/ibm-hyper-protect/k8s-operator-hpcr:latest
-        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: 512Mi
