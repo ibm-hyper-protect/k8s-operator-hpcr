@@ -6,6 +6,8 @@ github.com/IBM/platform-services-go-sdk v0.35.1 h1:SuXr6HBNNkULOs0ns7Wo8sUaxU6RV
 github.com/IBM/platform-services-go-sdk v0.35.1/go.mod h1:oFW/DQyAXGBcGytB+DtKjE3yNdEGM2bmw5SDOjrRwTw=
 github.com/IBM/vpc-go-sdk v0.35.0 h1:Qc0OV2WIQLGwxuvPKusJdgeXiMwyHQITvSof+v125D8=
 github.com/IBM/vpc-go-sdk v0.35.0/go.mod h1:Ozn0YBCs284Qvy+CNAmoLhh2eD48NnobiAyfgVd8wmA=
+github.com/IBM/vpc-go-sdk v0.36.0 h1:ceUI+AaZ3cSKvfg9MjfW5lVO8YnJN6IuVC3YyXX+Yng=
+github.com/IBM/vpc-go-sdk v0.36.0/go.mod h1:MgZrbITC067AlcE5oy4hwylasFvrePL4RVxeF6GTdKQ=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/agext/levenshtein v1.2.3 h1:YB2fHEn0UJagG8T1rrWknE3ZQzWM06O8AMAatNn7lmo=
