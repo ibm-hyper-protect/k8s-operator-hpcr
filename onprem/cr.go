@@ -47,6 +47,13 @@ type DataDiskCustomResourceSpec struct {
 	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
 }
 
+type DataDiskStatus struct {
+	// description of the data disk status
+	Description string `json:"description"`
+	// the status flag
+	Status int `json:"status"`
+}
+
 type OnPremCustomResource struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object's metadata.
@@ -71,6 +78,9 @@ type DataDiskCustomResource struct {
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 	// +optional
 	Spec DataDiskCustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+
+	// status of this custom resource
+	Status DataDiskStatus `json:"status,omitempty"`
 }
 
 type OnPremCustomResourceOptions struct {

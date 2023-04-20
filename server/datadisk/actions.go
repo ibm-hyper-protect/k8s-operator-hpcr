@@ -15,27 +15,63 @@
 package datadisk
 
 import (
+	"log"
+
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
+	"libvirt.org/go/libvirtxml"
 )
+
+// createDataDiskReadyAction create the action
+func createDataDiskReadyAction(disk *libvirtxml.StorageVolume) common.Action {
+
+	return func() (*common.ResourceStatus, error) {
+		// metadata to attach
+		metadata := C.RawMap{
+			"Name": disk.Name,
+		}
+		// marshal the disk info into metadata
+		diskStrg, err := onprem.XMLMarshall(disk)
+		if err == nil {
+			metadata["diskXML"] = diskStrg
+		} else {
+			log.Printf("Unable to marshal the disk XML, cause: [%v]", err)
+		}
+		return &common.ResourceStatus{
+			Status:      common.Ready,
+			Description: diskStrg,
+			Error:       nil,
+			Metadata:    metadata,
+		}, nil
+	}
+}
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
 func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) common.Action {
 	// checks for the validity of the data disk
 	isDataDiskValid := onprem.IsDataDiskValid(client)
-	_, ok := isDataDiskValid(opt)
+	diskXML, ok := isDataDiskValid(opt)
 	if ok {
 		// ready
-		return common.CreateReadyAction()
+		return createDataDiskReadyAction(diskXML)
 	}
 	// create a disk (will resize if required)
 	diskSync := onprem.CreateDataDiskSync(client)
-	_, err := diskSync(opt)
+	disk, err := diskSync(opt)
 	if err != nil {
+		log.Printf("Unable to create data disk [%s], cause: [%v]", opt.Name, err)
+		return common.CreateErrorAction(err)
+	}
+	// try to get the XML description
+	getDiskXML := onprem.GetStorageVolXMLDesc(client)
+	diskXML, err = getDiskXML(disk)
+	if err != nil {
+		log.Printf("Unable to get disk XML [%s], cause: [%v]", opt.Name, err)
 		return common.CreateErrorAction(err)
 	}
 	// ready
-	return common.CreateReadyAction()
+	return createDataDiskReadyAction(diskXML)
 }
 
 func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) common.Action {

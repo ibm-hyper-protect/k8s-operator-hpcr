@@ -116,6 +116,7 @@ func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) 
 	instSync := onprem.CreateInstanceSync(client)
 	result, err := instSync(opt)
 	if err != nil {
+		log.Printf("Unable to create the VSI [%s], cause: [%v]", opt.Name, err)
 		return common.CreateErrorAction(err)
 	}
 	// log the result
@@ -135,6 +136,7 @@ func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.InstanceOptio
 	deleteSync := onprem.DeleteInstanceSync(client)
 	err := deleteSync(opt.StoragePool, opt.Name)
 	if err != nil {
+		log.Printf("Unable to delete the VSI [%s], cause: [%v]", opt.Name, err)
 		return common.CreateErrorAction(err)
 	}
 	// done

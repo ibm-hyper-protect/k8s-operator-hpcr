@@ -212,11 +212,17 @@ func DataDisksFromRelated(data map[string]any) ([]*DataDiskCustomResource, error
 			// decode each disk
 			for _, dataDisk := range dataDisks {
 				// transcode to the expected format
-				cfg, err := common.Transcode[*DataDiskCustomResource](dataDisk)
+				disk, err := common.Transcode[*DataDiskCustomResource](dataDisk)
 				if err != nil {
 					return nil, err
 				}
-				result = append(result, cfg)
+				// validate the status of the data disk
+				if disk.Status.Status == 1 {
+					result = append(result, disk)
+				} else {
+					// disk is not in a valid status
+					log.Printf("Data Disk [%s] is not in ready state, ignoring, cause: [%s]", disk.Name, disk.Status.Description)
+				}
 			}
 		}
 	}

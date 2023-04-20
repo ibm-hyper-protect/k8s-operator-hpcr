@@ -24,6 +24,7 @@ import (
 	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -67,7 +68,15 @@ func syncOnPrem(req map[string]any) common.Action {
 		return common.CreateErrorAction(err)
 	}
 
-	log.Printf("DataDisks: %v", dataDisks)
+	// dump the attached data disks
+	if A.IsNonEmpty(dataDisks) {
+		// extract names
+		dataDiskNames := A.MonadMap(dataDisks, func(disk *onprem.DataDiskCustomResource) string {
+			return disk.Name
+		})
+		// log the disks
+		log.Printf("DataDisks: %v", dataDiskNames)
+	}
 
 	// attach data disks
 	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
@@ -76,6 +85,7 @@ func syncOnPrem(req map[string]any) common.Action {
 	return CreateSyncAction(client, opt)
 }
 
+// finalizeOnPrem deletes a VSI
 func finalizeOnPrem(req map[string]any) common.Action {
 	if !lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)

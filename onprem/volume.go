@@ -61,6 +61,10 @@ func getStorageVolByNameXMLDesc(conn *libvirt.Libvirt) func(pool libvirt.Storage
 	}
 }
 
+func GetStorageVolXMLDesc(client *LivirtClient) func(vol *libvirt.StorageVol) (*libvirtxml.StorageVolume, error) {
+	return getStorageVolXMLDesc(client.LibVirt)
+}
+
 func getStorageVolXMLDesc(conn *libvirt.Libvirt) func(vol *libvirt.StorageVol) (*libvirtxml.StorageVolume, error) {
 	return func(vol *libvirt.StorageVol) (*libvirtxml.StorageVolume, error) {
 		// try to get more info
