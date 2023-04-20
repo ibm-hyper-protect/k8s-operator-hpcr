@@ -194,7 +194,9 @@ func shutDownDomain(client *LivirtClient) func(domain *libvirt.Domain) error {
 		// check if the domain is running
 		state, _, err := conn.DomainGetState(*domain, 0)
 		if err != nil {
-			return err
+			// if we cannot get the domain state, assume it's gone
+			log.Printf("Unable to get the domain state for domain [%s], err: [%v]", domain.Name, err)
+			return nil
 		}
 		if libvirt.DomainState(state) != libvirt.DomainRunning {
 			return nil
@@ -211,7 +213,9 @@ func shutDownDomain(client *LivirtClient) func(domain *libvirt.Domain) error {
 			state, reason, err := conn.DomainGetState(*domain, 0)
 			log.Printf("Domain State [%d], reason [%d]", state, reason)
 			if err != nil {
-				return err
+				// if we cannot get the domain state, assume it's gone
+				log.Printf("Unable to get the domain state for domain [%s], err: [%v]", domain.Name, err)
+				return nil
 			}
 			// check for states that depict a shutdown system
 			switch libvirt.DomainState(state) {
@@ -267,10 +271,14 @@ func DeleteDomainByName(client *LivirtClient) func(name string) error {
 	delDomain := deleteDomain(client)
 
 	return func(name string) error {
+		// log this
+		log.Printf("Deleting domain by name [%s] ...", name)
 		// locate the domain
 		domain, err := conn.DomainLookupByName(name)
 		// TODO check for domain does not exist
 		if err != nil {
+			// log this fact
+			log.Printf("Domain [%s] cannot be located, assuming it's been deleted, cause: [%v]", name, err)
 			return nil
 		}
 		// delete
