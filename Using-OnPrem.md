@@ -247,10 +247,10 @@ spec:
   storagePool: images
   targetSelector:
     matchLabels:
-      config: onpremsample
+      app: onpremtest
 ```
 
-Notice how the selector `config: onpremsample` selects the SSH configuration.
+Notice how the selector `app: onpremtest` selects the SSH configuration.
 
 The data disk may be stored on a different storage pool than the boot disk of the VSI.
 

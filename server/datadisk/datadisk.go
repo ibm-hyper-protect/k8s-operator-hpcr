@@ -220,14 +220,24 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		// produce a response
 		resp := common.CustomizeHookResponse{
 			RelatedResourceRules: []*common.RelatedResourceRule{
+				// select the config maps and secrets that describe the environment settings
 				{
 					ResourceRule: common.ResourceRule{
 						APIVersion: C.K8SAPIVersion,
 						Resource:   string(v1.ResourceConfigMaps),
 					},
-					// select by label
+					// select config maps by label
 					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				}},
+				},
+				{
+					ResourceRule: common.ResourceRule{
+						APIVersion: C.K8SAPIVersion,
+						Resource:   string(v1.ResourceSecrets),
+					},
+					// select secrets maps by label
+					LabelSelector: cfg.Parent.Spec.TargetSelector,
+				},
+			},
 		}
 		// dump it
 		data, err := json.Marshal(resp)
