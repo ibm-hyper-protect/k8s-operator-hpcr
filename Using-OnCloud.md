@@ -18,7 +18,7 @@ Now that you have installed the Hyper Protect Virtual Servers Kubernetes Operato
 
 Before you begin, you need to decide upon a [label](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the Virtual Server Instance. That's how the different Kubernetes resources discover each other. For this example we use the label `app: my-sample`
 
-## 1. Creating a Kubernetes ConfigMap for your IBM Cloud API key
+## 1. Creating a Kubernetes Secret for your IBM Cloud API key
 
 Create a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) to store the IBM Cloud API key.
 
@@ -36,8 +36,8 @@ stringData:
 If you have downloaded your `apikey.json` file from the IBM Cloud UI and have the `jq` program installed you may use these commands:
 
 ```bash
-kubectl create configmap vpc-apikey --from-literal=IBMCLOUD_API_KEY=$(cat ~/apikey.json | jq -r .apikey)
-kubectl label configmap vpc-apikey "app=my-sample"
+kubectl create secret generic vpc-apikey --from-literal=IBMCLOUD_API_KEY=$(cat ~/apikey.json | jq -r .apikey)
+kubectl label secret vpc-apikey "app=my-sample"
 ```
 
 ## 2. Creating a Kubernetes ConfigMap for your IBM Cloud VPC Configuration
@@ -95,6 +95,7 @@ Use `kubectl apply` to create your `HyperProtectContainerRuntimeVPC` resource an
 1. Each custom resource definition will get a UUID assigned by k8s. The controller uses this UUID to construct the name of the HPCR VSI, i.e. the name of the VSI is not user-friendly.
 2. The custom controller is configured to re-validate the state of the VSI every 60s. If the VSI is not in running state (e.g. because it has been deleted manually on VPC) it will be re-created.
 3. If your contract uses an OCI image from an outside registry, you may need to add a Public Gateway to your VPC subnet.
+4. IBM Cloud® Hyper Protect Virtual Servers v1 are not supported.
 
 ## Debugging
 
