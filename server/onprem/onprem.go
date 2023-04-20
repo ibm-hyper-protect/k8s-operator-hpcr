@@ -238,7 +238,7 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		// produce a response
 		resp := common.CustomizeHookResponse{
 			RelatedResourceRules: []*common.RelatedResourceRule{
-				// select the config map(s) that describe the environment settings
+				// select the config maps and secrets that describe the environment settings
 				{
 					ResourceRule: common.ResourceRule{
 						APIVersion: C.K8SAPIVersion,
@@ -252,7 +252,7 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 						APIVersion: C.K8SAPIVersion,
 						Resource:   string(v1.ResourceSecrets),
 					},
-					// select by label
+					// select secrets maps by label
 					LabelSelector: cfg.Parent.Spec.TargetSelector,
 				},
 				// select the attached data disks

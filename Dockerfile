@@ -24,5 +24,6 @@ COPY --from=base_layer /tmp/ /tmp/
 COPY k8s-operator-hpcr /k8s-operator-hpcr
 
 EXPOSE 8080
+ENV USER root
 
 ENTRYPOINT [ "/k8s-operator-hpcr" ]
