@@ -12,18 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package common
+package datadisk
 
 import (
-	"encoding/json"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func Transcode[T any](value any) (T, error) {
-	var result T
-	data, err := json.Marshal(value)
-	if err != nil {
-		return result, err
-	}
-	err = json.Unmarshal(data, &result)
-	return result, err
+// RefDataDisks references data disks as related resources
+func RefDataDisks(labels *metav1.LabelSelector) common.RelatedResource {
+	return common.RefResource(onprem.APIVersion, onprem.ResourceNameDataDisks, labels)
 }
