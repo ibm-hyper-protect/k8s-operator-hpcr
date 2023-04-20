@@ -21,10 +21,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
-	v1 "k8s.io/api/core/v1"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -219,29 +217,15 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
 		// produce a response
 		resp := common.CustomizeHookResponse{
-			RelatedResourceRules: []*common.RelatedResourceRule{
-				// select the config maps and secrets that describe the environment settings
-				{
-					ResourceRule: common.ResourceRule{
-						APIVersion: C.K8SAPIVersion,
-						Resource:   string(v1.ResourceConfigMaps),
-					},
-					// select config maps by label
-					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				},
-				{
-					ResourceRule: common.ResourceRule{
-						APIVersion: C.K8SAPIVersion,
-						Resource:   string(v1.ResourceSecrets),
-					},
-					// select secrets maps by label
-					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				},
-			},
+			RelatedResourceRules: common.CreateRelatedResourceRules([]common.RelatedResource{
+				// config
+				common.RefConfigMaps(cfg.Parent.Spec.TargetSelector),
+				common.RefSecrets(cfg.Parent.Spec.TargetSelector),
+			}),
 		}
 		// dump it
 		data, err := json.Marshal(resp)
-		if err != nil {
+		if err == nil {
 			log.Printf("customize response [%s]", string(data))
 		}
 

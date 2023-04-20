@@ -24,7 +24,9 @@ import (
 	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
+	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -245,41 +247,35 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		}
 		// print namespace
 		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
+		// list the related resources
+		var relatedResourceRules []*common.RelatedResourceRule
+		if F.IsNonNil(cfg.Parent.Spec.TargetSelector) {
+			// append the selectors
+			relatedResourceRules = append(relatedResourceRules, &common.RelatedResourceRule{
+				ResourceRule: common.ResourceRule{
+					APIVersion: C.K8SAPIVersion,
+					Resource:   string(v1.ResourceConfigMaps),
+				},
+				// select config maps by label
+				LabelSelector: cfg.Parent.Spec.TargetSelector,
+			})
+
+		}
+
 		// produce a response
 		resp := common.CustomizeHookResponse{
-			RelatedResourceRules: []*common.RelatedResourceRule{
-				// select the config maps and secrets that describe the environment settings
-				{
-					ResourceRule: common.ResourceRule{
-						APIVersion: C.K8SAPIVersion,
-						Resource:   string(v1.ResourceConfigMaps),
-					},
-					// select config maps by label
-					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				},
-				{
-					ResourceRule: common.ResourceRule{
-						APIVersion: C.K8SAPIVersion,
-						Resource:   string(v1.ResourceSecrets),
-					},
-					// select secrets maps by label
-					LabelSelector: cfg.Parent.Spec.TargetSelector,
-				},
-				// select the attached data disks
-				{
-					ResourceRule: common.ResourceRule{
-						APIVersion: onprem.APIVersion,
-						Resource:   onprem.ResourceNameDataDisks,
-					},
-					// select disks by label
-					LabelSelector: cfg.Parent.Spec.DiskSelector,
-				},
-			},
+			RelatedResourceRules: common.CreateRelatedResourceRules([]common.RelatedResource{
+				// config
+				common.RefConfigMaps(cfg.Parent.Spec.TargetSelector),
+				common.RefSecrets(cfg.Parent.Spec.TargetSelector),
+				// disk
+				datadisk.RefDataDisks(cfg.Parent.Spec.DiskSelector),
+			}),
 		}
 		// dump it
 		data, err := json.Marshal(resp)
-		if err != nil {
-			log.Printf("customize response [%s]", string(data))
+		if err == nil {
+			log.Printf("customize response for for [%s] in namespace [%s]: [%s]", cfg.Parent.Name, cfg.Parent.Namespace, string(data))
 		}
 
 		// done
