@@ -23,7 +23,6 @@ import (
 	"time"
 
 	"os"
-	"os/user"
 
 	"github.com/digitalocean/go-libvirt/socket"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
@@ -36,6 +35,7 @@ const (
 	defaultSSHPort  = 22
 	dialTimeout     = 10 * time.Second
 	defaultUnixSock = "/var/run/libvirt/libvirt-sock"
+	defaultUsername = "root"
 
 	// Environment variable names
 	KeyHostname   = "HOSTNAME"
@@ -81,12 +81,8 @@ func getUserName(config *SSHConfig) (string, error) {
 	if len(usr) > 0 {
 		return usr, nil
 	}
-	osUser, err := user.Current()
-	if err != nil {
-		return "", err
-	}
-
-	return osUser.Username, nil
+	// just assume the default user
+	return defaultUsername, nil
 }
 
 func getHostKeyCallback(config *SSHConfig) (ssh.HostKeyCallback, error) {
