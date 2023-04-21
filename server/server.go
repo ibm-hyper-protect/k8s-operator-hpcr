@@ -20,6 +20,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadiskref"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/networkref"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/vpc"
 )
@@ -42,6 +44,14 @@ func CreateServer(version, compileTime string) func(port int) error {
 	r.POST("/datadisk/sync", datadisk.CreateControllerSyncRoute())
 	r.POST("/datadisk/finalize", datadisk.CreateControllerFinalizeRoute())
 	r.POST("/datadisk/customize", datadisk.CreateControllerCustomizeRoute())
+	// register the data disk ref routes
+	r.GET("/datadiskref/ping", datadiskref.CreatePingRoute(version, compileTime))
+	r.POST("/datadiskref/sync", datadiskref.CreateControllerSyncRoute())
+	r.POST("/datadiskref/customize", datadiskref.CreateControllerCustomizeRoute())
+	// register the network ref routes
+	r.GET("/networkref/ping", networkref.CreatePingRoute(version, compileTime))
+	r.POST("/networkref/sync", networkref.CreateControllerSyncRoute())
+	r.POST("/networkref/customize", networkref.CreateControllerCustomizeRoute())
 
 	return func(port int) error {
 		return r.Run(fmt.Sprintf(":%d", port))

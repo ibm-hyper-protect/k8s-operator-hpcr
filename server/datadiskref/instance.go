@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package datadisk
+package datadiskref
 
 import (
-	"sync"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 )
 
-var (
-	lock sync.Mutex
-)
+// dataDiskRefOptionsFromConfigMap decodes the information required to create a data disk
+// from the k8s resource
+func dataDiskRefOptionsFromConfigMap(data *DataDiskRefConfigResource, envMap env.Environment) (*onprem.DataDiskRefOptions, error) {
+	spec := data.Parent.Spec
+	return &onprem.DataDiskRefOptions{
+		Name:        spec.VolumeName,
+		StoragePool: onprem.BoxStoragePool(spec.StoragePool),
+	}, nil
+}

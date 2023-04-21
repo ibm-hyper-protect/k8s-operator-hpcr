@@ -1,0 +1,11 @@
+kind: HyperProtectContainerRuntimeOnPremNetworkRef
+apiVersion: hpse.ibm.com/v1
+metadata:
+  name: samplenetworkref
+  labels:
+    app: hpcr
+spec:
+  networkName: default
+  targetSelector:
+    matchLabels:
+      config: onpremsample

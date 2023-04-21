@@ -7,7 +7,7 @@ spec:
   generateSelector: true
   parentResource:
     apiVersion: hpse.ibm.com/v1
-    resource: vpc-hpcrs    
+    resource: vpc-hpcrs
   resyncPeriodSeconds: 60
   hooks:
     sync:
@@ -23,7 +23,7 @@ spec:
 apiVersion: metacontroller.k8s.io/v1alpha1
 kind: CompositeController
 metadata:
-  name: k8s-operator-hpcr-onprem  
+  name: k8s-operator-hpcr-onprem
 spec:
   generateSelector: true
   parentResource:
@@ -44,13 +44,13 @@ spec:
 apiVersion: metacontroller.k8s.io/v1alpha1
 kind: CompositeController
 metadata:
-  name: k8s-operator-hpcr-datadisk  
+  name: k8s-operator-hpcr-datadisk
 spec:
   generateSelector: true
   parentResource:
     apiVersion: hpse.ibm.com/v1
     resource: onprem-datadisks
-  resyncPeriodSeconds: 60
+  resyncPeriodSeconds: 120
   hooks:
     sync:
       webhook:
@@ -61,3 +61,39 @@ spec:
     customize:
       webhook:
         url: http://k8s-operator-hpcr.default:8080/datadisk/customize
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-datadiskref
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-datadiskrefs
+  resyncPeriodSeconds: 120
+  hooks:
+    sync:
+      webhook:
+        url: http://k8s-operator-hpcr.default:8080/datadiskref/sync
+    customize:
+      webhook:
+        url: http://k8s-operator-hpcr.default:8080/datadiskref/customize
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-networkref
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-networkrefs
+  resyncPeriodSeconds: 120
+  hooks:
+    sync:
+      webhook:
+        url: http://k8s-operator-hpcr.default:8080/networkref/sync
+    customize:
+      webhook:
+        url: http://k8s-operator-hpcr.default:8080/networkref/customize
