@@ -18,6 +18,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/digitalocean/go-libvirt"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
@@ -26,9 +27,35 @@ import (
 	"libvirt.org/go/libvirtxml"
 )
 
+var (
+	emptyIPAddresses = A.Empty[string]()
+)
+
+func getIPAddress(lease libvirt.NetworkDhcpLease) string {
+	return lease.Ipaddr
+}
+
 func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.Domain, opt *onprem.InstanceOptions) common.Action {
 
 	getLoggingVolume := onprem.GetLoggingVolume(client)
+	getLeases := onprem.GetDCHPLeases(client)
+
+	// getIPAddresses determines the IP Addresses for the instance by checking for a all leases
+	// for the configured network and then filtering down the list to the hostname
+	getIPAddresses := func() []string {
+		network := onprem.GetNetwork(opt)
+		leases, err := getLeases(network)
+		if err != nil {
+			log.Printf("Unable to get the leases for network [%s], cause: [%v]", network, err)
+			return emptyIPAddresses
+		}
+		// filter down
+		return F.Pipe2(
+			leases,
+			A.Filter(onprem.IsNetworkDhcpLeaseForHostname(opt.Name)),
+			A.Map(getIPAddress),
+		)
+	}
 
 	return func() (*common.ResourceStatus, error) {
 		// fetch the logs
@@ -78,7 +105,8 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 			logs := strings.Join(lines, "\n")
 			// assemble some metadata
 			metadata := C.RawMap{
-				"logs": logs,
+				"logs":        logs,
+				"ipaddresses": getIPAddresses(),
 			}
 			if err == nil {
 				metadata["domainXML"] = instStrg
