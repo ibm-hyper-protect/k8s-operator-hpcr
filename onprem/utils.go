@@ -130,6 +130,13 @@ func BoxStoragePool(pool string) string {
 	return pool
 }
 
+func BoxNetworkName(name string) string {
+	if len(name) <= 0 {
+		return DefaultNetwork
+	}
+	return name
+}
+
 func BoxDataDiskSize(size uint64) uint64 {
 	if size <= 0 {
 		return DefaultDataDiskSize

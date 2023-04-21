@@ -195,6 +195,36 @@ func IsDataDiskValid(client *LivirtClient) func(opt *DataDiskOptions) (*libvirtx
 	}
 }
 
+// GetDataDiskRef tests if a data disk has a valid configuration
+func GetDataDiskRef(client *LivirtClient) func(opt *DataDiskRefOptions) (*libvirtxml.StorageVolume, error) {
+	// connection
+	conn := client.LibVirt
+	storageVolXMLDesc := getStorageVolXMLDesc(conn)
+
+	return func(opt *DataDiskRefOptions) (*libvirtxml.StorageVolume, error) {
+		// check for the pool
+		pool, err := conn.StoragePoolLookupByName(opt.StoragePool)
+		if err != nil {
+			log.Printf("Unable to lookup storage pool [%s], cause: [%v]", opt.StoragePool, err)
+			return nil, err
+		}
+		// lookup the volume
+		vol, err := conn.StorageVolLookupByName(pool, opt.Name)
+		if err != nil {
+			log.Printf("Unable to lookup volume [%s] on pool [%s], cause: [%v]", opt.Name, pool.Name, err)
+			return nil, err
+		}
+		// get some metadata
+		volXML, err := storageVolXMLDesc(&vol)
+		if err != nil {
+			log.Printf("Unable to get information for volume [%s] on pool [%s], cause: [%v]", opt.Name, pool.Name, err)
+			return nil, err
+		}
+		// nothing to do
+		return volXML, nil
+	}
+}
+
 // CreateDataDiskSync creates a data disk or resizes an existing one if required
 func CreateDataDiskSync(client *LivirtClient) func(opt *DataDiskOptions) (*libvirt.StorageVol, error) {
 	createDataDisk := CreateDataDisk(client)

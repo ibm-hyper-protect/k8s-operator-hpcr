@@ -63,6 +63,18 @@ type DataDiskOptions struct {
 	Size uint64
 }
 
+type DataDiskRefOptions struct {
+	// name of the data disk
+	Name string
+	// name of the libvirt storage pool, the pool must exist
+	StoragePool string
+}
+
+type NetworkRefOptions struct {
+	// name of the network
+	Name string
+}
+
 // GetNetwork returns the network attached to the instane
 func GetNetwork(opt *InstanceOptions) string {
 	if opt.Network != "" {

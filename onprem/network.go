@@ -15,13 +15,16 @@
 package onprem
 
 import (
+	"encoding/xml"
 	"log"
 	"math"
 
 	libvirt "github.com/digitalocean/go-libvirt"
+	"libvirt.org/go/libvirtxml"
 )
 
 const (
+	// default name for the network to attach to
 	DefaultNetwork = "default"
 )
 
@@ -57,5 +60,50 @@ func GetDCHPLeases(client *LivirtClient) func(networkName string) ([]libvirt.Net
 		}
 
 		return leases, err
+	}
+}
+
+func parseNetworkXML(s string) (*libvirtxml.Network, error) {
+	var networkDef libvirtxml.Network
+	err := xml.Unmarshal([]byte(s), &networkDef)
+	if err != nil {
+		return nil, err
+	}
+	return &networkDef, nil
+}
+
+func getNetworkXMLDesc(conn *libvirt.Libvirt) func(net *libvirt.Network) (*libvirtxml.Network, error) {
+	return func(net *libvirt.Network) (*libvirtxml.Network, error) {
+		// try to get more info
+		xmlDef, err := conn.NetworkGetXMLDesc(*net, 0)
+		if err != nil {
+			return nil, err
+		}
+		// parse
+		return parseNetworkXML(xmlDef)
+	}
+}
+
+// GetNetworkRef tries to return a network ref
+func GetNetworkRef(client *LivirtClient) func(opt *NetworkRefOptions) (*libvirtxml.Network, error) {
+	// connection
+	conn := client.LibVirt
+	networkXMLDesc := getNetworkXMLDesc(conn)
+
+	return func(opt *NetworkRefOptions) (*libvirtxml.Network, error) {
+		// check for the network
+		net, err := conn.NetworkLookupByName(opt.Name)
+		if err != nil {
+			log.Printf("Unable to lookup network [%s], cause: [%v]", opt.Name, err)
+			return nil, err
+		}
+		// get some metadata
+		netXML, err := networkXMLDesc(&net)
+		if err != nil {
+			log.Printf("Unable to get information for network [%s], cause: [%v]", opt.Name, err)
+			return nil, err
+		}
+		// nothing to do
+		return netXML, nil
 	}
 }

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package onprem
+package lock
 
 import (
 	"sync"
 )
 
 var (
-	lock sync.Mutex
+	Lock sync.Mutex
 )
