@@ -50,6 +50,8 @@ type InstanceOptions struct {
 	StoragePool string
 	// attached data disks
 	DataDisks []*AttachedDataDisk
+	// attached network
+	Network string
 }
 
 type DataDiskOptions struct {
@@ -59,6 +61,14 @@ type DataDiskOptions struct {
 	StoragePool string
 	// size of the disk
 	Size uint64
+}
+
+// GetNetwork returns the network attached to the instane
+func GetNetwork(opt *InstanceOptions) string {
+	if opt.Network != "" {
+		return opt.Network
+	}
+	return DefaultNetwork
 }
 
 func GetCIDataVolumeName(name string) string {
