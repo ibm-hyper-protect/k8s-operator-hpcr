@@ -204,9 +204,97 @@ The following example shows how to deploy a VSI that does need persistent storag
     - `imageURL`: an HTTP(s) URL serving the [IBM Hyper Protect Container Runtime image](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime). The URL should be resolvable from the Kubernetes cluster, have a filename part, and that filename will be used as an identifier of the HPCR image on the LPAR. 
     - `storagePool`: during the deployment of the VSI the controller manages several volumes on the LPAR. This setting identifies the name of the storage pool on that LPAR that hosts these volumes. The storage pool has to exist and it has to be large enough to hold the volumes.
     - `targetSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the config map that holds the SSH configuration
-    - `diskSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the data disk descriptor
+    - `diskSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the data disk descriptor or a data disk reference descriptor (or a mix)
 
     **Note:** In this setup we attach the data disk to the VSI but in order to be useable to an OCI container it has to be [mounted via the contract](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_volumes).
+
+### c. Deploying a VSI with a Data Disk Reference
+
+The following example shows how to deploy a VSI that does need persistent storage but the persistent storage has alread been pre-created and is not managed by the operator.
+
+1. Define the data disk reference. Note that the disk reference is labeled as `app:hpcr`
+
+    ```yaml
+    ---
+    kind: HyperProtectContainerRuntimeOnPremDataDiskRef
+    apiVersion: hpse.ibm.com/v1
+    metadata:
+      name: samplediskref
+      labels:
+        app: hpcr
+    spec:
+      volumeName: existingName
+      storagePool: images
+      targetSelector:
+        matchLabels:
+          config: onpremsample
+    ```
+
+2. Define the VSI and reference the data disk:
+
+    ```yaml
+    apiVersion: hpse.ibm.com/v1
+    kind: HyperProtectContainerRuntimeOnPrem
+    metadata:
+      name: onpremsample
+    spec:
+      contract: ...
+      imageURL: ...
+      storagePool: ...
+      targetSelector: 
+        matchLabels:
+          ...
+      diskSelector: 
+        matchLabels:
+          app: hpcr
+    ```
+
+    Please refer to [Deploying a VSI with a Data Disk](#b-deploying-a-vsi-with-a-data-disk) for a description of these parameters.
+
+
+### d. Deploying a VSI with a Network Reference
+
+The following example shows how to deploy a VSI that attaches to a predefined network.
+
+1. Define the network reference. Note that the network is labeled as `app:hpcr`
+
+    ```yaml
+    ---
+    kind: HyperProtectContainerRuntimeOnPremNetworkRef
+    apiVersion: hpse.ibm.com/v1
+    metadata:
+      name: samplenetworkref
+      labels:
+        app: hpcr
+    spec:
+      networkName: default
+      targetSelector:
+        matchLabels:
+          config: onpremsample
+    ```
+
+2. Define the VSI and reference the network:
+
+    ```yaml
+    apiVersion: hpse.ibm.com/v1
+    kind: HyperProtectContainerRuntimeOnPrem
+    metadata:
+      name: onpremsample
+    spec:
+      contract: ...
+      imageURL: ...
+      storagePool: ...
+      targetSelector: 
+        matchLabels:
+          ...
+      networkSelector: 
+        matchLabels:
+          app: hpcr
+    ```
+
+    Please refer to [Deploying a VSI with a Data Disk](#b-deploying-a-vsi-with-a-data-disk) for a description of these parameters.
+
+    - `networkSelector`: a [label selector](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) for the network or network reference
 
 ## Footnotes
 
@@ -256,6 +344,8 @@ The data disk may be stored on a different storage pool than the boot disk of th
 
 ## Debugging
 
+### OnPrem VSIs
+
 After deploying a custom resource of type `HyperProtectContainerRuntimeOnPrem` the controller will try to create the described VSI instance and will synchronise it state. The state of this process is captured in the `status` field of the `HyperProtectContainerRuntimeOnPrem` resource as shown:
 
 ```yaml
@@ -295,3 +385,55 @@ With the following semantics:
 
 - `status`: a status flag
 - `description`: for a running VSI this carries the console log. For an errored instance it carries the error information
+
+### Network References
+
+After deploying a custom resource of type `HyperProtectContainerRuntimeOnPremNetworkRef` the controller will try to locate the referenced network and will synchronise it state. The state of this process is captured in the `status` field of the `HyperProtectContainerRuntimeOnPremNetworkRef` resource as shown:
+
+```yaml
+status:
+  description: |2-
+      <network>
+          <name>default</name>
+          <uuid>97d16d9e-da57-492c-82a0-0388561bf065</uuid>
+          <forward mode="nat">
+              <nat>
+                  <port start="1024" end="65535"></port>
+              </nat>
+          </forward>
+          <bridge name="virbr0" stp="on" delay="0"></bridge>
+          <mac address="52:54:00:2b:4b:c4"></mac>
+          <ip address="192.168.122.1" netmask="255.255.255.0">
+              <dhcp>
+                  <range start="192.168.122.2" end="192.168.122.254"></range>
+              </dhcp>
+          </ip>
+      </network>
+  metadata:
+    Name: default
+    networkXML: |2-
+        <network>
+            <name>default</name>
+            <uuid>97d16d9e-da57-492c-82a0-0388561bf065</uuid>
+            <forward mode="nat">
+                <nat>
+                    <port start="1024" end="65535"></port>
+                </nat>
+            </forward>
+            <bridge name="virbr0" stp="on" delay="0"></bridge>
+            <mac address="52:54:00:2b:4b:c4"></mac>
+            <ip address="192.168.122.1" netmask="255.255.255.0">
+                <dhcp>
+                    <range start="192.168.122.2" end="192.168.122.254"></range>
+                </dhcp>
+            </ip>
+        </network>
+  observedGeneration: 1
+  status: 1
+```
+
+With the following semantics:
+
+- `status`: a status flag
+- `description`: some textual description of the status of the network or the error message
+- `networkXML`: an XML description of the network

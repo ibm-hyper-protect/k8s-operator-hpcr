@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.package datasource
 
-package onprem
+package networkref
 
 import (
 	"encoding/json"
@@ -21,14 +21,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
-	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/lock"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	v1 "k8s.io/api/core/v1"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -40,8 +35,8 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 	}
 }
 
-// syncOnPrem is invoked to synchronize the state of our resource
-func syncOnPrem(req map[string]any) common.Action {
+// syncNetworkRef is invoked to synchronize the state of our resource
+func syncNetworkRef(req map[string]any) common.Action {
 	// just a poor man's solution for now
 	if !lock.Lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)
@@ -50,75 +45,28 @@ func syncOnPrem(req map[string]any) common.Action {
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
-	// assemble information about the attached data disks
-	dataDisks, err := onprem.DataDisksFromRelated(req)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	cfg, err := common.Transcode[*OnPremConfigResource](req)
+	cfg, err := common.Transcode[*NetworkRefConfigResource](req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	opt, err := onpremInstanceOptionsFromConfigMap(cfg, env)
+	opt, err := networkRefOptionsFromConfigMap(cfg, env)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	// dump the attached data disks
-	if A.IsNonEmpty(dataDisks) {
-		// extract names
-		dataDiskNames := A.MonadMap(dataDisks, func(disk *onprem.DataDiskCustomResource) string {
-			return disk.Name
-		})
-		// log the disks
-		log.Printf("DataDisks: %v", dataDiskNames)
-	}
-
-	// attach data disks
-	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
-
-	// make sure to construct the VSI
 	return CreateSyncAction(client, opt)
-}
-
-// finalizeOnPrem deletes a VSI
-func finalizeOnPrem(req map[string]any) common.Action {
-	if !lock.Lock.TryLock() {
-		return common.CreateStatusAction(common.Waiting)
-	}
-	defer lock.Lock.Unlock()
-
-	env := common.EnvFromConfigMapsOrSecrets(req)
-
-	client, err := onprem.CreateLivirtClientFromEnvMap(env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	cfg, err := common.Transcode[*OnPremConfigResource](req)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	opt, err := onpremInstanceOptionsFromConfigMap(cfg, env)
-	if err != nil {
-		return common.CreateErrorAction(err)
-	}
-
-	return CreateFinalizeAction(client, opt)
 }
 
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		log.Printf("synchronizing onprem VSI ...")
+		log.Printf("synchronizing network ref...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			// Handle error
@@ -140,7 +88,7 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		// log the request
 		// log.Printf("JSON Input [%s]", string(jsonData))
 		// constuct the action
-		action := syncOnPrem(req)
+		action := syncNetworkRef(req)
 		// execute and handle
 		state, err := action()
 		if err != nil {
@@ -156,62 +104,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		if state.Status != common.Ready {
 			resp["resyncAfterSeconds"] = 10
 		}
-
-		// data, err := json.Marshal(resp)
-		// if err == nil {
-		// 	log.Printf("Sync Response: [%s]", string(data))
-		// }
-
 		// done
 		c.JSON(http.StatusOK, resp)
-	}
-}
-
-func CreateControllerFinalizeRoute() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		log.Printf("finalizing ...")
-
-		jsonData, err := io.ReadAll(c.Request.Body)
-		if err != nil {
-			// Handle error
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		var req map[string]any
-		err = json.Unmarshal(jsonData, &req)
-		if err != nil {
-			// Handle error
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		// constuct the action
-		action := finalizeOnPrem(req)
-		// execute and handle
-		state, err := action()
-		if err != nil {
-			log.Printf("Error [%v]", err)
-			// Handle error TODO really handle error
-			c.JSON(http.StatusOK, gin.H{
-				"finalized": true,
-			})
-			// bail out
-			return
-		}
-		// done finalizing
-		finalized := state.Status == common.Ready
-		resp := gin.H{
-			"finalized": finalized,
-		}
-		if !finalized {
-			resp["resyncAfterSeconds"] = 10
-		}
-		// final response
-		c.JSON(http.StatusOK, resp)
-		log.Printf("Finalized: [%t]", finalized)
 	}
 }
 
@@ -238,7 +132,7 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 			return
 		}
 		// transcode to the expected format
-		cfg, err := common.Transcode[*OnPremConfigResource](req)
+		cfg, err := common.Transcode[*NetworkRefConfigResource](req)
 		if err != nil {
 			// Handle error
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -248,35 +142,18 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		}
 		// print namespace
 		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
-		// list the related resources
-		var relatedResourceRules []*common.RelatedResourceRule
-		if F.IsNonNil(cfg.Parent.Spec.TargetSelector) {
-			// append the selectors
-			relatedResourceRules = append(relatedResourceRules, &common.RelatedResourceRule{
-				ResourceRule: common.ResourceRule{
-					APIVersion: C.K8SAPIVersion,
-					Resource:   string(v1.ResourceConfigMaps),
-				},
-				// select config maps by label
-				LabelSelector: cfg.Parent.Spec.TargetSelector,
-			})
-
-		}
-
 		// produce a response
 		resp := common.CustomizeHookResponse{
 			RelatedResourceRules: common.CreateRelatedResourceRules([]common.RelatedResource{
 				// config
 				common.RefConfigMaps(cfg.Parent.Spec.TargetSelector),
 				common.RefSecrets(cfg.Parent.Spec.TargetSelector),
-				// disk
-				datadisk.RefDataDisks(cfg.Parent.Spec.DiskSelector),
 			}),
 		}
 		// dump it
 		data, err := json.Marshal(resp)
 		if err == nil {
-			log.Printf("customize response for for [%s] in namespace [%s]: [%s]", cfg.Parent.Name, cfg.Parent.Namespace, string(data))
+			log.Printf("customize response [%s]", string(data))
 		}
 
 		// done

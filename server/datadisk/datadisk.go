@@ -23,6 +23,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/lock"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -37,10 +38,10 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 // syncDataDisk is invoked to synchronize the state of our resource
 func syncDataDisk(req map[string]any) common.Action {
 	// just a poor man's solution for now
-	if !lock.TryLock() {
+	if !lock.Lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)
 	}
-	defer lock.Unlock()
+	defer lock.Lock.Unlock()
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
@@ -63,10 +64,10 @@ func syncDataDisk(req map[string]any) common.Action {
 }
 
 func finalizeDataDisk(req map[string]any) common.Action {
-	if !lock.TryLock() {
+	if !lock.Lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)
 	}
-	defer lock.Unlock()
+	defer lock.Lock.Unlock()
 
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
@@ -91,7 +92,7 @@ func finalizeDataDisk(req map[string]any) common.Action {
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		log.Printf("synchronizing ...")
+		log.Printf("synchronizing data disk ...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			// Handle error

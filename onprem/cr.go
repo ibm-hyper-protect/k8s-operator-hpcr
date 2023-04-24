@@ -47,7 +47,37 @@ type DataDiskCustomResourceSpec struct {
 	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
 }
 
+type DataDiskRefCustomResourceSpec struct {
+	// name of the volume, must exist
+	VolumeName string `json:"volumeName"`
+	// name of the storage pool, must exist and must be large enough
+	StoragePool string `json:"storagePool"`
+	// specification of the associated config maps
+	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
+}
+
+type NetworkRefCustomResourceSpec struct {
+	// name of the network, must exist
+	NetworkName string `json:"networkName"`
+	// specification of the associated config maps
+	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
+}
+
 type DataDiskStatus struct {
+	// description of the data disk status
+	Description string `json:"description"`
+	// the status flag
+	Status int `json:"status"`
+}
+
+type DataDiskRefStatus struct {
+	// description of the data disk status
+	Description string `json:"description"`
+	// the status flag
+	Status int `json:"status"`
+}
+
+type NetworkRefStatus struct {
 	// description of the data disk status
 	Description string `json:"description"`
 	// the status flag
@@ -81,6 +111,38 @@ type DataDiskCustomResource struct {
 
 	// status of this custom resource
 	Status DataDiskStatus `json:"status,omitempty"`
+}
+
+type DataDiskRefCustomResource struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Specification of the desired behavior of the pod.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	Spec DataDiskRefCustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+
+	// status of this custom resource
+	Status DataDiskRefStatus `json:"status,omitempty"`
+}
+
+type NetworkRefCustomResource struct {
+	metav1.TypeMeta `json:",inline"`
+	// Standard object's metadata.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+
+	// Specification of the desired behavior of the pod.
+	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+	// +optional
+	Spec NetworkRefCustomResourceSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+
+	// status of this custom resource
+	Status NetworkRefStatus `json:"status,omitempty"`
 }
 
 type OnPremCustomResourceOptions struct {

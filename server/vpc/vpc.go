@@ -125,7 +125,7 @@ func finalizeVPC(req map[string]any) common.Action {
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		log.Printf("synchronizing ...")
+		log.Printf("synchronizing cloud VSI ...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			// print stome log
