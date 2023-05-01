@@ -13,12 +13,12 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.1.8
 	github.com/joho/godotenv v1.5.1
-	github.com/kdomanski/iso9660 v0.3.3
+	github.com/kdomanski/iso9660 v0.3.4
 	github.com/kevinburke/ssh_config v1.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/qri-io/jsonschema v0.2.1
 	github.com/stretchr/testify v1.8.2
-	github.com/urfave/cli/v2 v2.25.2
+	github.com/urfave/cli/v2 v2.25.3
 	golang.org/x/crypto v0.8.0
 	k8s.io/api v0.27.1
 	k8s.io/apimachinery v0.27.1
