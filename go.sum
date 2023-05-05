@@ -1,5 +1,7 @@
 github.com/IBM/go-sdk-core/v5 v5.13.1 h1:zD6p3t1whAlRJo/VBmE69c8RcH9LCHL1n0/sO1MWlpw=
 github.com/IBM/go-sdk-core/v5 v5.13.1/go.mod h1:pVkN7IGmsSdmR1ZCU4E/cLcCclqRKMYgg7ya+O2Mk6g=
+github.com/IBM/go-sdk-core/v5 v5.13.2 h1:C/JWnEadKzonoHFZdMX8DaSxGVqKRFhcpDXFS5bPDiA=
+github.com/IBM/go-sdk-core/v5 v5.13.2/go.mod h1:gKRSB+YyKsGlRQW7v5frlLbue5afulSvrRa4O26o4MM=
 github.com/IBM/platform-services-go-sdk v0.35.0 h1:7/iP1d+Um3+gO9osGElha4Tfca8Y5rm9GCVPEdwFVLI=
 github.com/IBM/platform-services-go-sdk v0.35.0/go.mod h1:oFW/DQyAXGBcGytB+DtKjE3yNdEGM2bmw5SDOjrRwTw=
 github.com/IBM/platform-services-go-sdk v0.35.1 h1:SuXr6HBNNkULOs0ns7Wo8sUaxU6RVS5jMFhYwboLOJI=
@@ -10,6 +12,8 @@ github.com/IBM/platform-services-go-sdk v0.37.2 h1:/J+qFXZSWk4WK5bdrLu9uMxPrzx7o
 github.com/IBM/platform-services-go-sdk v0.37.2/go.mod h1:oFW/DQyAXGBcGytB+DtKjE3yNdEGM2bmw5SDOjrRwTw=
 github.com/IBM/platform-services-go-sdk v0.37.3 h1:xPJ7M6F+Qmd+4IOMn2eM/UHy2Y1iHB2jRBrKynJA7QE=
 github.com/IBM/platform-services-go-sdk v0.37.3/go.mod h1:oFW/DQyAXGBcGytB+DtKjE3yNdEGM2bmw5SDOjrRwTw=
+github.com/IBM/platform-services-go-sdk v0.37.4 h1:MPzuoImfo4cWV1Zf1qMdxuAMSGdJnTJkvff43xoJKXg=
+github.com/IBM/platform-services-go-sdk v0.37.4/go.mod h1:rb1IaHGwT8QI8pCYgNbf2VbkuKMgOowl91pZ2QWZuJ4=
 github.com/IBM/vpc-go-sdk v0.35.0 h1:Qc0OV2WIQLGwxuvPKusJdgeXiMwyHQITvSof+v125D8=
 github.com/IBM/vpc-go-sdk v0.35.0/go.mod h1:Ozn0YBCs284Qvy+CNAmoLhh2eD48NnobiAyfgVd8wmA=
 github.com/IBM/vpc-go-sdk v0.36.0 h1:ceUI+AaZ3cSKvfg9MjfW5lVO8YnJN6IuVC3YyXX+Yng=
@@ -59,6 +63,8 @@ github.com/go-playground/universal-translator v0.18.1 h1:Bcnm0ZwsGyWbCzImXv+pAJn
 github.com/go-playground/universal-translator v0.18.1/go.mod h1:xekY+UJKNuX9WP91TpwSH2VMlDf28Uj24BCp08ZFTUY=
 github.com/go-playground/validator/v10 v10.12.0 h1:E4gtWgxWxp8YSxExrQFv5BpCahla0PVF2oTTEYaWQGI=
 github.com/go-playground/validator/v10 v10.12.0/go.mod h1:hCAPuzYvKdP33pxWa+2+6AIKXEKqjIUyqsNCtbsSJrA=
+github.com/go-playground/validator/v10 v10.13.0 h1:cFRQdfaSMCOSfGCCLB20MHvuoHb/s5G8L5pu2ppK5AQ=
+github.com/go-playground/validator/v10 v10.13.0/go.mod h1:dwu7+CG8/CtBiJFZDz4e+5Upb6OLw04gtBYw0mcG/z4=
 github.com/go-test/deep v1.0.3 h1:ZrJSEWsXzPOxaZnFteGEfooLba+ju3FYIbOrS+rQd68=
 github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
 github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=

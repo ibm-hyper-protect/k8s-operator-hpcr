@@ -3,8 +3,8 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.20
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.13.1
-	github.com/IBM/platform-services-go-sdk v0.37.3
+	github.com/IBM/go-sdk-core/v5 v5.13.2
+	github.com/IBM/platform-services-go-sdk v0.37.4
 	github.com/IBM/vpc-go-sdk v0.36.0
 	github.com/Masterminds/semver v1.5.0
 	github.com/digitalocean/go-libvirt v0.0.0-20221205150000-2939327a8519
@@ -40,7 +40,7 @@ require (
 	github.com/go-openapi/strfmt v0.21.7 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.12.0 // indirect
+	github.com/go-playground/validator/v10 v10.13.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
