@@ -20,6 +20,7 @@ import (
 
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/joho/godotenv"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -55,4 +56,51 @@ func TestCreateInstance(t *testing.T) {
 
 	// print the result
 	log.Printf("UUID: [%s]", result.UUID)
+}
+
+func TestCreateHash(t *testing.T) {
+	// disk attachment
+	var firstDisk = AttachedDataDisk{
+		Name:        "first",
+		StoragePool: "defaultPool",
+	}
+	var secondDisk = AttachedDataDisk{
+		Name:        "second",
+		StoragePool: "defaultPool",
+	}
+	// check if the hash creation is stable
+	var opt1 InstanceOptions = InstanceOptions{
+		Name:        "Carsten",
+		UserData:    "user_data",
+		ImageURL:    "http://example.com",
+		StoragePool: "defaultPool",
+		DataDisks: []*AttachedDataDisk{
+			&firstDisk,
+			&secondDisk,
+		},
+		Networks: []string{
+			"second",
+			"first",
+		},
+	}
+
+	var opt2 InstanceOptions = InstanceOptions{
+		Name:        "Carsten",
+		UserData:    "user_data",
+		ImageURL:    "http://example.com",
+		StoragePool: "defaultPool",
+		DataDisks: []*AttachedDataDisk{
+			&secondDisk,
+			&firstDisk,
+		},
+		Networks: []string{
+			"first",
+			"second",
+		},
+	}
+
+	var hash1 = CreateInstanceHash(&opt1)
+	var hash2 = CreateInstanceHash(&opt2)
+
+	assert.Equal(t, hash1, hash2)
 }

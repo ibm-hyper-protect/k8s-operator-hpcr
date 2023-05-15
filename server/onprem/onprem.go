@@ -85,6 +85,16 @@ func syncOnPrem(req map[string]any) common.Action {
 		log.Printf("DataDisks: %v", dataDiskNames)
 	}
 
+	// dump the attached network references
+	if A.IsNonEmpty(networks) {
+		// extract names
+		networkRefNames := A.MonadMap(networks, func(disk *onprem.NetworkRefCustomResource) string {
+			return disk.Name
+		})
+		// log the disks
+		log.Printf("NetworkRefs: %v", networkRefNames)
+	}
+
 	// attach data disks
 	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
 

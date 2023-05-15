@@ -249,7 +249,7 @@ func DataDisksFromRelated(data map[string]any) ([]*DataDiskCustomResource, error
 					return nil, err
 				}
 				// validate the status of the data disk
-				if disk.Status.Status == 1 {
+				if common.Status(disk.Status.Status) == common.Ready {
 					result = append(result, disk)
 				} else {
 					// disk is not in a valid status
@@ -276,7 +276,7 @@ func DataDiskDiskRefsFromRelated(data map[string]any) ([]*DataDiskRefCustomResou
 					return nil, err
 				}
 				// validate the status of the data disk
-				if disk.Status.Status == 1 {
+				if common.Status(disk.Status.Status) == common.Ready {
 					result = append(result, disk)
 				} else {
 					// disk is not in a valid status

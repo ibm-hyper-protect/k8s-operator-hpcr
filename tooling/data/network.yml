@@ -4,6 +4,7 @@ metadata:
   name: samplenetworkref
   labels:
     app: hpcr
+    network: onpremsample
 spec:
   networkName: default
   targetSelector:

@@ -49,10 +49,11 @@ func createNetworkRefReadyAction(net *libvirtxml.Network) common.Action {
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
 func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.NetworkRefOptions) common.Action {
-	// checks for the validity of the data disk
+	// checks for the validity of the network
 	getNetworkRef := onprem.GetNetworkRef(client)
 	netXML, err := getNetworkRef(opt)
 	if err != nil {
+		log.Printf("Unable to lookup network ref [%s], cause: [%v]", opt.Name, err)
 		return common.CreateErrorAction(err)
 	}
 	// successfully located the network

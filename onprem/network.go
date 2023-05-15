@@ -15,6 +15,7 @@
 package onprem
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"log"
@@ -130,9 +131,14 @@ func NetworkRefsFromRelated(data map[string]any) ([]*NetworkRefCustomResource, e
 					return nil, err
 				}
 				// validate the status of the network ref
-				if netRef.Status.Status == 1 {
+				if common.Status(netRef.Status.Status) == common.Ready {
 					result = append(result, netRef)
 				} else {
+					// print the invalid network config
+					res, err := json.Marshal(netRef)
+					if err == nil {
+						log.Printf("Network reference not ready is [%s]", string(res))
+					}
 					// disk is not in a valid status
 					log.Printf("Network Reference [%s] is not in ready state, ignoring, cause: [%s]", netRef.Name, netRef.Status.Description)
 				}

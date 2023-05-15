@@ -1,0 +1,7 @@
+<network>
+  <name>carsten</name>
+  <forward mode='nat'>
+  </forward>
+  <ip address='192.168.123.1' netmask='255.255.255.0'>
+  </ip>
+</network>

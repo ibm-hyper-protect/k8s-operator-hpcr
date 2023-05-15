@@ -20,10 +20,12 @@ import (
 	"fmt"
 	"log"
 	"path"
+	"sort"
 
 	"crypto/sha256"
 
 	"github.com/digitalocean/go-libvirt"
+	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
 )
 
@@ -95,6 +97,33 @@ func GetLoggingVolumeName(name string) string {
 	return fmt.Sprintf("console-%s.log", name)
 }
 
+// sort the data disks by name, so the hash is predictable
+func sortDataDisks(disks []*AttachedDataDisk) []*AttachedDataDisk {
+	if !A.IsNonEmpty(disks) {
+		return disks
+	}
+	// sort disks by name
+	var sorted []*AttachedDataDisk
+	sorted = append(sorted, disks...)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].Name < sorted[j].Name
+	})
+	// returns the sorted list
+	return sorted
+}
+
+// sort the networks by name, so the hash is predictable
+func sortNetwoks(networks []string) []string {
+	if !A.IsNonEmpty(networks) {
+		return networks
+	}
+	var sorted []string
+	sorted = append(sorted, networks...)
+	sort.Strings(sorted)
+	// returns the sorted list
+	return sorted
+}
+
 // createInstanceHash computes a hash value for the instance options
 func CreateInstanceHash(opt *InstanceOptions) string {
 	h := sha256.New()
@@ -103,15 +132,16 @@ func CreateInstanceHash(opt *InstanceOptions) string {
 	h.Write([]byte(opt.StoragePool))
 	h.Write([]byte(opt.UserData))
 	// add the data disks to the mix
-	for _, disk := range opt.DataDisks {
+	for _, disk := range sortDataDisks(opt.DataDisks) {
 		h.Write([]byte(disk.Name))
 		h.Write([]byte(disk.StoragePool))
 	}
 	// add the networks
-	for _, network := range opt.Networks {
+	for _, network := range sortNetwoks(opt.Networks) {
 		h.Write([]byte(network))
 	}
 	bs := h.Sum(nil)
+
 	return hex.EncodeToString(bs)
 }
 
@@ -280,7 +310,7 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 			Append: "off",
 		}
 		// add networks
-		if len(opt.Networks) > 0 {
+		if A.IsNonEmpty(opt.Networks) {
 			networks, err := createNetworksXML(opt.Networks)
 			if err != nil {
 				return nil, err
