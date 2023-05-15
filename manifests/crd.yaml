@@ -173,6 +173,26 @@ spec:
                             type: array
                             items:
                               type: string
+                networkSelector:
+                  type: object
+                  properties:
+                    matchLabels:
+                      type: object
+                      additionalProperties:
+                        type: string
+                    matchExpressions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                          operator:
+                            type: string
+                          value:
+                            type: array
+                            items:
+                              type: string
             status:
               type: object
               properties:

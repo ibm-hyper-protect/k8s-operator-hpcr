@@ -21,14 +21,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/lock"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/networkref"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	v1 "k8s.io/api/core/v1"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -52,6 +50,12 @@ func syncOnPrem(req map[string]any) common.Action {
 
 	// assemble information about the attached data disks
 	dataDisks, err := onprem.DataDisksFromRelated(req)
+	if err != nil {
+		return common.CreateErrorAction(err)
+	}
+
+	// assemble information about the attached networks
+	networks, err := onprem.NetworkRefsFromRelated(req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
@@ -83,6 +87,9 @@ func syncOnPrem(req map[string]any) common.Action {
 
 	// attach data disks
 	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
+
+	// attach networks
+	opt.Networks = onprem.NetworkRefCustomResourceToNetworks(networks)
 
 	// make sure to construct the VSI
 	return CreateSyncAction(client, opt)
@@ -248,21 +255,6 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 		}
 		// print namespace
 		log.Printf("Getting related resources for [%s] in namespace [%s] ...", cfg.Parent.Name, cfg.Parent.Namespace)
-		// list the related resources
-		var relatedResourceRules []*common.RelatedResourceRule
-		if F.IsNonNil(cfg.Parent.Spec.TargetSelector) {
-			// append the selectors
-			relatedResourceRules = append(relatedResourceRules, &common.RelatedResourceRule{
-				ResourceRule: common.ResourceRule{
-					APIVersion: C.K8SAPIVersion,
-					Resource:   string(v1.ResourceConfigMaps),
-				},
-				// select config maps by label
-				LabelSelector: cfg.Parent.Spec.TargetSelector,
-			})
-
-		}
-
 		// produce a response
 		resp := common.CustomizeHookResponse{
 			RelatedResourceRules: common.CreateRelatedResourceRules([]common.RelatedResource{
@@ -271,6 +263,9 @@ func CreateControllerCustomizeRoute() gin.HandlerFunc {
 				common.RefSecrets(cfg.Parent.Spec.TargetSelector),
 				// disk
 				datadisk.RefDataDisks(cfg.Parent.Spec.DiskSelector),
+				datadisk.RefDataDiskRefs(cfg.Parent.Spec.DiskSelector),
+				// networks
+				networkref.RefNetworkRefs(cfg.Parent.Spec.NetworkSelector),
 			}),
 		}
 		// dump it

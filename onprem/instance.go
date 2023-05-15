@@ -50,8 +50,8 @@ type InstanceOptions struct {
 	StoragePool string
 	// attached data disks
 	DataDisks []*AttachedDataDisk
-	// attached network
-	Network string
+	// attached networks
+	Networks []string
 }
 
 type DataDiskOptions struct {
@@ -76,11 +76,11 @@ type NetworkRefOptions struct {
 }
 
 // GetNetwork returns the network attached to the instane
-func GetNetwork(opt *InstanceOptions) string {
-	if opt.Network != "" {
-		return opt.Network
+func GetNetworks(opt *InstanceOptions) []string {
+	if len(opt.Networks) == 0 {
+		return []string{DefaultNetwork}
 	}
-	return DefaultNetwork
+	return opt.Networks
 }
 
 func GetCIDataVolumeName(name string) string {
@@ -106,6 +106,10 @@ func CreateInstanceHash(opt *InstanceOptions) string {
 	for _, disk := range opt.DataDisks {
 		h.Write([]byte(disk.Name))
 		h.Write([]byte(disk.StoragePool))
+	}
+	// add the networks
+	for _, network := range opt.Networks {
+		h.Write([]byte(network))
 	}
 	bs := h.Sum(nil)
 	return hex.EncodeToString(bs)
@@ -188,6 +192,8 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 	createLoggingVolume := CreateLoggingVolume(client)
 	isInstanceValid := IsInstanceValid(client)
 	createDataDiskXML := CreateDataDiskXML(client)
+
+	createNetworksXML := CreateNetworksXML()
 
 	return func(opt *InstanceOptions) (*libvirtxml.Domain, error) {
 		// prepare some names
@@ -273,7 +279,14 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 			File:   logVolume.Key,
 			Append: "off",
 		}
-
+		// add networks
+		if len(opt.Networks) > 0 {
+			networks, err := createNetworksXML(opt.Networks)
+			if err != nil {
+				return nil, err
+			}
+			domainXML.Devices.Interfaces = networks
+		}
 		// start the domain
 		return startDomain(domainXML)
 	}
