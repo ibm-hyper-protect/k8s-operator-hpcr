@@ -43,11 +43,16 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 	// getIPAddresses determines the IP Addresses for the instance by checking for a all leases
 	// for the configured network and then filtering down the list to the hostname
 	getIPAddresses := func() []string {
-		network := onprem.GetNetwork(opt)
-		leases, err := getLeases(network)
-		if err != nil {
-			log.Printf("Unable to get the leases for network [%s], cause: [%v]", network, err)
-			return emptyIPAddresses
+		networks := onprem.GetNetworks(opt)
+		var leases []libvirt.NetworkDhcpLease
+		for _, network := range networks {
+			lses, err := getLeases(network)
+			if err != nil {
+				log.Printf("Unable to get the leases for network [%s], cause: [%v]", network, err)
+				return emptyIPAddresses
+			}
+			// append all
+			leases = append(leases, lses...)
 		}
 		// filter down
 		return F.Pipe2(

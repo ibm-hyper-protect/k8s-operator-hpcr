@@ -36,6 +36,8 @@ type OnPremCustomResourceSpec struct {
 	TargetSelector *metav1.LabelSelector `json:"targetSelector"`
 	// specification of the associated data disks
 	DiskSelector *metav1.LabelSelector `json:"diskSelector"`
+	// specification of the associated networks
+	NetworkSelector *metav1.LabelSelector `json:"networkSelector"`
 }
 
 type DataDiskCustomResourceSpec struct {

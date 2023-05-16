@@ -24,3 +24,8 @@ import (
 func RefDataDisks(labels *metav1.LabelSelector) common.RelatedResource {
 	return common.RefResource(onprem.APIVersion, onprem.ResourceNameDataDisks, labels)
 }
+
+// RefDataDiskRefs references data disk references as related resources
+func RefDataDiskRefs(labels *metav1.LabelSelector) common.RelatedResource {
+	return common.RefResource(onprem.APIVersion, onprem.ResourceNameDataDiskRefs, labels)
+}

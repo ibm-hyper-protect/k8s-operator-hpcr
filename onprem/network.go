@@ -15,17 +15,26 @@
 package onprem
 
 import (
+	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"log"
 	"math"
 
 	libvirt "github.com/digitalocean/go-libvirt"
+	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
+	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
 )
 
 const (
 	// default name for the network to attach to
 	DefaultNetwork = "default"
+)
+
+var (
+	// full identifier of the disk ref config entry
+	KeyNetworkRefConfig = fmt.Sprintf("%s.%s", KindNetworkRef, APIVersion)
 )
 
 // IsNetworkDhcpLeaseForHostname checks if this lease is for the hostname
@@ -105,5 +114,71 @@ func GetNetworkRef(client *LivirtClient) func(opt *NetworkRefOptions) (*libvirtx
 		}
 		// nothing to do
 		return netXML, nil
+	}
+}
+
+// NetworkRefsFromRelated decodes the set of configured networks from the related data structure
+func NetworkRefsFromRelated(data map[string]any) ([]*NetworkRefCustomResource, error) {
+	var result []*NetworkRefCustomResource
+	if related, ok := data["related"].(map[string]any); ok {
+		// all config maps
+		if networkRefs, ok := related[KeyNetworkRefConfig].(map[string]any); ok {
+			// decode each network ref
+			for _, networkRef := range networkRefs {
+				// transcode to the expected format
+				netRef, err := common.Transcode[*NetworkRefCustomResource](networkRef)
+				if err != nil {
+					return nil, err
+				}
+				// validate the status of the network ref
+				if common.Status(netRef.Status.Status) == common.Ready {
+					result = append(result, netRef)
+				} else {
+					// print the invalid network config
+					res, err := json.Marshal(netRef)
+					if err == nil {
+						log.Printf("Network reference not ready is [%s]", string(res))
+					}
+					// disk is not in a valid status
+					log.Printf("Network Reference [%s] is not in ready state, ignoring, cause: [%s]", netRef.Name, netRef.Status.Description)
+				}
+			}
+		}
+	}
+	// ok
+	return result, nil
+}
+
+func networkRefCustomResourceToNetworks(res *NetworkRefCustomResource) string {
+	return res.Spec.NetworkName
+}
+
+// NetworkRefCustomResourceToNetworks converts from an array of NetworkRefCustomResource to an array of attached disks
+var NetworkRefCustomResourceToNetworks = A.Map(networkRefCustomResourceToNetworks)
+
+func createNetworkXML(networkName string) libvirtxml.DomainInterface {
+	log.Printf("Defining domain interface on network [%s]", networkName)
+	return libvirtxml.DomainInterface{
+		Model: &libvirtxml.DomainInterfaceModel{
+			Type: "virtio",
+		},
+		Source: &libvirtxml.DomainInterfaceSource{
+			Network: &libvirtxml.DomainInterfaceSourceNetwork{
+				Network: networkName,
+			},
+		},
+		Driver: &libvirtxml.DomainInterfaceDriver{
+			IOMMU: "on",
+		},
+	}
+}
+
+// CreateNetworksXML creates the XML for the networks
+func CreateNetworksXML() func(networkNames []string) ([]libvirtxml.DomainInterface, error) {
+
+	mapNames := A.Map(createNetworkXML)
+
+	return func(networkNames []string) ([]libvirtxml.DomainInterface, error) {
+		return mapNames(networkNames), nil
 	}
 }

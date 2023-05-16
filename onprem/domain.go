@@ -224,9 +224,9 @@ func shutDownDomain(client *LivirtClient) func(domain *libvirt.Domain) error {
 			case libvirt.DomainRunning:
 				// keep trying
 			case libvirt.DomainBlocked:
-				fmt.Printf("Domain [%s] is blocked, not sure what to do ...", domain.Name)
+				log.Printf("Domain [%s] is blocked, not sure what to do ...", domain.Name)
 			default:
-				fmt.Printf("Domain [%s] is in unknown state [%d]", domain.Name, state)
+				log.Printf("Domain [%s] is in unknown state [%d]", domain.Name, state)
 			}
 			// wait a bit
 			time.Sleep(2 * time.Second)
@@ -297,7 +297,6 @@ func StartDomain(client *LivirtClient) func(*libvirtxml.Domain) (*libvirtxml.Dom
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println(domainString)
 		// define the domain
 		log.Printf("Defining domain [%s] ...", domainXML.Name)
 		domain, err := conn.DomainDefineXML(domainString)

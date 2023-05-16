@@ -27,6 +27,8 @@ import (
 var (
 	// full identifier of the disk config entry
 	KeyDiskConfig = fmt.Sprintf("%s.%s", KindDataDisk, APIVersion)
+	// full identifier of the disk ref config entry
+	KeyDiskRefConfig = fmt.Sprintf("%s.%s", KindDataDiskRef, APIVersion)
 )
 
 // RemoveDataDisk removes the data disk
@@ -247,7 +249,34 @@ func DataDisksFromRelated(data map[string]any) ([]*DataDiskCustomResource, error
 					return nil, err
 				}
 				// validate the status of the data disk
-				if disk.Status.Status == 1 {
+				if common.Status(disk.Status.Status) == common.Ready {
+					result = append(result, disk)
+				} else {
+					// disk is not in a valid status
+					log.Printf("Data Disk [%s] is not in ready state, ignoring, cause: [%s]", disk.Name, disk.Status.Description)
+				}
+			}
+		}
+	}
+	// ok
+	return result, nil
+}
+
+// DataDiskRefsFromRelated decodes the set of configured data disks from the related data structure
+func DataDiskDiskRefsFromRelated(data map[string]any) ([]*DataDiskRefCustomResource, error) {
+	var result []*DataDiskRefCustomResource
+	if related, ok := data["related"].(map[string]any); ok {
+		// all config maps
+		if dataDisks, ok := related[KeyDiskRefConfig].(map[string]any); ok {
+			// decode each disk
+			for _, dataDisk := range dataDisks {
+				// transcode to the expected format
+				disk, err := common.Transcode[*DataDiskRefCustomResource](dataDisk)
+				if err != nil {
+					return nil, err
+				}
+				// validate the status of the data disk
+				if common.Status(disk.Status.Status) == common.Ready {
 					result = append(result, disk)
 				} else {
 					// disk is not in a valid status
