@@ -49,6 +49,7 @@ func syncDataDisk(req map[string]any) common.Action {
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
+	defer client.Close()
 
 	cfg, err := common.Transcode[*DataDiskRefConfigResource](req)
 	if err != nil {
