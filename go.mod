@@ -3,7 +3,7 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.20
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.13.2
+	github.com/IBM/go-sdk-core/v5 v5.13.4
 	github.com/IBM/platform-services-go-sdk v0.37.4
 	github.com/IBM/vpc-go-sdk v0.37.0
 	github.com/Masterminds/semver v1.5.0
@@ -13,15 +13,15 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.1.8
 	github.com/joho/godotenv v1.5.1
-	github.com/kdomanski/iso9660 v0.3.4
+	github.com/kdomanski/iso9660 v0.3.5
 	github.com/kevinburke/ssh_config v1.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/qri-io/jsonschema v0.2.1
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 	github.com/urfave/cli/v2 v2.25.3
 	golang.org/x/crypto v0.9.0
-	k8s.io/api v0.27.1
-	k8s.io/apimachinery v0.27.1
+	k8s.io/api v0.27.2
+	k8s.io/apimachinery v0.27.2
 	libvirt.org/go/libvirtxml v1.9002.0
 )
 
