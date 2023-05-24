@@ -64,6 +64,7 @@ func syncOnPrem(req map[string]any) common.Action {
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
+	defer client.Close()
 
 	cfg, err := common.Transcode[*OnPremConfigResource](req)
 	if err != nil {
@@ -118,6 +119,7 @@ func finalizeOnPrem(req map[string]any) common.Action {
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
+	defer client.Close()
 
 	cfg, err := common.Transcode[*OnPremConfigResource](req)
 	if err != nil {
