@@ -22,7 +22,7 @@ require (
 	golang.org/x/crypto v0.9.0
 	k8s.io/api v0.27.2
 	k8s.io/apimachinery v0.27.2
-	libvirt.org/go/libvirtxml v1.9002.0
+	libvirt.org/go/libvirtxml v1.9004.0
 )
 
 require (
