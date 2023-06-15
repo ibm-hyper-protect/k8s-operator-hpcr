@@ -23,7 +23,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
-	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/lock"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
@@ -37,11 +36,6 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 
 // syncDataDisk is invoked to synchronize the state of our resource
 func syncDataDisk(req map[string]any) common.Action {
-	// just a poor man's solution for now
-	if !lock.Lock.TryLock() {
-		return common.CreateStatusAction(common.Waiting)
-	}
-	defer lock.Lock.Unlock()
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
