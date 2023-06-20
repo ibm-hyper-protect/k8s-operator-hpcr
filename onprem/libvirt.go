@@ -16,6 +16,7 @@ package onprem
 
 import (
 	"io"
+	"log"
 
 	libvirt "github.com/digitalocean/go-libvirt"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
@@ -28,7 +29,10 @@ type LivirtClient struct {
 }
 
 func (client *LivirtClient) Close() error {
-	return client.LibVirt.ConnectClose()
+	// log this
+	log.Println("Disconnecting client ...")
+	// disconnect from the instance
+	return client.LibVirt.Disconnect()
 }
 
 // CreateLivirtClient creates a libvirt connection based on an SSH config
