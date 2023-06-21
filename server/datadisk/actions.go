@@ -24,31 +24,29 @@ import (
 )
 
 // createDataDiskReadyAction create the action
-func createDataDiskReadyAction(disk *libvirtxml.StorageVolume) common.Action {
+func createDataDiskReadyAction(disk *libvirtxml.StorageVolume) (*common.ResourceStatus, error) {
 
-	return func() (*common.ResourceStatus, error) {
-		// metadata to attach
-		metadata := C.RawMap{
-			"Name": disk.Name,
-		}
-		// marshal the disk info into metadata
-		diskStrg, err := onprem.XMLMarshall(disk)
-		if err == nil {
-			metadata["diskXML"] = diskStrg
-		} else {
-			log.Printf("Unable to marshal the disk XML, cause: [%v]", err)
-		}
-		return &common.ResourceStatus{
-			Status:      common.Ready,
-			Description: diskStrg,
-			Error:       nil,
-			Metadata:    metadata,
-		}, nil
+	// metadata to attach
+	metadata := C.RawMap{
+		"Name": disk.Name,
 	}
+	// marshal the disk info into metadata
+	diskStrg, err := onprem.XMLMarshall(disk)
+	if err == nil {
+		metadata["diskXML"] = diskStrg
+	} else {
+		log.Printf("Unable to marshal the disk XML, cause: [%v]", err)
+	}
+	return &common.ResourceStatus{
+		Status:      common.Ready,
+		Description: diskStrg,
+		Error:       nil,
+		Metadata:    metadata,
+	}, nil
 }
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
-func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) common.Action {
+func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) (*common.ResourceStatus, error) {
 	// checks for the validity of the data disk
 	isDataDiskValid := onprem.IsDataDiskValid(client)
 	diskXML, ok := isDataDiskValid(opt)
@@ -74,7 +72,7 @@ func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) 
 	return createDataDiskReadyAction(diskXML)
 }
 
-func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) common.Action {
+func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.DataDiskOptions) (*common.ResourceStatus, error) {
 	// TODO proper check for existence comes here
 	// ...
 	// destroy the instance

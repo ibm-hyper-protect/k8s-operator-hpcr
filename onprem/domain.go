@@ -287,6 +287,15 @@ func DeleteDomainByName(client *LivirtClient) func(name string) error {
 
 }
 
+func GetDomains(client *LivirtClient) func() ([]libvirt.Domain, error) {
+	conn := client.LibVirt
+
+	return func() ([]libvirt.Domain, error) {
+		res, _, err := conn.ConnectListAllDomains(1000, 0)
+		return res, err
+	}
+}
+
 func StartDomain(client *LivirtClient) func(*libvirtxml.Domain) (*libvirtxml.Domain, error) {
 
 	conn := client.LibVirt

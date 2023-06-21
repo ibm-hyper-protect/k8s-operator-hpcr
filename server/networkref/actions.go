@@ -24,31 +24,29 @@ import (
 )
 
 // createNetworkRefReadyAction create the action
-func createNetworkRefReadyAction(net *libvirtxml.Network) common.Action {
+func createNetworkRefReadyAction(net *libvirtxml.Network) (*common.ResourceStatus, error) {
 
-	return func() (*common.ResourceStatus, error) {
-		// metadata to attach
-		metadata := C.RawMap{
-			"Name": net.Name,
-		}
-		// marshal the network info into metadata
-		netStrg, err := onprem.XMLMarshall(net)
-		if err == nil {
-			metadata["networkXML"] = netStrg
-		} else {
-			log.Printf("Unable to marshal the network XML, cause: [%v]", err)
-		}
-		return &common.ResourceStatus{
-			Status:      common.Ready,
-			Description: netStrg,
-			Error:       nil,
-			Metadata:    metadata,
-		}, nil
+	// metadata to attach
+	metadata := C.RawMap{
+		"Name": net.Name,
 	}
+	// marshal the network info into metadata
+	netStrg, err := onprem.XMLMarshall(net)
+	if err == nil {
+		metadata["networkXML"] = netStrg
+	} else {
+		log.Printf("Unable to marshal the network XML, cause: [%v]", err)
+	}
+	return &common.ResourceStatus{
+		Status:      common.Ready,
+		Description: netStrg,
+		Error:       nil,
+		Metadata:    metadata,
+	}, nil
 }
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
-func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.NetworkRefOptions) common.Action {
+func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.NetworkRefOptions) (*common.ResourceStatus, error) {
 	// checks for the validity of the network
 	getNetworkRef := onprem.GetNetworkRef(client)
 	netXML, err := getNetworkRef(opt)

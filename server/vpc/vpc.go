@@ -97,7 +97,7 @@ func createRuntimeConfig(req map[string]any) (*RuntimeConfig, error) {
 	}, nil
 }
 
-func syncVPC(req map[string]any) common.Action {
+func syncVPC(req map[string]any) (*common.ResourceStatus, error) {
 
 	cfg, err := createRuntimeConfig(req)
 	if err != nil {
@@ -112,7 +112,7 @@ func syncVPC(req map[string]any) common.Action {
 	return CreateSyncAction(cfg.Service, taggingSvc, cfg.Options)
 }
 
-func finalizeVPC(req map[string]any) common.Action {
+func finalizeVPC(req map[string]any) (*common.ResourceStatus, error) {
 
 	cfg, err := createRuntimeConfig(req)
 	if err != nil {
@@ -147,10 +147,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 			})
 			return
 		}
-		// constuct the action
-		action := syncVPC(req)
 		// execute and handle
-		state, err := action()
+		state, err := syncVPC(req)
 		if err != nil {
 			// print some log
 			log.Printf("Error executing the sync, cause: [%v]", err)
@@ -191,10 +189,8 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 			})
 			return
 		}
-		// constuct the action
-		action := finalizeVPC(req)
 		// execute and handle
-		state, err := action()
+		state, err := finalizeVPC(req)
 		if err != nil {
 			// Handle error
 			c.JSON(http.StatusOK, common.ResourceStatusToResponse(state))

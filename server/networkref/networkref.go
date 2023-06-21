@@ -35,7 +35,7 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 }
 
 // syncNetworkRef is invoked to synchronize the state of our resource
-func syncNetworkRef(req map[string]any) common.Action {
+func syncNetworkRef(req map[string]any) (*common.ResourceStatus, error) {
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
@@ -82,10 +82,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		}
 		// log the request
 		// log.Printf("JSON Input [%s]", string(jsonData))
-		// constuct the action
-		action := syncNetworkRef(req)
 		// execute and handle
-		state, err := action()
+		state, err := syncNetworkRef(req)
 		if err != nil {
 			log.Printf("Error [%v]", err)
 			// switch into error mode

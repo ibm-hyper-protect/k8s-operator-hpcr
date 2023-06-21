@@ -24,31 +24,29 @@ import (
 )
 
 // createDataDiskRefReadyAction create the action
-func createDataDiskRefReadyAction(disk *libvirtxml.StorageVolume) common.Action {
+func createDataDiskRefReadyAction(disk *libvirtxml.StorageVolume) (*common.ResourceStatus, error) {
 
-	return func() (*common.ResourceStatus, error) {
-		// metadata to attach
-		metadata := C.RawMap{
-			"Name": disk.Name,
-		}
-		// marshal the disk info into metadata
-		diskStrg, err := onprem.XMLMarshall(disk)
-		if err == nil {
-			metadata["diskXML"] = diskStrg
-		} else {
-			log.Printf("Unable to marshal the disk XML, cause: [%v]", err)
-		}
-		return &common.ResourceStatus{
-			Status:      common.Ready,
-			Description: diskStrg,
-			Error:       nil,
-			Metadata:    metadata,
-		}, nil
+	// metadata to attach
+	metadata := C.RawMap{
+		"Name": disk.Name,
 	}
+	// marshal the disk info into metadata
+	diskStrg, err := onprem.XMLMarshall(disk)
+	if err == nil {
+		metadata["diskXML"] = diskStrg
+	} else {
+		log.Printf("Unable to marshal the disk XML, cause: [%v]", err)
+	}
+	return &common.ResourceStatus{
+		Status:      common.Ready,
+		Description: diskStrg,
+		Error:       nil,
+		Metadata:    metadata,
+	}, nil
 }
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
-func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskRefOptions) common.Action {
+func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.DataDiskRefOptions) (*common.ResourceStatus, error) {
 	// checks for the validity of the data disk
 	getDataDiskRef := onprem.GetDataDiskRef(client)
 	diskXML, err := getDataDiskRef(opt)

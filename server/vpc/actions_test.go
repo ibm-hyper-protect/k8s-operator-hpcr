@@ -47,11 +47,8 @@ func TestAction(t *testing.T) {
 	opt, err := InstanceOptionsFromConfigMap(vpcSvc, cfg, env)
 	require.NoError(t, err)
 
-	// get the action
-	action := CreateSyncAction(vpcSvc, taggingSvc, opt)
-
 	// execute and get status
-	status, err := action()
+	status, err := CreateSyncAction(vpcSvc, taggingSvc, opt)
 	require.NoError(t, err)
 
 	fmt.Println(status)

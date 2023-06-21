@@ -14,5 +14,5 @@ mkdir %OUT% 2> NUL
 copy /Y Dockerfile %OUT%\Dockerfile
 
 go build -v -ldflags "-X main.version=0.0.0 -X main.compiled=%UNIX_TIME%" -o %OUT%\k8s-operator-hpcr
-docker build %OUT% -t ghcr.io/ibm-hyper-protect/k8s-operator-hpcr:latest
+docker buildx build %OUT% -t ghcr.io/ibm-hyper-protect/k8s-operator-hpcr:latest
 
