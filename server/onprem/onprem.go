@@ -39,7 +39,7 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 }
 
 // syncOnPrem is invoked to synchronize the state of our resource
-func syncOnPrem(req map[string]any) common.Action {
+func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 	// just a poor man's solution for now
 	if !lock.Lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)
@@ -107,7 +107,7 @@ func syncOnPrem(req map[string]any) common.Action {
 }
 
 // finalizeOnPrem deletes a VSI
-func finalizeOnPrem(req map[string]any) common.Action {
+func finalizeOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 	if !lock.Lock.TryLock() {
 		return common.CreateStatusAction(common.Waiting)
 	}
@@ -158,10 +158,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		}
 		// log the request
 		// log.Printf("JSON Input [%s]", string(jsonData))
-		// constuct the action
-		action := syncOnPrem(req)
 		// execute and handle
-		state, err := action()
+		state, err := syncOnPrem(req)
 		if err != nil {
 			log.Printf("Error [%v]", err)
 			// switch into error mode
@@ -207,10 +205,8 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 			})
 			return
 		}
-		// constuct the action
-		action := finalizeOnPrem(req)
 		// execute and handle
-		state, err := action()
+		state, err := finalizeOnPrem(req)
 		if err != nil {
 			log.Printf("Error [%v]", err)
 			// Handle error TODO really handle error

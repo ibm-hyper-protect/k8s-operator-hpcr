@@ -35,7 +35,7 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 }
 
 // syncDataDisk is invoked to synchronize the state of our resource
-func syncDataDisk(req map[string]any) common.Action {
+func syncDataDisk(req map[string]any) (*common.ResourceStatus, error) {
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
@@ -82,10 +82,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 		}
 		// log the request
 		// log.Printf("JSON Input [%s]", string(jsonData))
-		// constuct the action
-		action := syncDataDisk(req)
 		// execute and handle
-		state, err := action()
+		state, err := syncDataDisk(req)
 		if err != nil {
 			log.Printf("Error [%v]", err)
 			// switch into error mode

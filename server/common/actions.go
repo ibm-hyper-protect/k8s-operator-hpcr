@@ -34,34 +34,32 @@ type ResourceStatus struct {
 	Metadata    C.RawMap
 }
 
-type Action func() (*ResourceStatus, error)
+func CreateAction(status *ResourceStatus) (*ResourceStatus, error) {
+	return status, nil
+}
 
-func CreateReadyAction() Action {
+func CreateReadyAction() (*ResourceStatus, error) {
 	return CreateStatusAction(Ready)
 }
 
-func CreateWaitingAction() Action {
+func CreateWaitingAction() (*ResourceStatus, error) {
 	return CreateStatusAction(Waiting)
 }
 
-func CreateStatusAction(status Status) Action {
-	return func() (*ResourceStatus, error) {
-		return &ResourceStatus{
-			Status:      status,
-			Description: "Ready",
-			Error:       nil,
-		}, nil
-	}
+func CreateStatusAction(status Status) (*ResourceStatus, error) {
+	return CreateAction(&ResourceStatus{
+		Status:      status,
+		Description: "Ready",
+		Error:       nil,
+	})
 }
 
-func CreateErrorAction(err error) Action {
-	return func() (*ResourceStatus, error) {
-		return &ResourceStatus{
-			Status:      Error,
-			Description: err.Error(),
-			Error:       err,
-		}, err
-	}
+func CreateErrorAction(err error) (*ResourceStatus, error) {
+	return &ResourceStatus{
+		Status:      Error,
+		Description: err.Error(),
+		Error:       err,
+	}, err
 }
 
 func ResourceStatusToResponse(state *ResourceStatus) gin.H {

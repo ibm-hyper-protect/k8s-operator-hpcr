@@ -128,6 +128,43 @@ func printBanner(msg string) error {
 	return nil
 }
 
+type connProxy struct {
+	delegate net.Conn
+	close    func() error
+}
+
+func (proxy *connProxy) Read(b []byte) (n int, err error) {
+	return proxy.delegate.Read(b)
+}
+
+func (proxy *connProxy) Write(b []byte) (n int, err error) {
+	return proxy.delegate.Write(b)
+}
+
+func (proxy *connProxy) Close() error {
+	return proxy.close()
+}
+
+func (proxy *connProxy) LocalAddr() net.Addr {
+	return proxy.delegate.LocalAddr()
+}
+
+func (proxy *connProxy) RemoteAddr() net.Addr {
+	return proxy.delegate.RemoteAddr()
+}
+
+func (proxy *connProxy) SetDeadline(t time.Time) error {
+	return proxy.delegate.SetDeadline(t)
+}
+
+func (proxy *connProxy) SetReadDeadline(t time.Time) error {
+	return proxy.delegate.SetReadDeadline(t)
+}
+
+func (proxy *connProxy) SetWriteDeadline(t time.Time) error {
+	return proxy.delegate.SetWriteDeadline(t)
+}
+
 func (dialer *sshDialer) Dial() (net.Conn, error) {
 	// build the SSH config
 	config := dialer.config
@@ -163,8 +200,39 @@ func (dialer *sshDialer) Dial() (net.Conn, error) {
 		return nil, err
 	}
 
-	return sshClient.Dial("unix", defaultUnixSock)
+	conn, err := sshClient.Dial("unix", defaultUnixSock)
+	if err != nil {
+		log.Printf("Closing SSH client, cause [%v]", err)
+		errClient := sshClient.Close()
+		if errClient != nil {
+			log.Printf("Unable to close the SSH client, cause [%v].", errClient)
+		}
+		// return the original error
+		return nil, err
+	}
 
+	// close callback that will close the connection to the socket as well as the underlying ssh client
+	close := func() error {
+		log.Println("Closing connection ...")
+		errConn := conn.Close()
+
+		log.Println("Closing SSH client ...")
+		errClient := sshClient.Close()
+
+		if errConn != nil {
+			// at least print the original error
+			if errClient != nil {
+				log.Printf("Unable to close the SSH client, cause [%v].", errClient)
+			}
+			// return the original connection error
+			return errConn
+		}
+
+		// return the error caused by closing the SSH client
+		return errClient
+	}
+
+	return &connProxy{delegate: conn, close: close}, nil
 }
 
 // CreateSSHDialer produces a dialer that can connect to the given SSH config

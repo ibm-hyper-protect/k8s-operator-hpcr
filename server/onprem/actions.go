@@ -35,7 +35,7 @@ func getIPAddress(lease libvirt.NetworkDhcpLease) string {
 	return lease.Ipaddr
 }
 
-func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.Domain, opt *onprem.InstanceOptions) common.Action {
+func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.Domain, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 
 	getLoggingVolume := onprem.GetLoggingVolume(client)
 	getLeases := onprem.GetDCHPLeases(client)
@@ -62,82 +62,82 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 		)
 	}
 
-	return func() (*common.ResourceStatus, error) {
-		// fetch the logs
-		log.Printf("Domain [%s] is running, fetching logs ...", opt.Name)
-		// try to get the content of the logging volume
-		logName := onprem.GetLoggingVolumeName(opt.Name)
-		data, err := getLoggingVolume(opt.StoragePool, logName)
-		if err != nil {
-			// returns some error status
-			return &common.ResourceStatus{
-				Status:      common.Waiting,
-				Description: err.Error(),
-				Error:       err,
-			}, err
-		}
-		// marshal the instance
-		instStrg, err := onprem.XMLMarshall(inst)
-		// parse log into lines
-		lines := F.Pipe1(
-			strings.Split(data, "\n"),
-			A.Map(strings.TrimSpace),
-		)
-		// partition the lines
-		success, failure := onprem.PartitionLogs(lines)
-		if onprem.VSIFailedToStart(failure) {
-			// print some error details
-			logs := strings.Join(failure, "\n")
-			log.Printf("Domain [%s] failed to start, errors: [%s]", opt.Name, logs)
-			// assemble some metadata
-			metadata := C.RawMap{
-				"logs": logs,
-			}
-			if err == nil {
-				metadata["domainXML"] = instStrg
-			}
-			// VSI is ready but in an error state. It won't start at the next attempt
-			return &common.ResourceStatus{
-				Status:      common.Ready,
-				Description: logs,
-				Error:       nil,
-				Metadata:    metadata,
-			}, nil
-		}
-		// check if we are still booting
-		if onprem.VSIStartedSuccessfully(success) {
-			// some logs
-			logs := strings.Join(lines, "\n")
-			// assemble some metadata
-			metadata := C.RawMap{
-				"logs":        logs,
-				"ipaddresses": getIPAddresses(),
-			}
-			if err == nil {
-				metadata["domainXML"] = instStrg
-			}
-			// juhuuu
-			return &common.ResourceStatus{
-				Status:      common.Ready,
-				Description: logs,
-				Error:       nil,
-				Metadata:    metadata,
-			}, nil
-		}
+	// fetch the logs
+	log.Printf("Domain [%s] is running, fetching logs ...", opt.Name)
+	// try to get the content of the logging volume
+	logName := onprem.GetLoggingVolumeName(opt.Name)
+	data, err := getLoggingVolume(opt.StoragePool, logName)
+	if err != nil {
 		// log this
-		desc := strings.Join(lines, "\n")
-		log.Printf("Domain [%s] is still booting, logs: [%s]", opt.Name, desc)
-		// we need to wait
+		log.Printf("Unable to get the logging volumd [%s] from pool [%s], cause: [%v]", logName, opt.StoragePool, err)
+		// returns some error status
 		return &common.ResourceStatus{
 			Status:      common.Waiting,
-			Description: desc,
-			Error:       nil,
-		}, nil
+			Description: err.Error(),
+			Error:       err,
+		}, err
 	}
+	// marshal the instance
+	instStrg, err := onprem.XMLMarshall(inst)
+	// parse log into lines
+	lines := F.Pipe1(
+		strings.Split(data, "\n"),
+		A.Map(strings.TrimSpace),
+	)
+	// partition the lines
+	success, failure := onprem.PartitionLogs(lines)
+	if onprem.VSIFailedToStart(failure) {
+		// print some error details
+		logs := strings.Join(failure, "\n")
+		log.Printf("Domain [%s] failed to start, errors: [%s]", opt.Name, logs)
+		// assemble some metadata
+		metadata := C.RawMap{
+			"logs": logs,
+		}
+		if err == nil {
+			metadata["domainXML"] = instStrg
+		}
+		// VSI is ready but in an error state. It won't start at the next attempt
+		return common.CreateAction(&common.ResourceStatus{
+			Status:      common.Ready,
+			Description: logs,
+			Error:       nil,
+			Metadata:    metadata,
+		})
+	}
+	// check if we are still booting
+	if onprem.VSIStartedSuccessfully(success) {
+		// some logs
+		logs := strings.Join(lines, "\n")
+		// assemble some metadata
+		metadata := C.RawMap{
+			"logs":        logs,
+			"ipaddresses": getIPAddresses(),
+		}
+		if err == nil {
+			metadata["domainXML"] = instStrg
+		}
+		// juhuuu
+		return common.CreateAction(&common.ResourceStatus{
+			Status:      common.Ready,
+			Description: logs,
+			Error:       nil,
+			Metadata:    metadata,
+		})
+	}
+	// log this
+	desc := strings.Join(lines, "\n")
+	log.Printf("Domain [%s] is still booting, logs: [%s]", opt.Name, desc)
+	// we need to wait
+	return common.CreateAction(&common.ResourceStatus{
+		Status:      common.Waiting,
+		Description: desc,
+		Error:       nil,
+	})
 }
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
-func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) common.Action {
+func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 	// checks for the validity of the instance
 	isInstanceValid := onprem.IsInstanceValid(client)
 	inst, ok := isInstanceValid(opt)
@@ -162,7 +162,7 @@ func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) 
 	return common.CreateWaitingAction()
 }
 
-func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) common.Action {
+func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 	// TODO proper check for existence comes here
 	// ...
 	// destroy the instance

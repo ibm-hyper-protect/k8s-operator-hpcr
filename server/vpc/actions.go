@@ -30,16 +30,14 @@ import (
 
 var TagPrefix = strings.ReplaceAll(ServicePrefix, "-", "_")
 
-func deleteInstanceAction(service *vpcv1.VpcV1, inst *vpcv1.Instance) common.Action {
-	return func() (*common.ResourceStatus, error) {
-		_, err := service.DeleteInstance(&vpcv1.DeleteInstanceOptions{ID: inst.ID})
-		if err != nil {
-			return common.CreateErrorAction(err)()
-		}
-		// log that we deleted the instance
-		log.Printf("Deleted instance [%s]", *inst.ID)
-		return common.CreateWaitingAction()()
+func deleteInstanceAction(service *vpcv1.VpcV1, inst *vpcv1.Instance) (*common.ResourceStatus, error) {
+	_, err := service.DeleteInstance(&vpcv1.DeleteInstanceOptions{ID: inst.ID})
+	if err != nil {
+		return common.CreateErrorAction(err)
 	}
+	// log that we deleted the instance
+	log.Printf("Deleted instance [%s]", *inst.ID)
+	return common.CreateWaitingAction()
 }
 
 func createTag(data string) (string, error) {
@@ -53,36 +51,34 @@ func createTag(data string) (string, error) {
 	return fmt.Sprintf("%s:%x", TagPrefix, bs), nil
 }
 
-func createInstanceAction(service *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, vpcOp *vpcv1.CreateInstanceOptions, opt *InstanceOptions) common.Action {
-	return func() (*common.ResourceStatus, error) {
-		// construct instance
-		inst, _, err := service.CreateInstance(vpcOp)
-		if err != nil {
-			return common.CreateErrorAction(err)()
-		}
-		// the tag
-		tag, err := createTag(opt.UserData)
-		if err != nil {
-			return common.CreateErrorAction(err)()
-		}
-		// attach this service tag
-		tagType := globaltaggingv1.AttachTagOptionsTagTypeUserConst
-		res, _, err := taggingSvc.AttachTag(&globaltaggingv1.AttachTagOptions{
-			Resources: []globaltaggingv1.Resource{{ResourceID: inst.CRN}},
-			TagNames:  []string{tag},
-			TagType:   &tagType,
-		})
-		if err != nil {
-			return common.CreateErrorAction(err)()
-		}
-		// validate the response
-		if len(res.Results) != 1 {
-			return common.CreateErrorAction(err)()
-		}
-		// log that we created the instance
-		log.Printf("Created instance [%s]", *inst.ID)
-		return common.CreateWaitingAction()()
+func createInstanceAction(service *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, vpcOp *vpcv1.CreateInstanceOptions, opt *InstanceOptions) (*common.ResourceStatus, error) {
+	// construct instance
+	inst, _, err := service.CreateInstance(vpcOp)
+	if err != nil {
+		return common.CreateErrorAction(err)
 	}
+	// the tag
+	tag, err := createTag(opt.UserData)
+	if err != nil {
+		return common.CreateErrorAction(err)
+	}
+	// attach this service tag
+	tagType := globaltaggingv1.AttachTagOptionsTagTypeUserConst
+	res, _, err := taggingSvc.AttachTag(&globaltaggingv1.AttachTagOptions{
+		Resources: []globaltaggingv1.Resource{{ResourceID: inst.CRN}},
+		TagNames:  []string{tag},
+		TagType:   &tagType,
+	})
+	if err != nil {
+		return common.CreateErrorAction(err)
+	}
+	// validate the response
+	if len(res.Results) != 1 {
+		return common.CreateErrorAction(err)
+	}
+	// log that we created the instance
+	log.Printf("Created instance [%s]", *inst.ID)
+	return common.CreateWaitingAction()
 }
 
 func isString(msg, left, right string) bool {
@@ -139,26 +135,23 @@ func isVsiConfigValid(opt *InstanceOptions, inst *vpcv1.Instance, tags *globalta
 		isTag(opt, inst, tags)
 }
 
-func createRunningInstanceAction(inst *vpcv1.Instance, opt *InstanceOptions) common.Action {
-	return func() (*common.ResourceStatus, error) {
-		// prepare some metadata
-		metadata := make(map[string]any)
-		instData, err := json.Marshal(inst)
-		if err == nil {
-			metadata["instance"] = string(instData)
-		}
-		// return the status
-		return &common.ResourceStatus{
-			Status:      common.Ready,
-			Description: *inst.Name,
-			Error:       nil,
-			Metadata:    metadata,
-		}, nil
-
+func createRunningInstanceAction(inst *vpcv1.Instance, opt *InstanceOptions) (*common.ResourceStatus, error) {
+	// prepare some metadata
+	metadata := make(map[string]any)
+	instData, err := json.Marshal(inst)
+	if err == nil {
+		metadata["instance"] = string(instData)
 	}
+	// return the status
+	return &common.ResourceStatus{
+		Status:      common.Ready,
+		Description: *inst.Name,
+		Error:       nil,
+		Metadata:    metadata,
+	}, nil
 }
 
-func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, opt *InstanceOptions) common.Action {
+func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTaggingV1, opt *InstanceOptions) (*common.ResourceStatus, error) {
 	// check for the existence of the instance
 	inst, err := vpc.FindInstance(vpcSvc, opt.Name)
 	if err != nil {
@@ -218,7 +211,7 @@ func CreateSyncAction(vpcSvc *vpcv1.VpcV1, taggingSvc *globaltaggingv1.GlobalTag
 	return deleteInstanceAction(vpcSvc, inst)
 }
 
-func CreateFinalizeAction(service *vpcv1.VpcV1, opt *InstanceOptions) common.Action {
+func CreateFinalizeAction(service *vpcv1.VpcV1, opt *InstanceOptions) (*common.ResourceStatus, error) {
 	// check for the existence of the instance
 	inst, err := vpc.FindInstance(service, opt.Name)
 	if err != nil {
