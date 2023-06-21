@@ -306,6 +306,8 @@ func StartDomain(client *LivirtClient) func(*libvirtxml.Domain) (*libvirtxml.Dom
 		if err != nil {
 			return nil, err
 		}
+		// dump the input
+		log.Printf("Domain definition of domain [%s] is [%s]", domainXML.Name, domainString)
 		// define the domain
 		log.Printf("Defining domain [%s] ...", domainXML.Name)
 		domain, err := conn.DomainDefineXML(domainString)
