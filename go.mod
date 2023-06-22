@@ -84,7 +84,7 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	github.com/zclconf/go-cty v1.13.2 // indirect
-	go.mongodb.org/mongo-driver v1.11.7 // indirect
+	go.mongodb.org/mongo-driver v1.12.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/sys v0.9.0 // indirect

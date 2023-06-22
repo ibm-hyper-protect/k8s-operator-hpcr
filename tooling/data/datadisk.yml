@@ -10,4 +10,4 @@ spec:
   storagePool: images
   targetSelector:
     matchLabels:
-      config: onpremsample
+      app: onpremsample

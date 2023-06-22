@@ -7,3 +7,10 @@ main.exe
 
 dist/
 private/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform.tfstate.lock.info
+**/.cache
+**/.terraform
+**/.terraform.lock.hcl
+**/*.tfvars
