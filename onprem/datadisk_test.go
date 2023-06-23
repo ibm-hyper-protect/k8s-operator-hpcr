@@ -52,7 +52,7 @@ func TestDecodeOneAttachedDataDisk(t *testing.T) {
 	disks, err := AttachedDataDisksFromRelated(rel)
 	require.NoError(t, err)
 
-	assert.Empty(t, disks)
+	assert.Len(t, disks, 1)
 }
 
 func TestCreateDataDisk(t *testing.T) {
