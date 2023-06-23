@@ -15,13 +15,45 @@
 package onprem
 
 import (
+	"encoding/json"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestDecodeNoAttachedDataDisk(t *testing.T) {
+	// read sample
+	relJson, err := os.ReadFile("../samples/create_resource_full.json")
+	require.NoError(t, err)
+
+	var rel map[string]any
+	err = json.Unmarshal(relJson, &rel)
+	require.NoError(t, err)
+
+	disks, err := AttachedDataDisksFromRelated(rel)
+	require.NoError(t, err)
+
+	assert.Empty(t, disks)
+}
+
+func TestDecodeOneAttachedDataDisk(t *testing.T) {
+	// read sample
+	relJson, err := os.ReadFile("./samples/create.req.json")
+	require.NoError(t, err)
+
+	var rel map[string]any
+	err = json.Unmarshal(relJson, &rel)
+	require.NoError(t, err)
+
+	disks, err := AttachedDataDisksFromRelated(rel)
+	require.NoError(t, err)
+
+	assert.Empty(t, disks)
+}
 
 func TestCreateDataDisk(t *testing.T) {
 	env, err := godotenv.Read("../.env")

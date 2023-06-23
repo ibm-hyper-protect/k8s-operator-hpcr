@@ -1,0 +1,276 @@
+{
+    "children": {},
+    "controller": {
+        "apiVersion": "metacontroller.k8s.io/v1alpha1",
+        "kind": "CompositeController",
+        "metadata": {
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"metacontroller.k8s.io/v1alpha1\",\"kind\":\"CompositeController\",\"metadata\":{\"annotations\":{},\"name\":\"k8s-operator-hpcr-onprem\"},\"spec\":{\"generateSelector\":true,\"hooks\":{\"customize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/customize\"}},\"finalize\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/finalize\"}},\"sync\":{\"webhook\":{\"url\":\"http://k8s-operator-hpcr.default:8080/onprem/sync\"}}},\"parentResource\":{\"apiVersion\":\"hpse.ibm.com/v1\",\"resource\":\"onprem-hpcrs\"},\"resyncPeriodSeconds\":60}}\n"
+            },
+            "creationTimestamp": "2023-06-21T11:53:34Z",
+            "generation": 1,
+            "managedFields": [
+                {
+                    "apiVersion": "metacontroller.k8s.io/v1alpha1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:generateSelector": {},
+                            "f:hooks": {
+                                ".": {},
+                                "f:customize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:finalize": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                },
+                                "f:sync": {
+                                    ".": {},
+                                    "f:version": {},
+                                    "f:webhook": {
+                                        ".": {},
+                                        "f:url": {}
+                                    }
+                                }
+                            },
+                            "f:parentResource": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:resource": {}
+                            },
+                            "f:resyncPeriodSeconds": {}
+                        }
+                    },
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "time": "2023-06-21T11:53:34Z"
+                }
+            ],
+            "name": "k8s-operator-hpcr-onprem",
+            "resourceVersion": "4293",
+            "uid": "d8db738c-3a4f-45af-b42a-87dfebd9e8f1"
+        },
+        "spec": {
+            "generateSelector": true,
+            "hooks": {
+                "customize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/customize"
+                    }
+                },
+                "finalize": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/finalize"
+                    }
+                },
+                "sync": {
+                    "version": "v1",
+                    "webhook": {
+                        "url": "http://k8s-operator-hpcr.default:8080/onprem/sync"
+                    }
+                }
+            },
+            "parentResource": {
+                "apiVersion": "hpse.ibm.com/v1",
+                "resource": "onprem-hpcrs"
+            },
+            "resyncPeriodSeconds": 60
+        },
+        "status": {}
+    },
+    "finalizing": false,
+    "parent": {
+        "apiVersion": "hpse.ibm.com/v1",
+        "kind": "HyperProtectContainerRuntimeOnPrem",
+        "metadata": {
+            "annotations": {
+                "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"hpse.ibm.com/v1\",\"kind\":\"HyperProtectContainerRuntimeOnPrem\",\"metadata\":{\"annotations\":{},\"name\":\"sample-busybox-onprem-with-data-disk\",\"namespace\":\"default\"},\"spec\":{\"contract\":\"env: hyper-protect-basic.JqVlJH5Fou1WhbWUcd0D3LRfwBlceN3NxuV5o2UxghS4wthn6qbKb9q+lCOIgJHkgL3C/m600pj4xc1DepUacOsN3AmDT1WmDrzmQl0z+drJeR2BUKauTsdEgdqdQ7P51fYARI+EaYPrLqR11yFeeTpoGy0cWOwMvLCdLPyYW5u5d3J/3cOxy6qv443egfG9IjOLnmhsuElLpVB6RuoM4ZPonBXt53jGsWNhJmTZSWgB8r6hjNB0UFiYmMgPM3UJ5hru9EG6MfNGe8gQZCW7ModpphQZ0YC83PCuLxVdWUDVDcMK3U6SvJlVUodHxvcR9OfMaPwL37mlczbP+iBwhCKNWT83xtKgY3kodUn82DdtktKgQx9EgPDEiUl4Cd3U+59dnLsV5YwfKyG8blGiLucQT3/JyEuDv0FH24NNwI9Op3yZuPZ4youj5GSvBOKyyO+YBiRSSSEichgwISXOMShoqOJJROSFq19B3cvW0p6N7TZ8bmSe2jm0HV+iclKbabkKglsdwTYDPkma4eXMQgyW8hw22wxI2TrN1+5EJJM6DXaQrI9ILJB8a72WMTZKzZsMJCt8EuqOjamuRrPdv5GDsJsh2x1Qp24Fead9xjcXQehNaSdxljTnNUGfBjU3TmVJhE+55lXTyM3fow8P6vs9O7AofcoJlaPc4cRNkeA=.U2FsdGVkX19XHw3kNdu0JYX9kqMVlvAXHGbO6qYb7hSG0XqJEr2ijbgunYoppp9bv8G04rYgn3pc9dPuMcPfeARnYJ88LodzGkUq9x6fktDx2GB0ztFX/nrp8UgIB6mBax88CKusOa18+4UZc8LWU2tkYZrvklecHlBWR20dAyvfzDXVnUaEitAygkcq05STlTAyFAS3Ur+w3NTMxbMUUAcyCbjCqFqmOA6nqtjUIA8Bs4YTXCZi1UoBlHksOU4SnDEOeMj0UrLa+hR4zqiD0rSBbza2ftNXnG3S9yX+g5GxdbmR1wSt1AEXxMjknDZ7jCyReolLMnVRl0OuLkezedSR8fADTpOyV5KPouMzRtZaH3BOXD84lENdcXel+Fjb+h9L8XzeXVTggNJl6HCYjhfkryFZT1Mi4fMgSgVhXFx664J38qfc3FZCwfgAf5fG+FTsUoUaiYE15lIKpeYq+mQPTXqBHWauYgsl1sYyATX2kUi/ncRvKXyEAYZEE1IwVkVh6txGBm2xdzipszVKMxuc6jHWUSourh1G0RFeDuaH3g6msASQfn5yMHvGhQGR4YsYcWdPkWSfW4hZYTODAM9KqV+ia/M89Zej5p/5SLi83P+/9vMCsxaw+14K3DKy1aAxDcjr5FGTyTzGkmR6+8lmWVa3mKM1L5oyzqB+eF27eh1YOqcTEN7cENoHXl+qk0fsFQtHv9aWeSgqUtOlKwzBxn4W4yQ0epb/q8u353hOWBixJh5grgo6+/UJS9YeTU1baST5yxMJeYITlmrLn8dXaZQ5gLdqmUQwnUt5JfkPJ2ZXQ4Fn/BY1YIEsmJz1tn0uEwsAADeG3eA2gqcRN4ltOIXO5KLc9QJ1iarXq4/sLMR831WSsPB4jRlpo6pCPX+m1DyoNIKEUpiYYCMJXlkMH9XVeryl57I48f4nrirI96CqI57lr4TViSqRGEe/J80FGPeBtZljSJJNbshr/5I16HBzGmTdP19zyEx34ggl4D1WtawdjtLmREDxt6Tnr3i8rnYq8KPT1pC8o4Yd6R8mQf5P/pR/L39n/5FqtYnCbxXFJA0dh//UZ62AugoC91c1qphRSsmwFjQClfkyULPYCT2xe0shfFIHP9TLJGOShWOr4rEoxyR73AyzFTCqkwz46vcz+uXxOaqGPAo1h9XwyyIMCPVWnuMZWOZEwSVWDPRCpkZNgQyXTX201SAWUl3EMMDkFHqjkNQrXwB7pCe2HmMM7S8oylzE8dAW6yM3KAbGRDcn1pLDQghuDTvA90cqv+75lCngo+9+MvWZFEW/a+GiAdjb0nTXscytL4OyJUpyhe//yUnl7L8LEU5nkKKm2NPVy0BHtNW5HgDjP2cEv+LB1v0zmSk8Wa9w9zcnRE86bLyp/XB8ufqCsj+GNhmA1J1hgjyk3mySfczp6A==\\nenvWorkloadSignature: SEwsCHoSHDgbMETBJGbYmXPA1Gp6Ha4BeXYPJodC/3VxU1PuMszBHuAR6Ci32SThjG6I/MZegLz+8bPXIFHH6E/k3AHim778A8mca0mZIqsJSdfEtGyldoB2B4Yyvx8QoPmF2ahPzj0btqSppJs4FmoHncPpEM/eCVidWWF0ffl8LFiFUKIpSgiFgooNv3xc229Nsg3bk+lWpBkervKKcjpJa9bHU9xM1YXyRWD9n90M5Inf9tgxp+0fI6+/JicvQmw45f4R3akpzWGgeBp0UoI7WNy/UY8MDoM0Op36YlVGrpOIoYYdo86/yMb1g0RhlZg7A2n43eIcR+rr5NhI4yrhftsEvuV5qc2zGFG5ZBOy6WwHS0AgjcjAg+N6bbxBLadZ9dQusaHRv1YhH8lAvhsxooI6pgRD8PKtsoS48mS0J8IQQhF/lZXxUblCDLG3WcH4vpDJwXFaWsS+JDWto5dATURQtSC9pks0K2Lj4PUkLMtO/FbU00SOg1/cn7KVGa3ycM07NVJNkJWzdHG6SNARBk1VZvE2c9+cFWjSAVs85eE2Ar/Umy6wGPe5y62YIZm1QeccsfqMYap5VFUAXFcMMJUJWiubb8WEnAB+018rp2w96lMzMcuaBp4wKCiCDJ2qta/tk9CKciFj5o6hRQ/NnLkbUTAH9zvqRWQRKc0=\\nworkload: hyper-protect-basic.fLD7bpA0CvVl7p2hiInLVNQXUKZWmfmXn976nSorruU5gCYa/61LWmSLuXWjCyUwER1a0HMEy8ffj3sPqJeIkmLxPZzIZ+XdCsDY1WMkKZwFFtIDvyKDLWQ4KiQnHTC9znRxYgwxIb3Pqm1VNRmQC7/AD536DfWB9lMaiPwL5ReykSAONatTQX1EuF/GTiZEeM2UjRMH/QIwTg5FTCvrve8pAArDzuBDoz1k4xtHvhk4Z19UwS4R1pkp88WPoef5FFNS/EN9BQjKyj2ENjmVc7+GCDUEMXo6alBUnYBpABgyVvz3tNPgDxcI6xqHHDWAjLbfcPbR4fhBkNGTzpZ9EkNTWO9ZHwstzTCwPqCuttS3qYoe8/G1OHA0O8U07hW4yc1MQddJdj5/mG1bfYfXpXZ2py5Y9X3XfoJmK4nDs62oDOSUUdqq0B/qJZ1AIkdJhJCIAvUyEr5btWrqdLvzVBGfVFkGTu6JbBW/bNmvLMhx9dzBi6dqQgQAcXlxGpSYNeOI0tmA1ZsogevF43bClvwDom7gvxVvOviTz9xL5zWjX0QykQuWfm3iXh9eXwPKhAOfcUiX98aHpSjhgcSWl58NESz/ZEmctAjLnCGtDCQlCwuSU5TM47UMQphXZ13NYYeamoY+trOBtlIopY8f+ZG6vzRrhaqtbT7BGvKQ8HQ=.U2FsdGVkX1/9TVSUxr6sewtUS23VeSuBBLtBAM/fUNHN7jbNJNSqG4hYem9hBsI3WobUrktLnl9UQ1viPZN4GMC0gqCu0eH4SZJFujq976YPcnA3d34m5xqmIbl1Z8g8RdhHtjl0dRAYN84Eds89kuzDpEODt+BJ0JYJo0EWBHNzUxbq0wqjZcDes4ojtxy7KFsUsjWCl2IMDtJy1xg5n435o9ZkxXFxn9WvE4OExLrXyYOC2DPiy+WzRbaNi3hPVlCFy9uQoaqdJavfvAnlKsF94Dmma24Zpl03XMzt2VhATW/yaky8OjjW319ciP/FzZhpPg8eUT9aeEf8CDgnXYt3K8xOur2uIYYd79c8N7E9ax2bGhCE0/XPwmJgVvP4+sHlOb7eWZFAbIH3kqFs426oW8I/HREyH9JLXF5ncuFQh74XzhFQT9VNQgCTvjVknE+EO9+mr9GEGjcQw3PivMa8MMY4KGENo0DFFEGU0u68V47wcTrdSnliDgE2aKuKnojT1gERq4vdhpm1f1WDTM39l/XCuMq7B/x4uPCe1NDq6X8ssKpRwohz0M1+YrhMQguXTbz9QqTHNPR/8XEtfE7H5sMPOwXOhBv2lF3ZgnDFfsKSr7XFzpE+X2RnJ0bVB5SLVegcV8W87+8UYqyTi5tcZvamM0vU7pujRUFdJl7NzyLTfoK/twW5IP/4i6csTKJssAYkpmzB8qQC7KnprIHtbQtoyB+V9WPUBZvdE0NHLrDbFLVg5kE8sYOOYwoanxnMWFEp9BQpJO1oIERQ1upWGctX0ONVPJohqksxndD8Q35j1g1jLOj3do2qSyU8VP25qYZDH1I4ExcGn/O2QDYWqIZm3tcH/TUqa0iC5rI3gIhlCydjbVL9fzdDD0BzJ2X2r1nC+bku9hJZ4oHRNA==\\n\",\"diskSelector\":{\"matchLabels\":{\"app\":\"hpcr-disk-ref\"}},\"imageURL\":\"http://hpcr-qcow2-image.default:8080/hpcr.qcow2\",\"storagePool\":\"images\",\"targetSelector\":{\"matchLabels\":{\"app\":\"onpremsample\"}}}}\n"
+            },
+            "creationTimestamp": "2023-06-23T11:13:04Z",
+            "finalizers": [
+                "metacontroller.io/compositecontroller-k8s-operator-hpcr-onprem"
+            ],
+            "generation": 1,
+            "managedFields": [
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:annotations": {
+                                ".": {},
+                                "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                            }
+                        },
+                        "f:spec": {
+                            ".": {},
+                            "f:contract": {},
+                            "f:diskSelector": {
+                                ".": {},
+                                "f:matchLabels": {
+                                    ".": {},
+                                    "f:app": {}
+                                }
+                            },
+                            "f:imageURL": {},
+                            "f:storagePool": {},
+                            "f:targetSelector": {
+                                ".": {},
+                                "f:matchLabels": {
+                                    ".": {},
+                                    "f:app": {}
+                                }
+                            }
+                        }
+                    },
+                    "manager": "kubectl-client-side-apply",
+                    "operation": "Update",
+                    "time": "2023-06-23T11:13:04Z"
+                },
+                {
+                    "apiVersion": "hpse.ibm.com/v1",
+                    "fieldsType": "FieldsV1",
+                    "fieldsV1": {
+                        "f:metadata": {
+                            "f:finalizers": {
+                                ".": {},
+                                "v:\"metacontroller.io/compositecontroller-k8s-operator-hpcr-onprem\"": {}
+                            }
+                        }
+                    },
+                    "manager": "metacontroller",
+                    "operation": "Update",
+                    "time": "2023-06-23T11:13:04Z"
+                }
+            ],
+            "name": "sample-busybox-onprem-with-data-disk",
+            "namespace": "default",
+            "resourceVersion": "192470",
+            "uid": "9ce28808-8eff-498e-a8a4-7636af8ee1ef"
+        },
+        "spec": {
+            "contract": "env: hyper-protect-basic.JqVlJH5Fou1WhbWUcd0D3LRfwBlceN3NxuV5o2UxghS4wthn6qbKb9q+lCOIgJHkgL3C/m600pj4xc1DepUacOsN3AmDT1WmDrzmQl0z+drJeR2BUKauTsdEgdqdQ7P51fYARI+EaYPrLqR11yFeeTpoGy0cWOwMvLCdLPyYW5u5d3J/3cOxy6qv443egfG9IjOLnmhsuElLpVB6RuoM4ZPonBXt53jGsWNhJmTZSWgB8r6hjNB0UFiYmMgPM3UJ5hru9EG6MfNGe8gQZCW7ModpphQZ0YC83PCuLxVdWUDVDcMK3U6SvJlVUodHxvcR9OfMaPwL37mlczbP+iBwhCKNWT83xtKgY3kodUn82DdtktKgQx9EgPDEiUl4Cd3U+59dnLsV5YwfKyG8blGiLucQT3/JyEuDv0FH24NNwI9Op3yZuPZ4youj5GSvBOKyyO+YBiRSSSEichgwISXOMShoqOJJROSFq19B3cvW0p6N7TZ8bmSe2jm0HV+iclKbabkKglsdwTYDPkma4eXMQgyW8hw22wxI2TrN1+5EJJM6DXaQrI9ILJB8a72WMTZKzZsMJCt8EuqOjamuRrPdv5GDsJsh2x1Qp24Fead9xjcXQehNaSdxljTnNUGfBjU3TmVJhE+55lXTyM3fow8P6vs9O7AofcoJlaPc4cRNkeA=.U2FsdGVkX19XHw3kNdu0JYX9kqMVlvAXHGbO6qYb7hSG0XqJEr2ijbgunYoppp9bv8G04rYgn3pc9dPuMcPfeARnYJ88LodzGkUq9x6fktDx2GB0ztFX/nrp8UgIB6mBax88CKusOa18+4UZc8LWU2tkYZrvklecHlBWR20dAyvfzDXVnUaEitAygkcq05STlTAyFAS3Ur+w3NTMxbMUUAcyCbjCqFqmOA6nqtjUIA8Bs4YTXCZi1UoBlHksOU4SnDEOeMj0UrLa+hR4zqiD0rSBbza2ftNXnG3S9yX+g5GxdbmR1wSt1AEXxMjknDZ7jCyReolLMnVRl0OuLkezedSR8fADTpOyV5KPouMzRtZaH3BOXD84lENdcXel+Fjb+h9L8XzeXVTggNJl6HCYjhfkryFZT1Mi4fMgSgVhXFx664J38qfc3FZCwfgAf5fG+FTsUoUaiYE15lIKpeYq+mQPTXqBHWauYgsl1sYyATX2kUi/ncRvKXyEAYZEE1IwVkVh6txGBm2xdzipszVKMxuc6jHWUSourh1G0RFeDuaH3g6msASQfn5yMHvGhQGR4YsYcWdPkWSfW4hZYTODAM9KqV+ia/M89Zej5p/5SLi83P+/9vMCsxaw+14K3DKy1aAxDcjr5FGTyTzGkmR6+8lmWVa3mKM1L5oyzqB+eF27eh1YOqcTEN7cENoHXl+qk0fsFQtHv9aWeSgqUtOlKwzBxn4W4yQ0epb/q8u353hOWBixJh5grgo6+/UJS9YeTU1baST5yxMJeYITlmrLn8dXaZQ5gLdqmUQwnUt5JfkPJ2ZXQ4Fn/BY1YIEsmJz1tn0uEwsAADeG3eA2gqcRN4ltOIXO5KLc9QJ1iarXq4/sLMR831WSsPB4jRlpo6pCPX+m1DyoNIKEUpiYYCMJXlkMH9XVeryl57I48f4nrirI96CqI57lr4TViSqRGEe/J80FGPeBtZljSJJNbshr/5I16HBzGmTdP19zyEx34ggl4D1WtawdjtLmREDxt6Tnr3i8rnYq8KPT1pC8o4Yd6R8mQf5P/pR/L39n/5FqtYnCbxXFJA0dh//UZ62AugoC91c1qphRSsmwFjQClfkyULPYCT2xe0shfFIHP9TLJGOShWOr4rEoxyR73AyzFTCqkwz46vcz+uXxOaqGPAo1h9XwyyIMCPVWnuMZWOZEwSVWDPRCpkZNgQyXTX201SAWUl3EMMDkFHqjkNQrXwB7pCe2HmMM7S8oylzE8dAW6yM3KAbGRDcn1pLDQghuDTvA90cqv+75lCngo+9+MvWZFEW/a+GiAdjb0nTXscytL4OyJUpyhe//yUnl7L8LEU5nkKKm2NPVy0BHtNW5HgDjP2cEv+LB1v0zmSk8Wa9w9zcnRE86bLyp/XB8ufqCsj+GNhmA1J1hgjyk3mySfczp6A==\nenvWorkloadSignature: SEwsCHoSHDgbMETBJGbYmXPA1Gp6Ha4BeXYPJodC/3VxU1PuMszBHuAR6Ci32SThjG6I/MZegLz+8bPXIFHH6E/k3AHim778A8mca0mZIqsJSdfEtGyldoB2B4Yyvx8QoPmF2ahPzj0btqSppJs4FmoHncPpEM/eCVidWWF0ffl8LFiFUKIpSgiFgooNv3xc229Nsg3bk+lWpBkervKKcjpJa9bHU9xM1YXyRWD9n90M5Inf9tgxp+0fI6+/JicvQmw45f4R3akpzWGgeBp0UoI7WNy/UY8MDoM0Op36YlVGrpOIoYYdo86/yMb1g0RhlZg7A2n43eIcR+rr5NhI4yrhftsEvuV5qc2zGFG5ZBOy6WwHS0AgjcjAg+N6bbxBLadZ9dQusaHRv1YhH8lAvhsxooI6pgRD8PKtsoS48mS0J8IQQhF/lZXxUblCDLG3WcH4vpDJwXFaWsS+JDWto5dATURQtSC9pks0K2Lj4PUkLMtO/FbU00SOg1/cn7KVGa3ycM07NVJNkJWzdHG6SNARBk1VZvE2c9+cFWjSAVs85eE2Ar/Umy6wGPe5y62YIZm1QeccsfqMYap5VFUAXFcMMJUJWiubb8WEnAB+018rp2w96lMzMcuaBp4wKCiCDJ2qta/tk9CKciFj5o6hRQ/NnLkbUTAH9zvqRWQRKc0=\nworkload: hyper-protect-basic.fLD7bpA0CvVl7p2hiInLVNQXUKZWmfmXn976nSorruU5gCYa/61LWmSLuXWjCyUwER1a0HMEy8ffj3sPqJeIkmLxPZzIZ+XdCsDY1WMkKZwFFtIDvyKDLWQ4KiQnHTC9znRxYgwxIb3Pqm1VNRmQC7/AD536DfWB9lMaiPwL5ReykSAONatTQX1EuF/GTiZEeM2UjRMH/QIwTg5FTCvrve8pAArDzuBDoz1k4xtHvhk4Z19UwS4R1pkp88WPoef5FFNS/EN9BQjKyj2ENjmVc7+GCDUEMXo6alBUnYBpABgyVvz3tNPgDxcI6xqHHDWAjLbfcPbR4fhBkNGTzpZ9EkNTWO9ZHwstzTCwPqCuttS3qYoe8/G1OHA0O8U07hW4yc1MQddJdj5/mG1bfYfXpXZ2py5Y9X3XfoJmK4nDs62oDOSUUdqq0B/qJZ1AIkdJhJCIAvUyEr5btWrqdLvzVBGfVFkGTu6JbBW/bNmvLMhx9dzBi6dqQgQAcXlxGpSYNeOI0tmA1ZsogevF43bClvwDom7gvxVvOviTz9xL5zWjX0QykQuWfm3iXh9eXwPKhAOfcUiX98aHpSjhgcSWl58NESz/ZEmctAjLnCGtDCQlCwuSU5TM47UMQphXZ13NYYeamoY+trOBtlIopY8f+ZG6vzRrhaqtbT7BGvKQ8HQ=.U2FsdGVkX1/9TVSUxr6sewtUS23VeSuBBLtBAM/fUNHN7jbNJNSqG4hYem9hBsI3WobUrktLnl9UQ1viPZN4GMC0gqCu0eH4SZJFujq976YPcnA3d34m5xqmIbl1Z8g8RdhHtjl0dRAYN84Eds89kuzDpEODt+BJ0JYJo0EWBHNzUxbq0wqjZcDes4ojtxy7KFsUsjWCl2IMDtJy1xg5n435o9ZkxXFxn9WvE4OExLrXyYOC2DPiy+WzRbaNi3hPVlCFy9uQoaqdJavfvAnlKsF94Dmma24Zpl03XMzt2VhATW/yaky8OjjW319ciP/FzZhpPg8eUT9aeEf8CDgnXYt3K8xOur2uIYYd79c8N7E9ax2bGhCE0/XPwmJgVvP4+sHlOb7eWZFAbIH3kqFs426oW8I/HREyH9JLXF5ncuFQh74XzhFQT9VNQgCTvjVknE+EO9+mr9GEGjcQw3PivMa8MMY4KGENo0DFFEGU0u68V47wcTrdSnliDgE2aKuKnojT1gERq4vdhpm1f1WDTM39l/XCuMq7B/x4uPCe1NDq6X8ssKpRwohz0M1+YrhMQguXTbz9QqTHNPR/8XEtfE7H5sMPOwXOhBv2lF3ZgnDFfsKSr7XFzpE+X2RnJ0bVB5SLVegcV8W87+8UYqyTi5tcZvamM0vU7pujRUFdJl7NzyLTfoK/twW5IP/4i6csTKJssAYkpmzB8qQC7KnprIHtbQtoyB+V9WPUBZvdE0NHLrDbFLVg5kE8sYOOYwoanxnMWFEp9BQpJO1oIERQ1upWGctX0ONVPJohqksxndD8Q35j1g1jLOj3do2qSyU8VP25qYZDH1I4ExcGn/O2QDYWqIZm3tcH/TUqa0iC5rI3gIhlCydjbVL9fzdDD0BzJ2X2r1nC+bku9hJZ4oHRNA==\n",
+            "diskSelector": {
+                "matchLabels": {
+                    "app": "hpcr-disk-ref"
+                }
+            },
+            "imageURL": "http://hpcr-qcow2-image.default:8080/hpcr.qcow2",
+            "storagePool": "images",
+            "targetSelector": {
+                "matchLabels": {
+                    "app": "onpremsample"
+                }
+            }
+        }
+    },
+    "related": {
+        "ConfigMap.v1": {},
+        "HyperProtectContainerRuntimeOnPremDataDisk.hpse.ibm.com/v1": {},
+        "HyperProtectContainerRuntimeOnPremDataDiskRef.hpse.ibm.com/v1": {
+            "sampledisk": {
+                "apiVersion": "hpse.ibm.com/v1",
+                "kind": "HyperProtectContainerRuntimeOnPremDataDiskRef",
+                "metadata": {
+                    "annotations": {
+                        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"hpse.ibm.com/v1\",\"kind\":\"HyperProtectContainerRuntimeOnPremDataDiskRef\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"hpcr-disk-ref\"},\"name\":\"sampledisk\",\"namespace\":\"default\"},\"spec\":{\"storagePool\":\"images\",\"targetSelector\":{\"matchLabels\":{\"app\":\"onpremsample\"}},\"volumeName\":\"diskref\"}}\n"
+                    },
+                    "creationTimestamp": "2023-06-23T07:53:14Z",
+                    "generation": 1,
+                    "labels": {
+                        "app": "hpcr-disk-ref"
+                    },
+                    "name": "sampledisk",
+                    "namespace": "default",
+                    "resourceVersion": "177749",
+                    "uid": "ba7ad9e6-b310-4b89-bcda-1a60e8b56a0a"
+                },
+                "spec": {
+                    "storagePool": "images",
+                    "targetSelector": {
+                        "matchLabels": {
+                            "app": "onpremsample"
+                        }
+                    },
+                    "volumeName": "diskref"
+                },
+                "status": {
+                    "description": "  \u003cvolume type=\"file\"\u003e\n      \u003cname\u003ediskref\u003c/name\u003e\n      \u003ckey\u003e/var/lib/libvirt/images/diskref\u003c/key\u003e\n      \u003callocation unit=\"bytes\"\u003e2244329472\u003c/allocation\u003e\n      \u003ccapacity unit=\"bytes\"\u003e107374182400\u003c/capacity\u003e\n      \u003cphysical unit=\"bytes\"\u003e2244345856\u003c/physical\u003e\n      \u003ctarget\u003e\n          \u003cpath\u003e/var/lib/libvirt/images/diskref\u003c/path\u003e\n          \u003cformat type=\"qcow2\"\u003e\u003c/format\u003e\n          \u003cpermissions\u003e\n              \u003cowner\u003e0\u003c/owner\u003e\n              \u003cgroup\u003e0\u003c/group\u003e\n              \u003cmode\u003e0644\u003c/mode\u003e\n          \u003c/permissions\u003e\n          \u003ctimestamps\u003e\n              \u003catime\u003e1687449889.421880316\u003c/atime\u003e\n              \u003cmtime\u003e1687449842.121880316\u003c/mtime\u003e\n              \u003cctime\u003e1687449842.121880316\u003c/ctime\u003e\n          \u003c/timestamps\u003e\n      \u003c/target\u003e\n  \u003c/volume\u003e",
+                    "metadata": {
+                        "Name": "diskref",
+                        "diskXML": "  \u003cvolume type=\"file\"\u003e\n      \u003cname\u003ediskref\u003c/name\u003e\n      \u003ckey\u003e/var/lib/libvirt/images/diskref\u003c/key\u003e\n      \u003callocation unit=\"bytes\"\u003e2244329472\u003c/allocation\u003e\n      \u003ccapacity unit=\"bytes\"\u003e107374182400\u003c/capacity\u003e\n      \u003cphysical unit=\"bytes\"\u003e2244345856\u003c/physical\u003e\n      \u003ctarget\u003e\n          \u003cpath\u003e/var/lib/libvirt/images/diskref\u003c/path\u003e\n          \u003cformat type=\"qcow2\"\u003e\u003c/format\u003e\n          \u003cpermissions\u003e\n              \u003cowner\u003e0\u003c/owner\u003e\n              \u003cgroup\u003e0\u003c/group\u003e\n              \u003cmode\u003e0644\u003c/mode\u003e\n          \u003c/permissions\u003e\n          \u003ctimestamps\u003e\n              \u003catime\u003e1687449889.421880316\u003c/atime\u003e\n              \u003cmtime\u003e1687449842.121880316\u003c/mtime\u003e\n              \u003cctime\u003e1687449842.121880316\u003c/ctime\u003e\n          \u003c/timestamps\u003e\n      \u003c/target\u003e\n  \u003c/volume\u003e"
+                    },
+                    "observedGeneration": 1,
+                    "status": 1
+                }
+            }
+        },
+        "Secret.v1": {
+            "onprem-sshconfig-configmap": {
+                "apiVersion": "v1",
+                "data": {},
+                "kind": "Secret",
+                "metadata": {
+                    "annotations": {},
+                    "creationTimestamp": "2023-06-21T11:49:05Z",
+                    "labels": {
+                        "app": "onpremsample"
+                    },
+                    "managedFields": [
+                        {
+                            "apiVersion": "v1",
+                            "fieldsType": "FieldsV1",
+                            "fieldsV1": {
+                                "f:data": {
+                                    ".": {},
+                                    "f:HOSTNAME": {},
+                                    "f:KEY": {},
+                                    "f:KNOWN_HOSTS": {},
+                                    "f:USER": {}
+                                },
+                                "f:metadata": {
+                                    "f:annotations": {
+                                        ".": {},
+                                        "f:kubectl.kubernetes.io/last-applied-configuration": {}
+                                    },
+                                    "f:labels": {
+                                        ".": {},
+                                        "f:app": {}
+                                    }
+                                },
+                                "f:type": {}
+                            },
+                            "manager": "kubectl-client-side-apply",
+                            "operation": "Update",
+                            "time": "2023-06-21T11:49:05Z"
+                        }
+                    ],
+                    "name": "onprem-sshconfig-configmap",
+                    "namespace": "default",
+                    "resourceVersion": "3909",
+                    "uid": "a25700f7-b6ee-4eae-bbdf-a98e92c534db"
+                },
+                "type": "Opaque"
+            }
+        }
+    }
+}
