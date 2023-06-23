@@ -1,12 +1,12 @@
 ---
-kind: HyperProtectContainerRuntimeOnPremDataDisk
+kind: HyperProtectContainerRuntimeOnPremDataDiskRef
 apiVersion: hpse.ibm.com/v1
 metadata:
   name: sampledisk
   labels:
-    app: hpcr
+    app: hpcr-disk-ref
 spec:
-  size: 107374182400
+  volumeName: diskref
   storagePool: images
   targetSelector:
     matchLabels:

@@ -48,14 +48,13 @@ func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 	// assemble all information about the environment by merging the config maps
 	env := common.EnvFromConfigMapsOrSecrets(req)
 
-	// assemble information about the attached data disks
-	dataDisks, err := onprem.DataDisksFromRelated(req)
+	attachedDataDisks, err := onprem.AttachedDataDisksFromRelated(req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
 
-	// assemble information about the attached networks
-	networks, err := onprem.NetworkRefsFromRelated(req)
+	// assemble information about the attached networkRefs
+	networkRefs, err := onprem.NetworkRefsFromRelated(req)
 	if err != nil {
 		return common.CreateErrorAction(err)
 	}
@@ -76,20 +75,10 @@ func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 		return common.CreateErrorAction(err)
 	}
 
-	// dump the attached data disks
-	if A.IsNonEmpty(dataDisks) {
-		// extract names
-		dataDiskNames := A.MonadMap(dataDisks, func(disk *onprem.DataDiskCustomResource) string {
-			return disk.Name
-		})
-		// log the disks
-		log.Printf("DataDisks: %v", dataDiskNames)
-	}
-
 	// dump the attached network references
-	if A.IsNonEmpty(networks) {
+	if A.IsNonEmpty(networkRefs) {
 		// extract names
-		networkRefNames := A.MonadMap(networks, func(disk *onprem.NetworkRefCustomResource) string {
+		networkRefNames := A.MonadMap(networkRefs, func(disk *onprem.NetworkRefCustomResource) string {
 			return disk.Name
 		})
 		// log the disks
@@ -97,10 +86,10 @@ func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 	}
 
 	// attach data disks
-	opt.DataDisks = onprem.DataDiskCustomResourcesToAttachedDataDisks(dataDisks)
+	opt.DataDisks = attachedDataDisks
 
 	// attach networks
-	opt.Networks = onprem.NetworkRefCustomResourceToNetworks(networks)
+	opt.Networks = onprem.NetworkRefCustomResourceToNetworks(networkRefs)
 
 	// make sure to construct the VSI
 	return CreateSyncAction(client, opt)

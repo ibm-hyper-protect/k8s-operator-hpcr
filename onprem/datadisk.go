@@ -263,7 +263,7 @@ func DataDisksFromRelated(data map[string]any) ([]*DataDiskCustomResource, error
 }
 
 // DataDiskRefsFromRelated decodes the set of configured data disks from the related data structure
-func DataDiskDiskRefsFromRelated(data map[string]any) ([]*DataDiskRefCustomResource, error) {
+func DataDiskRefsFromRelated(data map[string]any) ([]*DataDiskRefCustomResource, error) {
 	var result []*DataDiskRefCustomResource
 	if related, ok := data["related"].(map[string]any); ok {
 		// all config maps
@@ -298,3 +298,53 @@ func dataDiskCustomResourceToAttachedDataDisk(res *DataDiskCustomResource) *Atta
 
 // DataDiskCustomResourcesToAttachedDataDisks converts from an array of DataDiskCustomResource to an array of attached disks
 var DataDiskCustomResourcesToAttachedDataDisks = A.Map(dataDiskCustomResourceToAttachedDataDisk)
+
+func dataDiskRefCustomResourceToAttachedDataDisk(res *DataDiskRefCustomResource) *AttachedDataDisk {
+	return &AttachedDataDisk{
+		StoragePool: res.Spec.StoragePool,
+		Name:        res.Spec.VolumeName,
+	}
+}
+
+// DataDiskRefCustomResourcesToAttachedDataDisks converts from an array of DataDiskCustomResource to an array of attached disks
+var DataDiskRefCustomResourcesToAttachedDataDisks = A.Map(dataDiskRefCustomResourceToAttachedDataDisk)
+
+// AttachedDataDisksFromRelated decodes the data disks and data disk references
+// from the set of custom resources and convers them into an array of AttachedDataDisk objects
+func AttachedDataDisksFromRelated(rel map[string]any) ([]*AttachedDataDisk, error) {
+	// decode
+	dataDisks, err := DataDisksFromRelated(rel)
+	if err != nil {
+		return nil, err
+	}
+	// assemble information about the attached data disk references
+	dataDiskRefs, err := DataDiskRefsFromRelated(rel)
+	if err != nil {
+		return nil, err
+	}
+	// dump the attached data disks
+	if A.IsNonEmpty(dataDisks) {
+		// extract names
+		dataDiskNames := A.MonadMap(dataDisks, func(disk *DataDiskCustomResource) string {
+			return disk.Name
+		})
+		// log the disks
+		log.Printf("DataDisks: %v", dataDiskNames)
+	}
+
+	// dump the attached data disk references
+	if A.IsNonEmpty(dataDiskRefs) {
+		// extract names
+		dataDiskRefNames := A.MonadMap(dataDiskRefs, func(disk *DataDiskRefCustomResource) string {
+			return disk.Name
+		})
+		// log the disks
+		log.Printf("DataDiskRefs: %v", dataDiskRefNames)
+	}
+	// assemble
+	return A.Monoid[*AttachedDataDisk]().Concat(
+		DataDiskCustomResourcesToAttachedDataDisks(dataDisks),
+		DataDiskRefCustomResourcesToAttachedDataDisks(dataDiskRefs),
+	), nil
+
+}
