@@ -138,6 +138,9 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
 func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
+	// log this config
+	log.Printf("Entering CreateSyncAction for config [%v]", opt)
+	defer log.Printf("Leaving CreateSyncAction for config [%v]", opt)
 	// checks for the validity of the instance
 	isInstanceValid := onprem.IsInstanceValid(client)
 	inst, ok := isInstanceValid(opt)
@@ -163,6 +166,9 @@ func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) 
 }
 
 func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
+	// log this config
+	log.Printf("Entering CreateFinalizeAction for config [%v]", opt)
+	defer log.Printf("Leaving CreateFinalizeAction for config [%v]", opt)
 	// TODO proper check for existence comes here
 	// ...
 	// destroy the instance
