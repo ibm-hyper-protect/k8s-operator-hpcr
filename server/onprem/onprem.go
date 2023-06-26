@@ -42,6 +42,7 @@ func CreatePingRoute(version, compileTime string) gin.HandlerFunc {
 func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 	// just a poor man's solution for now
 	if !lock.Lock.TryLock() {
+		log.Println("Sync: waiting for lock ...")
 		return common.CreateStatusAction(common.Waiting)
 	}
 	defer lock.Lock.Unlock()
@@ -61,12 +62,14 @@ func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
+		log.Printf("Unable to create libvirt client, cause: [%v]", err)
 		return common.CreateErrorAction(err)
 	}
 	defer client.Close()
 
 	cfg, err := common.Transcode[*OnPremConfigResource](req)
 	if err != nil {
+		log.Printf("Unable to decode request, cause: [%v]", err)
 		return common.CreateErrorAction(err)
 	}
 
@@ -97,7 +100,9 @@ func syncOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 
 // finalizeOnPrem deletes a VSI
 func finalizeOnPrem(req map[string]any) (*common.ResourceStatus, error) {
+
 	if !lock.Lock.TryLock() {
+		log.Println("Finalize: waiting for lock ...")
 		return common.CreateStatusAction(common.Waiting)
 	}
 	defer lock.Lock.Unlock()
@@ -106,12 +111,14 @@ func finalizeOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 
 	client, err := onprem.CreateLivirtClientFromEnvMap(env)
 	if err != nil {
+		log.Printf("Unable to create libvirt client, cause: [%v]", err)
 		return common.CreateErrorAction(err)
 	}
 	defer client.Close()
 
 	cfg, err := common.Transcode[*OnPremConfigResource](req)
 	if err != nil {
+		log.Printf("Unable to decode request, cause: [%v]", err)
 		return common.CreateErrorAction(err)
 	}
 
