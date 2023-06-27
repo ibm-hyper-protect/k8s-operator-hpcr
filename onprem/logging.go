@@ -16,8 +16,10 @@ package onprem
 
 import (
 	"bytes"
+	"fmt"
 	"regexp"
 
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"libvirt.org/go/libvirtxml"
 )
 
@@ -94,6 +96,7 @@ func GetLoggingVolume(client *LivirtClient) func(storagePool, name string) (stri
 	conn := client.LibVirt
 
 	return func(storagePool, name string) (string, error) {
+		defer CM.EntryExit(fmt.Sprintf("GetLoggingVolume(%s, %s)", storagePool, name))()
 		// access the pool
 		pool, err := conn.StoragePoolLookupByName(storagePool)
 		if err != nil {

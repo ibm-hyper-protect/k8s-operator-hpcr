@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 )
@@ -84,6 +85,9 @@ func finalizeDataDisk(req map[string]any) (*common.ResourceStatus, error) {
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+		// log this config
+		defer CM.EntryExit("DataDiskCreateControllerSyncRoute")()
+
 		log.Printf("synchronizing data disk ...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
@@ -127,6 +131,10 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 
 func CreateControllerFinalizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		// log this config
+		defer CM.EntryExit("DataDiskCreateControllerFinalizeRoute")()
+
 		log.Printf("finalizing ...")
 
 		jsonData, err := io.ReadAll(c.Request.Body)
@@ -174,6 +182,8 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 // CreateControllerCustomizeRoute is invoked to
 func CreateControllerCustomizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// log this config
+		defer CM.EntryExit("DataDiskCreateControllerCustomizeRoute")()
 		// parse body
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {

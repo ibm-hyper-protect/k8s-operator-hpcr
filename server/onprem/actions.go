@@ -15,10 +15,12 @@
 package onprem
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
 	"github.com/digitalocean/go-libvirt"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
@@ -37,12 +39,15 @@ func getIPAddress(lease libvirt.NetworkDhcpLease) string {
 
 func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.Domain, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 
+	defer CM.EntryExit(fmt.Sprintf("createInstanceRunningAction(%s)", opt.Name))()
+
 	getLoggingVolume := onprem.GetLoggingVolume(client)
 	getLeases := onprem.GetDCHPLeases(client)
 
 	// getIPAddresses determines the IP Addresses for the instance by checking for a all leases
 	// for the configured network and then filtering down the list to the hostname
 	getIPAddresses := func() []string {
+		defer CM.EntryExit(fmt.Sprintf("getIPAddresses(%s)", opt.Name))()
 		networks := onprem.GetNetworks(opt)
 		var leases []libvirt.NetworkDhcpLease
 		for _, network := range networks {
@@ -139,8 +144,7 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 // CreateSyncAction synchronizes the state of the resource and determines what to do next
 func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 	// log this config
-	log.Printf("Entering CreateSyncAction for config [%v]", opt)
-	defer log.Printf("Leaving CreateSyncAction for config [%v]", opt)
+	defer CM.EntryExit(fmt.Sprintf("CreateSyncAction(%s)", opt.Name))()
 	// checks for the validity of the instance
 	isInstanceValid := onprem.IsInstanceValid(client)
 	inst, ok := isInstanceValid(opt)
@@ -167,8 +171,7 @@ func CreateSyncAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) 
 
 func CreateFinalizeAction(client *onprem.LivirtClient, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
 	// log this config
-	log.Printf("Entering CreateFinalizeAction for config [%v]", opt)
-	defer log.Printf("Leaving CreateFinalizeAction for config [%v]", opt)
+	defer CM.EntryExit(fmt.Sprintf("CreateFinalizeAction(%s)", opt.Name))()
 	// TODO proper check for existence comes here
 	// ...
 	// destroy the instance

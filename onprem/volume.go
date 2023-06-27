@@ -19,6 +19,7 @@ import (
 	"log"
 
 	libvirt "github.com/digitalocean/go-libvirt"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"libvirt.org/go/libvirtxml"
 )
 
@@ -41,6 +42,8 @@ func createDefaultVolume() libvirtxml.StorageVolume {
 
 func deleteStorageVol(conn *libvirt.Libvirt) func(pool libvirt.StoragePool, name string) (*libvirt.StorageVol, error) {
 	return func(pool libvirt.StoragePool, name string) (*libvirt.StorageVol, error) {
+		// log this config
+		defer CM.EntryExit(fmt.Sprintf("deleteStorageVol(%s, %s)", pool.Name, name))()
 		existing, err := conn.StorageVolLookupByName(pool, name)
 		if err != nil {
 			return nil, err

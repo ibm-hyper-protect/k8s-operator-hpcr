@@ -33,4 +33,6 @@ const (
 	ResourceNameDataDiskRefs = "onprem-datadiskrefs"
 	ResourceNameNetworkRefs  = "onprem-networkrefs"
 	ResourceNameVSIs         = "onprem-hpcrs"
+
+	NeedResults = int32(1)
 )

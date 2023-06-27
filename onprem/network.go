@@ -19,9 +19,9 @@ import (
 	"encoding/xml"
 	"fmt"
 	"log"
-	"math"
 
 	libvirt "github.com/digitalocean/go-libvirt"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
@@ -55,14 +55,17 @@ func GetDCHPLeases(client *LivirtClient) func(networkName string) ([]libvirt.Net
 	conn := client.LibVirt
 
 	return func(networkName string) ([]libvirt.NetworkDhcpLease, error) {
+		defer CM.EntryExit(fmt.Sprintf("GetDCHPLeases(%s)", networkName))()
 
+		log.Printf("NetworkLookupByName: %s", networkName)
 		network, err := conn.NetworkLookupByName(networkName)
 		if err != nil {
 			log.Printf("Unable to lookup the network [%s], cause: [%v]", networkName, err)
 			return nil, err
 		}
 
-		leases, ret, err := conn.NetworkGetDhcpLeases(network, nil, math.MaxInt32, 0)
+		log.Printf("NetworkGetDhcpLeases: %s", network.Name)
+		leases, ret, err := conn.NetworkGetDhcpLeases(network, nil, NeedResults, 0)
 		if err != nil {
 			log.Printf("Unable to get leases for the network [%s], ret: [%d], cause: [%v]", networkName, ret, err)
 			return nil, err
