@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
@@ -133,7 +134,9 @@ func finalizeOnPrem(req map[string]any) (*common.ResourceStatus, error) {
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		log.Printf("synchronizing onprem VSI ...")
+		// log this config
+		defer CM.EntryExit("OnPremCreateControllerSyncRoute")()
+
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			// Handle error
@@ -182,7 +185,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 
 func CreateControllerFinalizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Printf("finalizing ...")
+		// log this config
+		defer CM.EntryExit("OnPremCreateControllerFinalizeRoute")()
 
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
@@ -229,6 +233,8 @@ func CreateControllerFinalizeRoute() gin.HandlerFunc {
 // CreateControllerCustomizeRoute is invoked to
 func CreateControllerCustomizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// log this config
+		defer CM.EntryExit("OnPremCreateControllerCustomizeRoute")()
 		// parse body
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {

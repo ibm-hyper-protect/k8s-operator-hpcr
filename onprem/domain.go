@@ -23,6 +23,7 @@ import (
 
 	libvirt "github.com/digitalocean/go-libvirt"
 	"github.com/google/uuid"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"libvirt.org/go/libvirtxml"
 )
 
@@ -271,6 +272,8 @@ func DeleteDomainByName(client *LivirtClient) func(name string) error {
 	delDomain := deleteDomain(client)
 
 	return func(name string) error {
+		// log this config
+		defer CM.EntryExit(fmt.Sprintf("DeleteDomainByName(%s)", name))()
 		// log this
 		log.Printf("Deleting domain by name [%s] ...", name)
 		// locate the domain

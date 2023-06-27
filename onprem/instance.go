@@ -25,6 +25,7 @@ import (
 	"crypto/sha256"
 
 	"github.com/digitalocean/go-libvirt"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
 )
@@ -226,6 +227,8 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 	createNetworksXML := CreateNetworksXML()
 
 	return func(opt *InstanceOptions) (*libvirtxml.Domain, error) {
+		// log this config
+		defer CM.EntryExit(fmt.Sprintf("CreateInstanceSync(%s)", opt.Name))()
 		// prepare some names
 		name := opt.Name
 		cidataName := GetCIDataVolumeName(name)
@@ -331,6 +334,8 @@ func DeleteInstanceSync(client *LivirtClient) func(storagePool, name string) err
 
 	// delete the disks, but failure will only be logged
 	delDisks := func(storagePool, name string) {
+		// log this config
+		defer CM.EntryExit(fmt.Sprintf("DeleteInstanceSync(%s, %s)", storagePool, name))()
 		// access the pool
 		pool, err := conn.StoragePoolLookupByName(storagePool)
 		if err != nil {

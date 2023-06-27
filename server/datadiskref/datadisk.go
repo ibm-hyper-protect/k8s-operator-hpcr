@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 )
@@ -61,6 +62,9 @@ func syncDataDisk(req map[string]any) (*common.ResourceStatus, error) {
 func CreateControllerSyncRoute() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+		// log this config
+		defer CM.EntryExit("DataDiskRefCreateControllerSyncRoute")()
+
 		log.Printf("synchronizing data disk ref...")
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
@@ -105,6 +109,8 @@ func CreateControllerSyncRoute() gin.HandlerFunc {
 // CreateControllerCustomizeRoute is invoked to
 func CreateControllerCustomizeRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// log this config
+		defer CM.EntryExit("DataDiskRefCreateControllerCustomizeRoute")()
 		// parse body
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
