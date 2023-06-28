@@ -29,6 +29,8 @@ import (
 // CreateServer creates the server that implements the actual controller
 func CreateServer(version, compileTime string) func(port int) error {
 	r := gin.Default()
+	// some generic middleware
+	r.Use()
 	// register the VPC routes
 	r.GET("/vpc/ping", vpc.CreatePingRoute(version, compileTime))
 	r.POST("/vpc/sync", vpc.CreateControllerSyncRoute())

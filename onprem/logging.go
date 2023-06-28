@@ -17,7 +17,9 @@ package onprem
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"regexp"
+	"time"
 
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"libvirt.org/go/libvirtxml"
@@ -96,23 +98,37 @@ func GetLoggingVolume(client *LivirtClient) func(storagePool, name string) (stri
 	conn := client.LibVirt
 
 	return func(storagePool, name string) (string, error) {
-		defer CM.EntryExit(fmt.Sprintf("GetLoggingVolume(%s, %s)", storagePool, name))()
+		msg := fmt.Sprintf("GetLoggingVolume(%s, %s)", storagePool, name)
+
+		defer CM.PanicAfterTimeout(msg, 5*time.Second)()
+		defer CM.EntryExit(msg)()
 		// access the pool
+		log.Printf("Looking up storage pool [%s] by name ...", name)
 		pool, err := conn.StoragePoolLookupByName(storagePool)
 		if err != nil {
+			log.Printf("Error looking up storage pool [%s] by name, cause: [%v]", name, err)
 			return "", err
 		}
+		log.Printf("Lookup up of storage pool [%s] was successful.", pool.Name)
+
+		// go for the volume
+		log.Printf("Looking up volume [%s] by name in pool [%s] ...", name, pool.Name)
 		vol, err := conn.StorageVolLookupByName(pool, name)
 		if err != nil {
+			log.Printf("Error looking up volume [%s] by name in pool [%s], cause: [%v]", name, pool.Name, err)
 			return "", err
 		}
-		//
+		log.Printf("Lookup up of volume [%s] by name in pool [%s] was successful.", vol.Name, pool.Name)
+
 		// load the value of the logging volume
 		var buffer bytes.Buffer
+		log.Printf("Downloading volume [%s] ...", vol.Key)
 		err = conn.StorageVolDownload(vol, &buffer, 0, maxLoggingVolumeSize, 0)
 		if err != nil {
+			log.Printf("Error downloading volume [%s], cause: [%v]", vol.Key, err)
 			return "", err
 		}
+		log.Printf("Download of volume [%s] was successful", vol.Key)
 		// returns the content of the logs
 		return buffer.String(), nil
 	}

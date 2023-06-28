@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/digitalocean/go-libvirt"
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
@@ -38,8 +39,10 @@ func getIPAddress(lease libvirt.NetworkDhcpLease) string {
 }
 
 func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.Domain, opt *onprem.InstanceOptions) (*common.ResourceStatus, error) {
+	msg := fmt.Sprintf("createInstanceRunningAction(%s)", opt.Name)
 
-	defer CM.EntryExit(fmt.Sprintf("createInstanceRunningAction(%s)", opt.Name))()
+	defer CM.PanicAfterTimeout(msg, 5*time.Second)()
+	defer CM.EntryExit(msg)()
 
 	getLoggingVolume := onprem.GetLoggingVolume(client)
 	getLeases := onprem.GetDCHPLeases(client)
@@ -74,7 +77,7 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 	data, err := getLoggingVolume(opt.StoragePool, logName)
 	if err != nil {
 		// log this
-		log.Printf("Unable to get the logging volumd [%s] from pool [%s], cause: [%v]", logName, opt.StoragePool, err)
+		log.Printf("Unable to get the logging volume [%s] from pool [%s], cause: [%v]", logName, opt.StoragePool, err)
 		// returns some error status
 		return &common.ResourceStatus{
 			Status:      common.Waiting,
