@@ -106,7 +106,7 @@ func GetLoggingVolume(client *LivirtClient) func(storagePool, name string) (stri
 		log.Printf("Looking up storage pool [%s] by name ...", name)
 		pool, err := conn.StoragePoolLookupByName(storagePool)
 		if err != nil {
-			log.Printf("Error looking up storage pool [%s] by name, cause: [%v]", name, err)
+			log.Printf("Error looking up storage pool [%s] by name, cause: [%v]", storagePool, err)
 			return "", err
 		}
 		log.Printf("Lookup up of storage pool [%s] was successful.", pool.Name)
