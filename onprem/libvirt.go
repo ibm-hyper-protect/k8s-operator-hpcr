@@ -24,8 +24,9 @@ import (
 
 type LivirtClient struct {
 	io.Closer
-	LibVirt *libvirt.Libvirt
-	Hash    string
+	LibVirt   *libvirt.Libvirt
+	Hash      string
+	SSHConfig *SSHConfig
 }
 
 func (client *LivirtClient) Close() error {
@@ -52,8 +53,9 @@ func CreateLivirtClient(sshConfig *SSHConfig) (*LivirtClient, error) {
 	hash := getHost(sshConfig)
 
 	return &LivirtClient{
-		LibVirt: l,
-		Hash:    hash,
+		LibVirt:   l,
+		Hash:      hash,
+		SSHConfig: sshConfig,
 	}, nil
 }
 

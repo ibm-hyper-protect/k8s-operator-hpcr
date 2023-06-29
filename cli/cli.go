@@ -15,16 +15,10 @@
 package cli
 
 import (
-	"log"
 	"strconv"
 	"time"
 
-	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server"
 	c "github.com/urfave/cli/v2"
-)
-
-const (
-	portFlagName = "port"
 )
 
 // CreateApp creates the application that starts the operator
@@ -35,23 +29,10 @@ func CreateApp(version, compiled, commit string) *c.App {
 		Version:  version,
 		Compiled: compiledAt,
 		Name:     "k8s-operator-hpcr",
-		Usage:    "Start HPCR controller",
-		Flags: []c.Flag{
-			&c.IntFlag{
-				Name:    portFlagName,
-				Aliases: []string{"p"},
-				Value:   8080,
-				Usage:   "Port to listen on",
-			},
-		},
-		Action: func(ctx *c.Context) error {
-			port := ctx.Int(portFlagName)
-
-			log.Printf("Starting server [%s] built on [%v] on port [%d] ...", version, compiledAt, port)
-
-			svr := server.CreateServer(version, compiled)
-
-			return svr(port)
+		Usage:    "HPCR controller commands",
+		Commands: []*c.Command{
+			StartServerCommand(version, compiled, commit),
+			DownloadCommand(version, compiled, commit),
 		},
 	}
 }

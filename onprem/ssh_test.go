@@ -15,8 +15,11 @@
 package onprem
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"testing"
 
 	libvirt "github.com/digitalocean/go-libvirt"
@@ -82,5 +85,27 @@ func TestSerializeToMap(t *testing.T) {
 	deser := GetSSHConfigFromEnvMap(env)
 
 	assert.Equal(t, config, deser)
+
+}
+
+func TestMarshalSSHConfig(t *testing.T) {
+	config, err := defaultSSHConfig("../.env")
+	if err != nil {
+		t.SkipNow()
+	}
+	// target
+	dstPath := "../build"
+	err = os.MkdirAll(dstPath, os.ModePerm)
+	require.NoError(t, err)
+	// marshal
+	dstFile := filepath.Join(dstPath, "sshconfig.json")
+	dst, err := os.Create(dstFile)
+	require.NoError(t, err)
+	defer dst.Close()
+
+	// marshal
+	enc := json.NewEncoder(dst)
+	err = enc.Encode(config)
+	require.NoError(t, err)
 
 }
