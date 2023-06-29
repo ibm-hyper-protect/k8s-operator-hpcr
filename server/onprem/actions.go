@@ -44,7 +44,8 @@ func createInstanceRunningAction(client *onprem.LivirtClient, inst *libvirtxml.D
 	defer CM.PanicAfterTimeout(msg, 5*time.Second)()
 	defer CM.EntryExit(msg)()
 
-	getLoggingVolume := onprem.GetLoggingVolume(client)
+	// getLoggingVolume := onprem.GetLoggingVolume(client)
+	getLoggingVolume := onprem.GetLoggingVolumeViaCommand(client)
 	getLeases := onprem.GetDCHPLeases(client)
 
 	// getIPAddresses determines the IP Addresses for the instance by checking for a all leases

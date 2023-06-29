@@ -84,3 +84,29 @@ func TestPartitionFailedStartup(t *testing.T) {
 	assert.NotEmpty(t, failure)
 	assert.NotEmpty(t, success)
 }
+
+// func TestDirectVolumeDownload(t *testing.T) {
+// 	config, err := defaultSSHConfig("../.env")
+// 	if err != nil {
+// 		t.SkipNow()
+// 	}
+
+// 	getVolume := GetLoggingVolumeViaSSH(config)
+
+// 	data, err := getVolume("/var/lib/libvirt/images/console-e140b66c-be72-4d49-9348-b0f4b658b073.log")
+// 	require.NoError(t, err)
+
+// 	fmt.Println(data)
+// }
+
+// func TestGetLoggingViaCommand(t *testing.T) {
+// 	config, err := defaultSSHConfig("../.env")
+// 	if err != nil {
+// 		t.SkipNow()
+// 	}
+
+// 	data, err := getLoggingVolumeViaCommand(context.Background(), config, "../k8s-operator-hpcr.exe", "/var/lib/libvirt/images/console-e140b66c-be72-4d49-9348-b0f4b658b073.log")
+// 	require.NoError(t, err)
+
+// 	fmt.Println(data)
+// }

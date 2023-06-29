@@ -25,4 +25,4 @@ COPY k8s-operator-hpcr /k8s-operator-hpcr
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/k8s-operator-hpcr" ]
+ENTRYPOINT [ "/k8s-operator-hpcr", "server"]
