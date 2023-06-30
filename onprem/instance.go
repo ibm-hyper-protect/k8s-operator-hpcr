@@ -25,6 +25,7 @@ import (
 	"crypto/sha256"
 
 	"github.com/digitalocean/go-libvirt"
+	"github.com/google/uuid"
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
@@ -224,8 +225,6 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 	isInstanceValid := IsInstanceValid(client)
 	createDataDiskXML := CreateDataDiskXML(client)
 
-	createNetworksXML := CreateNetworksXML()
-
 	return func(opt *InstanceOptions) (*libvirtxml.Domain, error) {
 		// log this config
 		defer CM.EntryExit(fmt.Sprintf("CreateInstanceSync(%s)", opt.Name))()
@@ -314,11 +313,38 @@ func CreateInstanceSync(client *LivirtClient) func(opt *InstanceOptions) (*libvi
 		}
 		// add networks
 		if A.IsNonEmpty(opt.Networks) {
-			networks, err := createNetworksXML(opt.Networks)
+			networks, err := CreateNetworksXML(name)(opt.Networks)
 			if err != nil {
 				return nil, err
 			}
 			domainXML.Devices.Interfaces = networks
+		} else {
+			// mac address based on the UUID
+			macAddress := CreateMacAddressFromMaybeUUID(name)
+			// construct a network
+			domainXML.Devices.Interfaces = []libvirtxml.DomainInterface{{
+				Model: &libvirtxml.DomainInterfaceModel{
+					Type: "virtio",
+				},
+				Source: &libvirtxml.DomainInterfaceSource{
+					Network: &libvirtxml.DomainInterfaceSourceNetwork{
+						Network: DefaultNetwork,
+					},
+				},
+				Driver: &libvirtxml.DomainInterfaceDriver{
+					IOMMU: "on",
+				},
+				MAC: &libvirtxml.DomainInterfaceMAC{
+					Address: macAddress,
+				},
+			},
+			}
+		}
+		// check if we can hardcode the UUID
+		uid, err := uuid.Parse(name)
+		if err == nil {
+			// explicitly set the domain UUID
+			domainXML.UUID = uid.String()
 		}
 		// start the domain
 		return startDomain(domainXML)
