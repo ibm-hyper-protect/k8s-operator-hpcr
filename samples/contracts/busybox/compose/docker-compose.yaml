@@ -4,4 +4,7 @@ services:
   busybox:
     image: docker.io/library/busybox@sha256:2376a0c12759aa1214ba83e771ff252c7b1663216b192fbe5e0fb364e952f85c
     command: |
-      echo "Hello from busybox"
+      sh /var/lib/busybox/run.sh
+    volumes:
+      - ./run.sh:/var/lib/busybox/run.sh:ro
+      - /etc/machine-id:/var/lib/busybox/machine-id:ro      

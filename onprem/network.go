@@ -159,27 +159,35 @@ func networkRefCustomResourceToNetworks(res *NetworkRefCustomResource) string {
 // NetworkRefCustomResourceToNetworks converts from an array of NetworkRefCustomResource to an array of attached disks
 var NetworkRefCustomResourceToNetworks = A.Map(networkRefCustomResourceToNetworks)
 
-func createNetworkXML(networkName string) libvirtxml.DomainInterface {
-	log.Printf("Defining domain interface on network [%s]", networkName)
-	return libvirtxml.DomainInterface{
-		Model: &libvirtxml.DomainInterfaceModel{
-			Type: "virtio",
-		},
-		Source: &libvirtxml.DomainInterfaceSource{
-			Network: &libvirtxml.DomainInterfaceSourceNetwork{
-				Network: networkName,
+func createNetworkXML(prefix string) func(networkName string) libvirtxml.DomainInterface {
+	return func(networkName string) libvirtxml.DomainInterface {
+		// produce a mac address
+		macAddr := CreateMacAddressFromHash(fmt.Sprintf("%s-%s", prefix, networkName))
+
+		log.Printf("Defining domain interface on network [%s], mac [%s]", networkName, macAddr)
+		return libvirtxml.DomainInterface{
+			Model: &libvirtxml.DomainInterfaceModel{
+				Type: "virtio",
 			},
-		},
-		Driver: &libvirtxml.DomainInterfaceDriver{
-			IOMMU: "on",
-		},
+			Source: &libvirtxml.DomainInterfaceSource{
+				Network: &libvirtxml.DomainInterfaceSourceNetwork{
+					Network: networkName,
+				},
+			},
+			Driver: &libvirtxml.DomainInterfaceDriver{
+				IOMMU: "on",
+			},
+			MAC: &libvirtxml.DomainInterfaceMAC{
+				Address: macAddr,
+			},
+		}
 	}
 }
 
 // CreateNetworksXML creates the XML for the networks
-func CreateNetworksXML() func(networkNames []string) ([]libvirtxml.DomainInterface, error) {
+func CreateNetworksXML(prefix string) func(networkNames []string) ([]libvirtxml.DomainInterface, error) {
 
-	mapNames := A.Map(createNetworkXML)
+	mapNames := A.Map(createNetworkXML(prefix))
 
 	return func(networkNames []string) ([]libvirtxml.DomainInterface, error) {
 		return mapNames(networkNames), nil

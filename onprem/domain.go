@@ -76,7 +76,7 @@ func getCanonicalMachineName(caps *libvirtxml.Caps, arch string, virttype string
 		}
 	}
 
-	return "", fmt.Errorf("Cannot find machine type %s for %s/%s in %v", targetmachine, virttype, arch, caps)
+	return "", fmt.Errorf("cannot find machine type %s for %s/%s in %v", targetmachine, virttype, arch, caps)
 }
 
 func getHostCapabilities(virConn *libvirt.Libvirt) (*libvirtxml.Caps, error) {
@@ -168,7 +168,7 @@ func createDefaultDomainDef(client *LivirtClient) (*libvirtxml.Domain, error) {
 					},
 					Source: &libvirtxml.DomainInterfaceSource{
 						Network: &libvirtxml.DomainInterfaceSourceNetwork{
-							Network: "default",
+							Network: DefaultNetwork,
 						},
 					},
 					Driver: &libvirtxml.DomainInterfaceDriver{
