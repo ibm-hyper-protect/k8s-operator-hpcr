@@ -30,9 +30,7 @@ You need a Kubernetes cluster with Internet connectivity.
 
 ### 2. Install the Hyper Protect Virtual Servers Kubernetes Operator
 
-```bash
-kubectl apply -k https://github.com/ibm-hyper-protect/k8s-operator-hpcr/manifests
-``` 
+The `deploy` directory contains installation information.
 
 ### 3. Verify your installation by checking for the existence of the custom resources
 
