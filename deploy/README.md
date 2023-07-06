@@ -12,7 +12,7 @@ You need a Kubernetes cluster with Internet connectivity.
 The operator is installed via its helm chart.
 Add the operator's helm chart to your local helm repository list as `k8s-hpcr-operator`.
   ``` bash
-  helm repo add k8s-hpcr-operator https://github.io/ibm-hyper-protect/k8s-operator-hpcr/deploy/charts/k8s-hpcr-operator
+  helm repo add k8s-hpcr-operator https://charts.k8s-hpcr-operator.io
   ```
 Install the chart with the release name `k8s-hpcr-operator`:
   ``` bash
