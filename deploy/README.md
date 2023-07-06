@@ -1,21 +1,30 @@
-## Installing the Controller
+# Installing the Controller
 
 You need a Kubernetes cluster with Internet connectivity.
 
-### 1. Install [Metacontroller](https://metacontroller.github.io/metacontroller/guide/install.html):
+## 1. Install [Metacontroller](https://metacontroller.github.io/metacontroller/guide/install.html):
   
   ```bash
   kubectl apply -k https://github.com/metacontroller/metacontroller/manifests/production
   ```
 
-### 2. Install the Hyper Protect Virtual Servers Kubernetes Operator
-    Generate the manifest files from the manifest diecrtory
-    
-    ```bash
-    kubectl apply https://github.com/ibm-hyper-protect/k8s-operator-hpcr/deploy/manifests
-    ``` 
+## 2. Install the Hyper Protect Virtual Servers Kubernetes Operator
+The operator is installed via its helm chart.
+To install the chart with the release name `k8s-hpcr-operator`:
+  ``` bash
+  helm repo add k8s-hpcr-operator https://github.io/ibm-hyper-protect/k8s-operator-hpcr/deploy/charts/k8s-hpcr-operator
+  helm install k8s-hpcr-operator k8s-hpcr-operator/k8s-hpcr-operator
+  ```
 
-### 3. Verify your installation by checking for the existence of the custom resources
+### Generate my own Manifest files
+The static deployment manifests would be generated from the helm chart and bundled as part of a release on github.
+You can generate your own static deployment manifests on your local workstation, using helm and make. 
+Teh default deployment values can be overwrtitten by customizing the `helm-values.yaml` file.
+  ```bash
+  make manifests
+  ``` 
+
+## 3. Verify your installation by checking for the existence of the custom resources
 
 ```bash
 kubectl get crds
@@ -37,14 +46,22 @@ k8s-operator-hpcr-vpc      5m37s
 ```
 
 ```bash
-kubectl get deployments
+kubectl get deployments -n k8s-hpcr-operator
 
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
 k8s-operator-hpcr   1/1     1            1           6m35s
 ```
 
-### Show Logs
+## Show Logs
 
-```bash
-kubectl logs -l app=k8s-operator-hpcr
-```
+  ```bash
+  kubectl logs -l app=k8s-operator-hpcr -n k8s-hpcr-operator
+  ```
+
+
+## 4. Uninstalling the Chart
+To uninstall the k8s-operator-hpcr deployment via helm:
+  ```bash
+  helm uninstall k8s-operator-hpcr
+  ```
+The command removes all the Kubernetes components associated with the chart and deletes the helm release.
