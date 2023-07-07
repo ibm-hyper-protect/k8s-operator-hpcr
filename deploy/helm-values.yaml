@@ -1,5 +1,5 @@
 fullnameOverride: k8s-operator-hpcr
-namespace: k8s-operator-hpcr222
+namespace: k8s-operator-hpcr
 
 resources:
   limits:
