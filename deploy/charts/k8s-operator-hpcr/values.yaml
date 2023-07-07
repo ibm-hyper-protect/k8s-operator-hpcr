@@ -1,0 +1,21 @@
+# Default values for k8s-operator-hpcr.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/ibm-hyper-protect/k8s-operator-hpcr
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: "1"
+  requests:
+    memory: 256Mi
+    cpu: "0.2"

@@ -1,0 +1,102 @@
+---
+{{- $serviceBaseUrl := "http://k8s-operator-hpcr" -}}
+{{- $servicePort := "8080" -}}
+
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-vpc
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: vpc-hpcrs
+  resyncPeriodSeconds: 60
+  hooks:
+    sync:
+      webhook:
+        url: {{ printf "%s.%s:%s/vpc/sync" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    finalize:
+      webhook:
+        url: {{ printf "%s.%s:%s/vpc/finalize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    customize:
+      webhook:
+        url: {{ printf "%s.%s:%s/vpc/customize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-onprem
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-hpcrs
+  resyncPeriodSeconds: 60
+  hooks:
+    sync:
+      webhook:
+        url: {{ printf "%s.%s:%s/onprem/sync" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    finalize:
+      webhook:
+        url: {{ printf "%s.%s:%s/onprem/finalize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    customize:
+      webhook:
+        url: {{ printf "%s.%s:%s/onprem/customize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-datadisk
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-datadisks
+  resyncPeriodSeconds: 120
+  hooks:
+    sync:
+      webhook:
+        url: {{ printf "%s.%s:%s/datadisk/sync" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    finalize:
+      webhook:
+        url: {{ printf "%s.%s:%s/datadisk/finalize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    customize:
+      webhook:
+        url: {{ printf "%s.%s:%s/datadisk/customize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-datadiskref
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-datadiskrefs
+  resyncPeriodSeconds: 120
+  hooks:
+    sync:
+      webhook:
+        url: {{ printf "%s.%s:%s/datadiskref/sync" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    customize:
+      webhook:
+        url: {{ printf "%s.%s:%s/datadiskref/customize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+---
+apiVersion: metacontroller.k8s.io/v1alpha1
+kind: CompositeController
+metadata:
+  name: k8s-operator-hpcr-networkref
+spec:
+  generateSelector: true
+  parentResource:
+    apiVersion: hpse.ibm.com/v1
+    resource: onprem-networkrefs
+  resyncPeriodSeconds: 120
+  hooks:
+    sync:
+      webhook:
+        url: {{ printf "%s.%s:%s/networkref/sync" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
+    customize:
+      webhook:
+        url: {{ printf "%s.%s:%s/networkref/customize" $serviceBaseUrl (.Values.namespace | default .Release.Namespace) $servicePort }}
