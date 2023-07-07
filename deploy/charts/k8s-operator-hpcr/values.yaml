@@ -8,10 +8,6 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
 
-serviceAccount:
-  create: true
-  name: k8s-operator-hpcr
-
 service:
   type: ClusterIP
   port: 8080

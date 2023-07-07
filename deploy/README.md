@@ -10,13 +10,13 @@ You need a Kubernetes cluster with Internet connectivity.
 
 ## 2. Install the Hyper Protect Virtual Servers Kubernetes Operator
 The operator is installed via its helm chart.
-Add the operator's helm chart to your local helm repository list as `k8s-hpcr-operator`.
+Add the operator's helm chart to your local helm repository list as `k8s-operator-hpcr`.
   ``` bash
-  helm repo add k8s-hpcr-operator https://charts.k8s-hpcr-operator.io
+  helm repo add k8s-operator-hpcr https://charts.k8s-operator-hpcr.io
   ```
-Install the chart with the release name `k8s-hpcr-operator`:
+Install the chart with the release name `k8s-operator-hpcr`:
   ``` bash
-  helm install k8s-hpcr-operator k8s-hpcr-operator/k8s-hpcr-operator
+  helm install k8s-operator-hpcr k8s-operator-hpcr/k8s-operator-hpcr
   ```
 
 ### Generate my own Manifest files
@@ -25,6 +25,10 @@ You can also generate your own static deployment manifests on your local worksta
 The default deployment values can be overwrtitten by customizing the `helm-values.yaml` file.
   ```bash
   make manifests
+  ``` 
+Then install the operator on your cluster via kubectl and kustomize. Be sure to have created the namespace for the operator's namespace on your cluster before apply the manifests:
+  ```bash
+  make kustomize-install
   ``` 
 
 ## 3. Verify your installation by checking for the existence of the custom resources
@@ -49,7 +53,7 @@ k8s-operator-hpcr-vpc      5m37s
 ```
 
 ```bash
-kubectl get deployments -n k8s-hpcr-operator
+kubectl get deployments -n k8s-operator-hpcr
 
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
 k8s-operator-hpcr   1/1     1            1           6m35s
@@ -58,7 +62,7 @@ k8s-operator-hpcr   1/1     1            1           6m35s
 ## Show Logs
 
   ```bash
-  kubectl logs -l app=k8s-operator-hpcr -n k8s-hpcr-operator
+  kubectl logs -l app=k8s-operator-hpcr -n k8s-operator-hpcr
   ```
 
 ## 4. Uninstalling the Chart
