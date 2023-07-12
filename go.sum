@@ -118,6 +118,8 @@ github.com/ibm-hyper-protect/terraform-provider-hpcr v0.1.12 h1:1DhIglqVbymLb73y
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.1.12/go.mod h1:sHvbmIcCA8/TU3rkFpQySkS6cn5YAAKaPZorLRv8FCY=
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.1 h1:zdEYj6Pbp0Xg48VUSB/MHdwPfrFDsQBsZYmct0poM3c=
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.1/go.mod h1:L20n2rWM74MhdyxyMnGrDz3wZrVPPcNcFwdt6ehv8YU=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.2 h1:gHexPwvki/PPnKtDiA5I9uo0ZygHNLKTtnGbC1/mSZU=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.2/go.mod h1:mBHNaIv6D8G7Ak8JwnrGqjXjFCTW6V7//g0Yi5sA5m4=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
