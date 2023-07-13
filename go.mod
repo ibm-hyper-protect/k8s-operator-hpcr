@@ -10,7 +10,7 @@ require (
 	github.com/digitalocean/go-libvirt v0.0.0-20221205150000-2939327a8519
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.0
-	github.com/iancoleman/strcase v0.2.0
+	github.com/iancoleman/strcase v0.3.0
 	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.2
 	github.com/joho/godotenv v1.5.1
 	github.com/kdomanski/iso9660 v0.3.5
