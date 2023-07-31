@@ -15,11 +15,11 @@
 package contract
 
 import (
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	I "github.com/IBM/fp-go/identity"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 	CE "github.com/ibm-hyper-protect/terraform-provider-hpcr/encrypt"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	I "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/identity"
 )
 
 var (
@@ -40,7 +40,7 @@ func EncryptContract(encCert []byte) func(contract C.RawMap) E.Either[error, C.R
 			defaultEncryption.PrivKey(),
 			E.Chain(F.Flow2(
 				encryptAndSign,
-				I.Ap[C.RawMap, E.Either[error, C.RawMap]](contract),
+				I.Ap[E.Either[error, C.RawMap]](contract),
 			)),
 		)
 	}

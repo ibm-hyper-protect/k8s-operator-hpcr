@@ -17,9 +17,9 @@ package contract
 import (
 	"fmt"
 
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	R "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/record"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	R "github.com/IBM/fp-go/record"
 )
 
 const (

@@ -15,7 +15,7 @@
 package common
 
 import (
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
+	E "github.com/IBM/fp-go/either"
 )
 
 type result[A any] struct {

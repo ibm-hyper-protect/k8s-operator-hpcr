@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"log"
 
+	A "github.com/IBM/fp-go/array"
 	libvirt "github.com/digitalocean/go-libvirt"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
 )
 

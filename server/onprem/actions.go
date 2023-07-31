@@ -20,13 +20,13 @@ import (
 	"strings"
 	"time"
 
+	A "github.com/IBM/fp-go/array"
+	F "github.com/IBM/fp-go/function"
 	"github.com/digitalocean/go-libvirt"
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/common"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"libvirt.org/go/libvirtxml"
 )
 

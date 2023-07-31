@@ -19,8 +19,8 @@ import (
 	"strings"
 	"testing"
 
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
+	A "github.com/IBM/fp-go/array"
+	F "github.com/IBM/fp-go/function"
 	"github.com/stretchr/testify/assert"
 )
 

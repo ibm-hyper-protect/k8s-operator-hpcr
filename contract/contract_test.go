@@ -18,10 +18,10 @@ import (
 	"fmt"
 	"testing"
 
+	B "github.com/IBM/fp-go/bytes"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
-	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"github.com/joho/godotenv"
 )
 
@@ -33,11 +33,10 @@ func TestSimpleContract(t *testing.T) {
 	}
 	// build
 
-	ctr := F.Pipe5(
+	ctr := F.Pipe4(
 		env,
 		CreateBusyboxContract,
 		E.Chain(ValidateContract),
-		C.MapRefRawMapE,
 		E.Chain(C.StringifyRawMapE),
 		E.Map[error](B.ToString),
 	)

@@ -17,7 +17,7 @@ package common
 import (
 	"testing"
 
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
+	A "github.com/IBM/fp-go/array"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

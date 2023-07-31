@@ -17,12 +17,12 @@ package cli
 import (
 	"os"
 
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	J "github.com/IBM/fp-go/json"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	J "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/json"
 	"github.com/urfave/cli/v2"
 )
 
@@ -109,7 +109,7 @@ func CreateOnPremCommand() *cli.Command {
 			data, err := common.FromEither(F.Pipe2(
 				opts,
 				onprem.CreateCustomResourceFromEnv(env),
-				E.Chain(J.Stringify[onprem.OnPremCustomResource]),
+				E.Chain(J.Marshal[*onprem.OnPremCustomResource]),
 			))
 			if err != nil {
 				return err

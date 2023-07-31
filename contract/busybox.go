@@ -18,11 +18,11 @@ import (
 	"fmt"
 	"path/filepath"
 
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	O "github.com/IBM/fp-go/option"
+	R "github.com/IBM/fp-go/record"
 	"github.com/iancoleman/strcase"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	O "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/option"
-	R "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/record"
 
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
 )
@@ -85,29 +85,26 @@ func CreateContract(env map[string]string) func(composeFolder string) E.Either[e
 	)
 
 	// load the contract
-	contract := F.Pipe1(
-		C.ParseRawMapE([]byte(contractTemplate)),
-		C.MapDerefRawMapE,
-	)
+	contract := C.ParseRawMapE([]byte(contractTemplate))
 
 	// create pull secrets
 	contractWithAuth := F.Pipe2(
 		credentials,
 		E.Map[error](upsertPullSecrets),
-		E.Ap[error, C.RawMap, C.RawMap](contract),
+		E.Ap[C.RawMap](contract),
 	)
 
 	// create logging
 	contractWithLogging := F.Pipe2(
 		logging,
 		E.Map[error](upsertLogging),
-		E.Ap[error, C.RawMap, C.RawMap](contractWithAuth),
+		E.Ap[C.RawMap](contractWithAuth),
 	)
 
 	return F.Flow3(
 		tarFolder,
 		E.Map[error](upsertComposeArchive),
-		E.Ap[error, C.RawMap, C.RawMap](contractWithLogging),
+		E.Ap[C.RawMap](contractWithLogging),
 	)
 }
 
