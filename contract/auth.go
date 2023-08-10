@@ -15,8 +15,8 @@
 package contract
 
 import (
+	R "github.com/IBM/fp-go/record"
 	"github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
-	R "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/record"
 )
 
 type Credential struct {

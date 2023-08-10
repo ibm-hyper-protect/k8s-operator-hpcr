@@ -18,11 +18,11 @@ import (
 	"context"
 	"os"
 
+	A "github.com/IBM/fp-go/array"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	O "github.com/IBM/fp-go/option"
 	ENC "github.com/ibm-hyper-protect/terraform-provider-hpcr/encrypt"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	O "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/option"
 	"github.com/qri-io/jsonschema"
 
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
@@ -32,10 +32,9 @@ import (
 var (
 	readFile = E.Eitherize1(os.ReadFile)
 	// LoadRawContractFromYAML reads a contract from a YAML file
-	LoadRawContractFromYAML = F.Flow3(
+	LoadRawContractFromYAML = F.Flow2(
 		readFile,
 		E.Chain(C.ParseRawMapE),
-		C.MapDerefRawMapE,
 	)
 	// the contract schema
 	contractSchema = V.GetContractSchema()
@@ -57,11 +56,11 @@ func ValidateContract(contract C.RawMap) E.Either[error, C.RawMap] {
 	return F.Pipe3(
 		contractSchema,
 		E.Map[error](validate[C.RawMap]),
-		E.Ap[error, C.RawMap, []jsonschema.KeyError](E.Of[error](contract)),
+		E.Ap[[]jsonschema.KeyError](E.Of[error](contract)),
 		E.Chain(F.Flow3(
 			A.Head[jsonschema.KeyError],
 			O.Map(func(err jsonschema.KeyError) error { return err }),
-			O.Fold(F.Constant(E.Of[error](contract)), E.Left[error, C.RawMap]),
+			O.Fold(F.Constant(E.Of[error](contract)), E.Left[C.RawMap, error]),
 		)),
 	)
 }

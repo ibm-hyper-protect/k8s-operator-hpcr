@@ -25,9 +25,9 @@ import (
 	"github.com/kevinburke/ssh_config"
 	homedir "github.com/mitchellh/go-homedir"
 
-	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
+	B "github.com/IBM/fp-go/bytes"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
 
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/contract"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
@@ -168,11 +168,10 @@ func getEncryptedBusyboxContract(envMap env.Environment) E.Either[error, string]
 		E.Chain(contract.ValidateContract),
 	)
 
-	return F.Pipe5(
+	return F.Pipe4(
 		enc,
-		E.Ap[error, C.RawMap, E.Either[error, C.RawMap]](ctr),
+		E.Ap[E.Either[error, C.RawMap]](ctr),
 		E.Flatten[error, C.RawMap],
-		C.MapRefRawMapE,
 		E.Chain(C.StringifyRawMapE),
 		E.Map[error](B.ToString),
 	)

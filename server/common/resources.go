@@ -15,10 +15,10 @@
 package common
 
 import (
+	A "github.com/IBM/fp-go/array"
+	F "github.com/IBM/fp-go/function"
+	T "github.com/IBM/fp-go/tuple"
 	C "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	T "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/tuple"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

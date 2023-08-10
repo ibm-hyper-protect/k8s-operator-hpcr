@@ -24,10 +24,10 @@ import (
 
 	"crypto/sha256"
 
+	A "github.com/IBM/fp-go/array"
 	"github.com/digitalocean/go-libvirt"
 	"github.com/google/uuid"
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 	"libvirt.org/go/libvirtxml"
 )
 

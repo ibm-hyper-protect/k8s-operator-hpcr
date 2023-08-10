@@ -20,6 +20,7 @@ import (
 	"log"
 	"net/http"
 
+	A "github.com/IBM/fp-go/array"
 	"github.com/gin-gonic/gin"
 	CM "github.com/ibm-hyper-protect/k8s-operator-hpcr/common"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/onprem"
@@ -27,7 +28,6 @@ import (
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/datadisk"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/lock"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/server/networkref"
-	A "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/array"
 )
 
 func CreatePingRoute(version, compileTime string) gin.HandlerFunc {

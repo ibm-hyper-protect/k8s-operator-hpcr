@@ -17,10 +17,10 @@ package contract
 import (
 	"testing"
 
+	B "github.com/IBM/fp-go/bytes"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
-	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
@@ -45,11 +45,10 @@ func TestSignAndEncryptContract(t *testing.T) {
 		E.Chain(ValidateContract),
 	)
 
-	encCtr := F.Pipe5(
+	encCtr := F.Pipe4(
 		enc,
-		E.Ap[error, C.RawMap, E.Either[error, C.RawMap]](ctr),
+		E.Ap[E.Either[error, C.RawMap]](ctr),
 		E.Flatten[error, C.RawMap],
-		C.MapRefRawMapE,
 		E.Chain(C.StringifyRawMapE),
 		E.Map[error](B.ToString),
 	)

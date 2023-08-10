@@ -15,13 +15,13 @@
 package onprem
 
 import (
+	B "github.com/IBM/fp-go/bytes"
+	E "github.com/IBM/fp-go/either"
+	F "github.com/IBM/fp-go/function"
+	I "github.com/IBM/fp-go/identity"
 	CTR "github.com/ibm-hyper-protect/k8s-operator-hpcr/contract"
 	"github.com/ibm-hyper-protect/k8s-operator-hpcr/env"
 	C "github.com/ibm-hyper-protect/terraform-provider-hpcr/contract"
-	B "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/bytes"
-	E "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/either"
-	F "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/function"
-	I "github.com/ibm-hyper-protect/terraform-provider-hpcr/fp/identity"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -184,11 +184,10 @@ type OnPremCustomResourceEnvOptions struct {
 // CreateCustomResource creates a custom resource from a contract
 func CreateCustomResource(opt *OnPremCustomResourceOptions) E.Either[error, *OnPremCustomResource] {
 	// load the encryption certificate and create the encryption callback
-	userData := F.Pipe5(
+	userData := F.Pipe4(
 		opt.EncryptionCert,
 		CTR.EncryptContract,
-		I.Ap[C.RawMap, E.Either[error, C.RawMap]](opt.Contract),
-		C.MapRefRawMapE,
+		I.Ap[E.Either[error, C.RawMap]](opt.Contract),
 		E.Chain(C.StringifyRawMapE),
 		E.Map[error](B.ToString),
 	)
