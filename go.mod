@@ -3,32 +3,33 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.21
 
 require (
-	github.com/IBM/fp-go v1.0.17
-	github.com/IBM/go-sdk-core/v5 v5.13.4
-	github.com/IBM/platform-services-go-sdk v0.43.0
+	github.com/IBM/fp-go v1.0.29
+	github.com/IBM/go-sdk-core/v5 v5.14.1
+	github.com/IBM/platform-services-go-sdk v0.48.1
 	github.com/IBM/vpc-go-sdk v0.41.0
 	github.com/Masterminds/semver v1.5.0
 	github.com/digitalocean/go-libvirt v0.0.0-20221205150000-2939327a8519
 	github.com/gin-gonic/gin v1.9.1
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.3.1
 	github.com/iancoleman/strcase v0.3.0
-	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.7
+	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.2.8
 	github.com/joho/godotenv v1.5.1
-	github.com/kdomanski/iso9660 v0.3.5
+	github.com/kdomanski/iso9660 v0.4.0
 	github.com/kevinburke/ssh_config v1.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/qri-io/jsonschema v0.2.1
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
-	golang.org/x/crypto v0.12.0
-	k8s.io/api v0.27.4
-	k8s.io/apimachinery v0.27.4
+	golang.org/x/crypto v0.13.0
+	k8s.io/api v0.28.1
+	k8s.io/apimachinery v0.28.1
 	libvirt.org/go/libvirtxml v1.9004.0
 )
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
+	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/bytedance/sonic v1.10.0-rc3 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
@@ -57,11 +58,11 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.4 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
-	github.com/hashicorp/hcl/v2 v2.17.0 // indirect
+	github.com/hashicorp/hcl/v2 v2.18.0 // indirect
 	github.com/hashicorp/logutils v1.0.0 // indirect
-	github.com/hashicorp/terraform-plugin-go v0.18.0 // indirect
+	github.com/hashicorp/terraform-plugin-go v0.19.0 // indirect
 	github.com/hashicorp/terraform-plugin-log v0.9.0 // indirect
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.27.0 // indirect
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.29.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
@@ -85,13 +86,13 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	github.com/zclconf/go-cty v1.13.2 // indirect
+	github.com/zclconf/go-cty v1.14.0 // indirect
 	go.mongodb.org/mongo-driver v1.12.0 // indirect
 	golang.org/x/arch v0.4.0 // indirect
-	golang.org/x/net v0.12.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/text v0.12.0 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
+	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
+	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
