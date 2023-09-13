@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/IBM/fp-go v1.0.31
 	github.com/IBM/go-sdk-core/v5 v5.14.1
-	github.com/IBM/platform-services-go-sdk v0.48.1
+	github.com/IBM/platform-services-go-sdk v0.49.0
 	github.com/IBM/vpc-go-sdk v0.41.0
 	github.com/Masterminds/semver v1.5.0
 	github.com/digitalocean/go-libvirt v0.0.0-20221205150000-2939327a8519
