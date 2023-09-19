@@ -14,6 +14,8 @@ github.com/IBM/fp-go v1.0.33 h1:kD3xpq36psihX/4cIdPIc1KOqj6IweUwZ9SAGe4PbcM=
 github.com/IBM/fp-go v1.0.33/go.mod h1:bzy8gLFXi4hAbaOYc1fHBUqKOvQq7oNUkfNotjrNTGw=
 github.com/IBM/fp-go v1.0.34 h1:xhoMKUb5h4IJXa/NmJz9Laou5igN0Fhe/Ket+hNmPMY=
 github.com/IBM/fp-go v1.0.34/go.mod h1:bzy8gLFXi4hAbaOYc1fHBUqKOvQq7oNUkfNotjrNTGw=
+github.com/IBM/fp-go v1.0.35 h1:QrP0UqRIgrHvUHXes58O3q0oxaX7ZDqAhyolUbqq11A=
+github.com/IBM/fp-go v1.0.35/go.mod h1:bzy8gLFXi4hAbaOYc1fHBUqKOvQq7oNUkfNotjrNTGw=
 github.com/IBM/go-sdk-core/v5 v5.13.4 h1:kJvBNQOwhFRkXCPapjNvKVC7n7n2vd1Nr6uUtDZGcfo=
 github.com/IBM/go-sdk-core/v5 v5.13.4/go.mod h1:gKRSB+YyKsGlRQW7v5frlLbue5afulSvrRa4O26o4MM=
 github.com/IBM/go-sdk-core/v5 v5.14.1 h1:WR1r0zz+gDW++xzZjF41r9ueY4JyjS2vgZjiYs8lO3c=
@@ -30,6 +32,8 @@ github.com/IBM/platform-services-go-sdk v0.50.0 h1:opsC+eJNGn4xvM2Z5DBgZWtFu3xkR
 github.com/IBM/platform-services-go-sdk v0.50.0/go.mod h1:6LxcUhIaSLP4SuQJXF9oLXBamSQogs5D9BcVwr4hmfU=
 github.com/IBM/platform-services-go-sdk v0.50.1 h1:mLT6SB2L/4uatI0tflj/IA2966UeGBNF4Pj8FnbtrJk=
 github.com/IBM/platform-services-go-sdk v0.50.1/go.mod h1:6LxcUhIaSLP4SuQJXF9oLXBamSQogs5D9BcVwr4hmfU=
+github.com/IBM/platform-services-go-sdk v0.50.2 h1:57JdiZq3nnn0epmSLScYISQ2OLJZrR8fKfcnUdCMtjA=
+github.com/IBM/platform-services-go-sdk v0.50.2/go.mod h1:6LxcUhIaSLP4SuQJXF9oLXBamSQogs5D9BcVwr4hmfU=
 github.com/IBM/vpc-go-sdk v0.40.0 h1:p4E1dIQc6+WmqLwRTzgWA2udqFw6nypOg+8R0WxTgX0=
 github.com/IBM/vpc-go-sdk v0.40.0/go.mod h1:MgZrbITC067AlcE5oy4hwylasFvrePL4RVxeF6GTdKQ=
 github.com/IBM/vpc-go-sdk v0.41.0 h1:Y/V0i5qp3hraD0nHl1EYga9MupSqMJP12vO/OlFqvDk=
