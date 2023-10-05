@@ -1,31 +1,59 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-      "config:base",
-      ":dependencyDashboard"
+    "config:base",
+    ":dependencyDashboard"
   ],
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchUpdateTypes": ["major", "minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true,
       "groupName": "go dependencies",
-      "excludePackageNames": ["github.com/IBM/vpc-go-sdk"]
+      "excludePackageNames": [
+        "github.com/IBM/vpc-go-sdk"
+      ]
     },
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true,
-      "matchPackageNames": ["github.com/IBM/vpc-go-sdk"]
+      "matchPackageNames": [
+        "github.com/IBM/vpc-go-sdk"
+      ]
     },
     {
-      "matchDatasources": ["golang-version"],
+      "matchDatasources": [
+        "golang-version"
+      ],
       "groupName": "golang-version"
+    },
+    {
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchDepTypes": [
+        "golang"
+      ],
+      "enabled": false
     }
   ],
   "regexManagers": [
     {
       "description": "Update `version:` and `_VERSION:` variables in github workflows",
-      "fileMatch": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+      "fileMatch": [
+        "^\\.github/workflows/[^/]+\\.ya?ml$"
+      ],
       "matchStrings": [
         "\\s+version: (?<currentValue>.+?) # renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>.+?))?\\s",
         "\\s*[A-Z_]+?_VERSION: (?<currentValue>.+?) # renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>.+?))?\\s"
