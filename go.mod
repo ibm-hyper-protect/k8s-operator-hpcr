@@ -1,6 +1,6 @@
 module github.com/ibm-hyper-protect/k8s-operator-hpcr
 
-go 1.21
+go 1.20
 
 require (
 	github.com/IBM/fp-go v1.0.37
