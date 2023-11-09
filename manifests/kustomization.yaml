@@ -1,4 +1,0 @@
-resources:
-- controller.yaml
-- crd.yaml
-- webhook.yaml
