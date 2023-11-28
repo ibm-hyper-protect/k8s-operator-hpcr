@@ -15,9 +15,8 @@
 package contract
 
 import (
-	"fmt"
-
 	E "github.com/IBM/fp-go/either"
+	"github.com/IBM/fp-go/errors"
 	F "github.com/IBM/fp-go/function"
 	R "github.com/IBM/fp-go/record"
 )
@@ -33,8 +32,6 @@ var (
 // LoadPublicKeyFromEnv locats the contract key from the environment and loads it
 var LoadPublicKeyFromEnv = F.Flow3(
 	lookupCrt,
-	E.FromOption[error, string](func() error {
-		return fmt.Errorf("unable to locate the contract certificate from the environment variable [%s].", KEY_TARGET_CONTRACT_PUB_KEY_FILENAME)
-	}),
+	E.FromOption[string](errors.OnNone("unable to locate the contract certificate from the environment variable [%s].", KEY_TARGET_CONTRACT_PUB_KEY_FILENAME)),
 	E.Chain(readFile),
 )
