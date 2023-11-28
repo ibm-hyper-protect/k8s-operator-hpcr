@@ -71,7 +71,7 @@ func CreateContract(env map[string]string) func(composeFolder string) E.Either[e
 				registry: {Username: user, Password: pwd},
 			})
 		}),
-		E.FromOption[error, Credentials](func() error { return fmt.Errorf("unable to lookup credentials") }),
+		E.FromOption[Credentials](func() error { return fmt.Errorf("unable to lookup credentials") }),
 	)
 
 	// construct logging part
@@ -81,7 +81,7 @@ func CreateContract(env map[string]string) func(composeFolder string) E.Either[e
 				LogDNA: &LogDNA{IngestionKey: key, Hostname: host},
 			})
 		}),
-		E.FromOption[error, Logging](func() error { return fmt.Errorf("unable to lookup logging config") }),
+		E.FromOption[Logging](func() error { return fmt.Errorf("unable to lookup logging config") }),
 	)
 
 	// load the contract
