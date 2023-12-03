@@ -30,6 +30,8 @@ github.com/IBM/fp-go v1.0.65 h1:2DIhqkiK8K7x6DtkypR3eDm/HGU8n+YyMyVuczvzbyE=
 github.com/IBM/fp-go v1.0.65/go.mod h1:VaZsB98yLOqZB/8ZjiSfhMa0T+R7/HhAKsuGWy6S+Os=
 github.com/IBM/fp-go v1.0.66 h1:rL8jY4MV/tv/PN939pOD60h7kGP+QtOHx3bY00Us6zk=
 github.com/IBM/fp-go v1.0.66/go.mod h1:VaZsB98yLOqZB/8ZjiSfhMa0T+R7/HhAKsuGWy6S+Os=
+github.com/IBM/fp-go v1.0.67 h1:CWC4yLVHEBXNvwOZLvJopIo1rERyzri2JN95bkD6x5k=
+github.com/IBM/fp-go v1.0.67/go.mod h1:xWixRkBAKQJpZpZXJDHkQccoURnROHydNVG7BloyF4Y=
 github.com/IBM/go-sdk-core/v5 v5.13.4 h1:kJvBNQOwhFRkXCPapjNvKVC7n7n2vd1Nr6uUtDZGcfo=
 github.com/IBM/go-sdk-core/v5 v5.13.4/go.mod h1:gKRSB+YyKsGlRQW7v5frlLbue5afulSvrRa4O26o4MM=
 github.com/IBM/go-sdk-core/v5 v5.14.1 h1:WR1r0zz+gDW++xzZjF41r9ueY4JyjS2vgZjiYs8lO3c=
@@ -217,6 +219,8 @@ github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.3 h1:HLZOzYYQ/vVQmgXQH
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.3/go.mod h1:C3VCjipVxHdOnP4c274IRQB9FgzzlKl1cTUX4FUlSow=
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.4 h1:Val9cQgZrUzxnczXDftnkvmxXzhPVW8HWa5QzVksLkw=
 github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.4/go.mod h1:ivnwqWllgcQaoAuCSB3D2UNL04uiaZF5VTao1jaZSSI=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.5 h1:HsbtIfkvU5HJDQWLWxDNormwgFi0NwXCwtOpksHYGcI=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.5/go.mod h1:E2F/acN/pRYKKpz/f8MECohpv/dVm2HEZfklrp5M25w=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
