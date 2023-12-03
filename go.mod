@@ -3,7 +3,7 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.21.4
 
 require (
-	github.com/IBM/fp-go v1.0.66
+	github.com/IBM/fp-go v1.0.67
 	github.com/IBM/go-sdk-core/v5 v5.15.0
 	github.com/IBM/platform-services-go-sdk v0.54.1
 	github.com/IBM/vpc-go-sdk v0.44.0
@@ -12,7 +12,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.4.0
 	github.com/iancoleman/strcase v0.3.0
-	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.4
+	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.5
 	github.com/joho/godotenv v1.5.1
 	github.com/kdomanski/iso9660 v0.4.0
 	github.com/kevinburke/ssh_config v1.2.0
