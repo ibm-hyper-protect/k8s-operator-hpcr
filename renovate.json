@@ -5,9 +5,7 @@
     ":dependencyDashboard"
   ],
   "rangeStrategy": "bump",
-  "postUpdateOptions": [
-    "gomodTidy"
-  ],
+  "postUpdateOptions": ["gomodTidy"],
   "packageRules": [
     {
       "matchUpdateTypes": [
