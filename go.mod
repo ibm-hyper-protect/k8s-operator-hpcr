@@ -12,7 +12,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/iancoleman/strcase v0.3.0
-	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.9
+	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.10
 	github.com/joho/godotenv v1.5.1
 	github.com/kdomanski/iso9660 v0.4.0
 	github.com/kevinburke/ssh_config v1.2.0
@@ -39,8 +39,8 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
-	github.com/go-openapi/errors v0.20.4 // indirect
-	github.com/go-openapi/strfmt v0.21.9 // indirect
+	github.com/go-openapi/errors v0.21.0 // indirect
+	github.com/go-openapi/strfmt v0.21.10 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.16.0 // indirect
