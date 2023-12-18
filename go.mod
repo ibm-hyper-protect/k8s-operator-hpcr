@@ -20,7 +20,7 @@ require (
 	github.com/qri-io/jsonschema v0.2.1
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.26.0
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 	k8s.io/api v0.29.0
 	k8s.io/apimachinery v0.29.0
 	libvirt.org/go/libvirtxml v1.9008.0
