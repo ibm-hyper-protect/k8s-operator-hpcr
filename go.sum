@@ -106,8 +106,8 @@ github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0 h1:Bl3e2ei2j/Z3Hc2HIS15Gal2
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0/go.mod h1:i2C41tszDjiWfziPQDL5R/f3Zp0gahXe5No/MIO9rCE=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.10 h1:PgXGoWhprKRtLnDl7Ngl99dr4lv4BsLMe3zOdnENnFo=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.10/go.mod h1:NnR5Y1OlN9ePeo+r3tecSand8gEDIESdCxFd5j/x9wc=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.11 h1:MuTo7LhcwO5MmStOVg4UVeEWsmZ1bkYX5hly4/AzNek=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.11/go.mod h1:YKZ1bZp9lIEu4mN7NVR9SHxmkzGuMXy3UeRSs+DJVrA=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
