@@ -38,7 +38,7 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-logr/logr v1.3.0 // indirect
+	github.com/go-logr/logr v1.4.0 // indirect
 	github.com/go-openapi/errors v0.21.0 // indirect
 	github.com/go-openapi/strfmt v0.21.10 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
