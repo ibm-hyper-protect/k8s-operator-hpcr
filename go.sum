@@ -1,5 +1,5 @@
-github.com/IBM/fp-go v1.0.88 h1:Of9aZV8tg5Q6BL3GNY2bKdcMaWj/rwEcIe7t7No62Vw=
-github.com/IBM/fp-go v1.0.88/go.mod h1:/BFhWzs0RG4zTORwAvQf8m503Sb5KbScKP/QG+KDJaA=
+github.com/IBM/fp-go v1.0.89 h1:+7ENoQkulriZRVD+B1qd/sc/wLxo/3sPVnbGcR8EGPE=
+github.com/IBM/fp-go v1.0.89/go.mod h1:/BFhWzs0RG4zTORwAvQf8m503Sb5KbScKP/QG+KDJaA=
 github.com/IBM/go-sdk-core/v5 v5.15.0 h1:AhFoWVk3i58f9vnDoEoZumI/zbtRoP5moWIz5YQOmZg=
 github.com/IBM/go-sdk-core/v5 v5.15.0/go.mod h1:5Obavm/s1Tc2PxivEIfgCvj/HJ5h3QIOjLHS5y8QJf0=
 github.com/IBM/platform-services-go-sdk v0.55.0 h1:W598xZanL61bwd8O2DQexr4qjIr+/tP0Y845zoms5yA=
@@ -107,8 +107,8 @@ github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0 h1:Bl3e2ei2j/Z3Hc2HIS15Gal2
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0/go.mod h1:i2C41tszDjiWfziPQDL5R/f3Zp0gahXe5No/MIO9rCE=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.15 h1:091EJHG1pGLEjJL+92ZVOFySTdU1JxZbAuji6CEj848=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.15/go.mod h1:JR/79AwhQr4XNeiqYNNHISmDE2YjCrrUmSvcyUXlSAs=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.16 h1:j0y7nA7E7mTQPCrESO9Ss9G2eBzL/Li36hC7Tan6UaA=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.16/go.mod h1:HIi4qGmb1l7xKN1tM56G1olHp0s56PGXADYd51UBcQk=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
