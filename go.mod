@@ -12,7 +12,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/iancoleman/strcase v0.3.0
-	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.16
+	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.17
 	github.com/joho/godotenv v1.5.1
 	github.com/kdomanski/iso9660 v0.4.0
 	github.com/kevinburke/ssh_config v1.2.0
