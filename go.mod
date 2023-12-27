@@ -3,7 +3,7 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.21
 
 require (
-	github.com/IBM/fp-go v1.0.89
+	github.com/IBM/fp-go v1.0.90
 	github.com/IBM/go-sdk-core/v5 v5.15.0
 	github.com/IBM/platform-services-go-sdk v0.55.0
 	github.com/IBM/vpc-go-sdk v0.47.0
