@@ -58,6 +58,9 @@ k8s-operator-hpcr-vpc      5m37s
 ```bash
 kubectl get deployments
 
+
+
+
 NAME                READY   UP-TO-DATE   AVAILABLE   AGE
 k8s-operator-hpcr   1/1     1            1           6m35s
 ```
@@ -67,3 +70,8 @@ k8s-operator-hpcr   1/1     1            1           6m35s
 ```bash
 kubectl logs -l app=k8s-operator-hpcr
 ```
+
+### NOTE :
+
+The security of the virtual server instance should be managed by the customer. If the customer is using this environment, please follow this link for guidance
+https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-additional-security-responsibilities-hyper-protect-virtual
