@@ -67,3 +67,7 @@ k8s-operator-hpcr   1/1     1            1           6m35s
 ```bash
 kubectl logs -l app=k8s-operator-hpcr
 ```
+### NOTE :
+
+You should own the security related responsibilities of the Virtual Servers following security best practices that help in maintaining a more secure environment. If your environment is IBM Hyper Protect Virtual Servers then, please follow https://www.ibm.com/docs/en/hpvs/2.1.x?topic=servers-additional-security-responsibilities-hyper-protect-virtual for the additional security responsibilities.
+
