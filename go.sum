@@ -1,5 +1,5 @@
-github.com/IBM/fp-go v1.0.96 h1:RGx45ZvZN9qaz6cEiBOuDIgHE+LyVqf2fGhmwT/UHVU=
-github.com/IBM/fp-go v1.0.96/go.mod h1:qqstC2fZZZajHWYAIj6GGxqiKnnWiBjfJzGRcB3mqGs=
+github.com/IBM/fp-go v1.0.97 h1:4XV/3Of+Yfs342EVyFvK8gaRf/ppL20H1bDyuFGJ2Q0=
+github.com/IBM/fp-go v1.0.97/go.mod h1:qqstC2fZZZajHWYAIj6GGxqiKnnWiBjfJzGRcB3mqGs=
 github.com/IBM/go-sdk-core/v5 v5.15.0 h1:AhFoWVk3i58f9vnDoEoZumI/zbtRoP5moWIz5YQOmZg=
 github.com/IBM/go-sdk-core/v5 v5.15.0/go.mod h1:5Obavm/s1Tc2PxivEIfgCvj/HJ5h3QIOjLHS5y8QJf0=
 github.com/IBM/platform-services-go-sdk v0.55.0 h1:W598xZanL61bwd8O2DQexr4qjIr+/tP0Y845zoms5yA=
