@@ -1,5 +1,5 @@
-github.com/IBM/fp-go v1.0.94 h1:g4IUO6Djp8rb4hgX0nUsVdLiBKo5ik0txxgSza7ZIyw=
-github.com/IBM/fp-go v1.0.94/go.mod h1:qqstC2fZZZajHWYAIj6GGxqiKnnWiBjfJzGRcB3mqGs=
+github.com/IBM/fp-go v1.0.96 h1:RGx45ZvZN9qaz6cEiBOuDIgHE+LyVqf2fGhmwT/UHVU=
+github.com/IBM/fp-go v1.0.96/go.mod h1:qqstC2fZZZajHWYAIj6GGxqiKnnWiBjfJzGRcB3mqGs=
 github.com/IBM/go-sdk-core/v5 v5.15.0 h1:AhFoWVk3i58f9vnDoEoZumI/zbtRoP5moWIz5YQOmZg=
 github.com/IBM/go-sdk-core/v5 v5.15.0/go.mod h1:5Obavm/s1Tc2PxivEIfgCvj/HJ5h3QIOjLHS5y8QJf0=
 github.com/IBM/platform-services-go-sdk v0.55.0 h1:W598xZanL61bwd8O2DQexr4qjIr+/tP0Y845zoms5yA=
@@ -44,7 +44,6 @@ github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
 github.com/gin-gonic/gin v1.9.1 h1:4idEAncQnU5cB7BeOkPtxjfCSye0AAm1R0RVIqJ+Jmg=
 github.com/gin-gonic/gin v1.9.1/go.mod h1:hPrL7YrpYKXt5YId3A/Tnip5kqbEAP+KLuI3SUcPTeU=
-github.com/go-logr/logr v1.3.0/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/logr v1.4.1 h1:pKouT5E8xu9zeFC39JXRDukb6JFQPXM5p5I91188VAQ=
 github.com/go-logr/logr v1.4.1/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-openapi/errors v0.21.0 h1:FhChC/duCnfoLj1gZ0BgaBmzhJC2SL/sJr8a2vAobSY=
@@ -107,8 +106,8 @@ github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0 h1:Bl3e2ei2j/Z3Hc2HIS15Gal2
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.31.0/go.mod h1:i2C41tszDjiWfziPQDL5R/f3Zp0gahXe5No/MIO9rCE=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.21 h1:E0HS17B+iT5FULvz/KNw2xOmN2ZDFEhDEYCcfNlLiVg=
-github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.21/go.mod h1:I/v03FWtiCyJkqyw+WB94uY+A4hJ5xqv28IGa6dwJ0U=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.22 h1:up7CGcD30xThX25KMAYaXdy9l2DfazXq8YjrI1iXSbQ=
+github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.22/go.mod h1:0Plt+DviJixw5iPM0KceXFnTiCyLM3EQ7Nbi0KX1b4M=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
@@ -317,8 +316,8 @@ k8s.io/api v0.29.0 h1:NiCdQMY1QOp1H8lfRyeEf8eOwV6+0xA6XEE44ohDX2A=
 k8s.io/api v0.29.0/go.mod h1:sdVmXoz2Bo/cb77Pxi71IPTSErEW32xa4aXwKH7gfBA=
 k8s.io/apimachinery v0.29.0 h1:+ACVktwyicPz0oc6MTMLwa2Pw3ouLAfAon1wPLtG48o=
 k8s.io/apimachinery v0.29.0/go.mod h1:eVBxQ/cwiJxH58eK/jd/vAk4mrxmVlnpBH5J2GbMeis=
-k8s.io/klog/v2 v2.110.1 h1:U/Af64HJf7FcwMcXyKm2RPM22WZzyR7OSpYj5tg3cL0=
-k8s.io/klog/v2 v2.110.1/go.mod h1:YGtd1984u+GgbuZ7e08/yBuAfKLSO0+uR1Fhi6ExXjo=
+k8s.io/klog/v2 v2.120.0 h1:z+q5mfovBj1fKFxiRzsa2DsJLPIVMk/KFL81LMOfK+8=
+k8s.io/klog/v2 v2.120.0/go.mod h1:3Jpz1GvMt720eyJH1ckRHK1EDfpxISzJ7I9OYgaDtPE=
 k8s.io/utils v0.0.0-20240102154912-e7106e64919e h1:eQ/4ljkx21sObifjzXwlPKpdGLrCfRziVtos3ofG/sQ=
 k8s.io/utils v0.0.0-20240102154912-e7106e64919e/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
 libvirt.org/go/libvirtxml v1.9008.0 h1:xo2U9SqUsufTFtbyjiqs6oDdF329cvtRdqttWN7eojk=

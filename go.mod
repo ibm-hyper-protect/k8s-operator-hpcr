@@ -3,7 +3,7 @@ module github.com/ibm-hyper-protect/k8s-operator-hpcr
 go 1.21
 
 require (
-	github.com/IBM/fp-go v1.0.94
+	github.com/IBM/fp-go v1.0.96
 	github.com/IBM/go-sdk-core/v5 v5.15.0
 	github.com/IBM/platform-services-go-sdk v0.55.0
 	github.com/IBM/vpc-go-sdk v0.47.0
@@ -12,7 +12,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/iancoleman/strcase v0.3.0
-	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.21
+	github.com/ibm-hyper-protect/terraform-provider-hpcr v0.3.22
 	github.com/joho/godotenv v1.5.1
 	github.com/kdomanski/iso9660 v0.4.0
 	github.com/kevinburke/ssh_config v1.2.0
@@ -94,7 +94,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/klog/v2 v2.110.1 // indirect
+	k8s.io/klog/v2 v2.120.0 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
