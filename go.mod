@@ -8,7 +8,7 @@ require (
 	github.com/IBM/fp-go v1.0.98
 	github.com/IBM/go-sdk-core/v5 v5.19.0
 	github.com/IBM/platform-services-go-sdk v0.56.0
-	github.com/IBM/vpc-go-sdk v0.67.0
+	github.com/IBM/vpc-go-sdk v0.67.1
 	github.com/Masterminds/semver v1.5.0
 	github.com/digitalocean/go-libvirt v0.0.0-20221205150000-2939327a8519
 	github.com/gin-gonic/gin v1.9.1
