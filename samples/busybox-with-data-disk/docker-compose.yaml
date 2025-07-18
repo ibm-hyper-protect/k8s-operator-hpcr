@@ -2,7 +2,7 @@
 version: '3.0'
 services:
   busybox:
-    image: docker.io/library/busybox@sha256:ba76950ac9eaa407512c9d859cea48114eeff8a6f12ebaa5d32ce79d4a017dd8
+    image: docker.io/library/busybox@sha256:f85340bf132ae937d2c2a763b8335c9bab35d6e8293f70f606b9c6178d84f42b
     volumes:
       - /mnt/busybox:/srv/busybox
     command: |
