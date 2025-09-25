@@ -4,8 +4,8 @@ github.com/IBM/go-sdk-core/v5 v5.20.1 h1:dzeyifh1kfRLw8VfAIIS5okZYuqLTqplPZP/Kcs
 github.com/IBM/go-sdk-core/v5 v5.20.1/go.mod h1:Q3BYO6iDA2zweQPDGbNTtqft5tDcEpm6RTuqMlPcvbw=
 github.com/IBM/platform-services-go-sdk v0.56.0 h1:1xpZ73+USxkB/kfvAsof20YRGbnOX2aVD1Kf6mqw1Ts=
 github.com/IBM/platform-services-go-sdk v0.56.0/go.mod h1:+U6Kg7o5u/Bh4ZkLxjymSgfdpVsaWAtsMtzhwclUry0=
-github.com/IBM/vpc-go-sdk v0.72.0 h1:3Pj7nNuYmlaRPiMyC/5Uro3+5hzNBM6v2Lrq5UABBkQ=
-github.com/IBM/vpc-go-sdk v0.72.0/go.mod h1:K3vVlje72PYE3ZRt1iouE+jSIq+vCyYzT1HiFC06hUA=
+github.com/IBM/vpc-go-sdk v0.73.0 h1:gMVR6NSzw8Y7pCkcDa92+heQTzu5X64q8bnBBpLJpFE=
+github.com/IBM/vpc-go-sdk v0.73.0/go.mod h1:K3vVlje72PYE3ZRt1iouE+jSIq+vCyYzT1HiFC06hUA=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/agext/levenshtein v1.2.3 h1:YB2fHEn0UJagG8T1rrWknE3ZQzWM06O8AMAatNn7lmo=
