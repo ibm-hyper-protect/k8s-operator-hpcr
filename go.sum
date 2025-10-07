@@ -1,11 +1,11 @@
 github.com/IBM/fp-go v1.0.98 h1:pdcFFbCPwcdWtdix4UrV0cD4IcQ6xHq06Jlyzc/0GoY=
 github.com/IBM/fp-go v1.0.98/go.mod h1:qqstC2fZZZajHWYAIj6GGxqiKnnWiBjfJzGRcB3mqGs=
-github.com/IBM/go-sdk-core/v5 v5.20.1 h1:dzeyifh1kfRLw8VfAIIS5okZYuqLTqplPZP/Kcsgdlo=
-github.com/IBM/go-sdk-core/v5 v5.20.1/go.mod h1:Q3BYO6iDA2zweQPDGbNTtqft5tDcEpm6RTuqMlPcvbw=
+github.com/IBM/go-sdk-core/v5 v5.21.0 h1:DUnYhvC4SoC8T84rx5omnhY3+xcQg/Whyoa3mDPIMkk=
+github.com/IBM/go-sdk-core/v5 v5.21.0/go.mod h1:Q3BYO6iDA2zweQPDGbNTtqft5tDcEpm6RTuqMlPcvbw=
 github.com/IBM/platform-services-go-sdk v0.56.0 h1:1xpZ73+USxkB/kfvAsof20YRGbnOX2aVD1Kf6mqw1Ts=
 github.com/IBM/platform-services-go-sdk v0.56.0/go.mod h1:+U6Kg7o5u/Bh4ZkLxjymSgfdpVsaWAtsMtzhwclUry0=
-github.com/IBM/vpc-go-sdk v0.73.0 h1:gMVR6NSzw8Y7pCkcDa92+heQTzu5X64q8bnBBpLJpFE=
-github.com/IBM/vpc-go-sdk v0.73.0/go.mod h1:K3vVlje72PYE3ZRt1iouE+jSIq+vCyYzT1HiFC06hUA=
+github.com/IBM/vpc-go-sdk v0.74.0 h1:41tRWn4Tw6r5so/tXsMEy6eYftSPOeRI1YGnECOydNw=
+github.com/IBM/vpc-go-sdk v0.74.0/go.mod h1:8lX6TpeYBbx1Vd4KTgM3PPQ4y3auGOPuD6qq3UBDdug=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/agext/levenshtein v1.2.3 h1:YB2fHEn0UJagG8T1rrWknE3ZQzWM06O8AMAatNn7lmo=
