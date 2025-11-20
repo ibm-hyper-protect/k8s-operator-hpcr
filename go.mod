@@ -1,6 +1,6 @@
 module github.com/ibm-hyper-protect/k8s-operator-hpcr
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -22,7 +22,7 @@ require (
 	github.com/qri-io/jsonschema v0.2.1
 	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/crypto v0.36.0
+	golang.org/x/crypto v0.45.0
 	k8s.io/api v0.29.0
 	k8s.io/apimachinery v0.29.0
 	libvirt.org/go/libvirtxml v1.9008.0
@@ -88,9 +88,9 @@ require (
 	github.com/zclconf/go-cty v1.14.1 // indirect
 	go.mongodb.org/mongo-driver v1.17.2 // indirect
 	golang.org/x/arch v0.7.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
